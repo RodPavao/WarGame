@@ -28,6 +28,12 @@ The project currently includes initial work involving:
 - Unity scenes
 - C# scripts
 - Initial game structure and mechanics
+  
+### World Map and Territory System
+<img width="1926" height="989" alt="Captura de tela 2026-08-09 224056" src="https://github.com/user-attachments/assets/5c70c882-1498-4564-86f3-b4e7ccb1fcce" />
+
+### Territory Development in Unity
+<img width="3439" height="1001" alt="Captura de tela 2026-08-09 224403" src="https://github.com/user-attachments/assets/67f0eb38-a248-41a1-b558-01db0594e5f5" />
 
 ## 📚 Concepts Practiced
 
