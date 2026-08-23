@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class TerritorioClique : MonoBehaviour
 {
-    private SpriteRenderer sr;
 
+    // Tudo isso pertence à classe
+    private TerritorioVisual territorioVisual;
+    private TerritorioContador territorioContador;
+    private TerritorioTropas territorioTropas;
+    
     // =====================================================
     // IDENTIFICAÇÃO
     // =====================================================
@@ -45,9 +49,17 @@ public class TerritorioClique : MonoBehaviour
     // EXÉRCITO
     // =====================================================
 
-    public int tropas = 1;
+    public int Tropas
+{
+    get
+    {
+        if (territorioTropas == null)
+            return 1;
 
-private ContadorTropas contadorTropas;
+        return territorioTropas.Quantidade;
+    }
+}
+
 
     // =====================================================
     // FRONTEIRAS
@@ -57,9 +69,16 @@ private ContadorTropas contadorTropas;
 
     void Start()
 {
-    sr = GetComponent<SpriteRenderer>();
+    territorioVisual =
+    GetComponent<TerritorioVisual>();
 
-    territorioFronteiras =
+if (territorioVisual == null)
+{
+    territorioVisual =
+        gameObject.AddComponent<TerritorioVisual>();
+}
+
+territorioFronteiras =
     GetComponent<TerritorioFronteiras>();
 
 if (territorioFronteiras == null)
@@ -70,188 +89,84 @@ if (territorioFronteiras == null)
     );
 }
 
-    AtualizarCor();
+territorioVisual.AtualizarCor();
 
-    CriarContadorModerno();
+territorioContador =
+    GetComponent<TerritorioContador>();
+
+if (territorioContador == null)
+{
+    territorioContador =
+        gameObject.AddComponent<TerritorioContador>();
 }
 
-    void OnMouseDown()
+territorioContador.Inicializar();
+
+territorioTropas =
+    GetComponent<TerritorioTropas>();
+
+if (territorioTropas == null)
+{
+    territorioTropas =
+        gameObject.AddComponent<TerritorioTropas>();
+}
+
+territorioTropas.Inicializar();
+
+}
+
+public void Clicar()
 {
     if (GameManager.instance == null)
     {
-        Debug.LogError("GameManager não encontrado na Scene.");
+        Debug.LogError(
+            "GameManager não encontrado na Scene."
+        );
+
         return;
     }
 
-    GameManager.instance.ClicarTerritorio(this);
+    GameManager.instance
+        .ClicarTerritorio(this);
 }
 
-private void CriarContadorModerno()
-{
-    Transform existente =
-    transform.Find("ContadorModerno");
-
-if (existente != null)
-{
-    contadorTropas =
-        existente.GetComponent<ContadorTropas>();
-
-    if (contadorTropas != null)
-        contadorTropas.Configurar(this);
-
-    return;
-}
-
-    PolygonCollider2D collider =
-        GetComponent<PolygonCollider2D>();
-
-    if (collider == null)
-        return;
-
-    GameObject obj =
-        new GameObject("ContadorModerno");
-
-    obj.transform.SetParent(
-        transform,
-        false
-    );
-
-    // -------------------------------------------------
-    // Encontra a maior área contínua do território.
-    // Isso evita colocar o contador no mar em
-    // arquipélagos como Japão e Indonésia.
-    // -------------------------------------------------
-
-    Vector2 centroEscolhido =
-        Vector2.zero;
-
-    float maiorArea =
-        0f;
-
-    for (int i = 0;
-         i < collider.pathCount;
-         i++)
-    {
-        Vector2[] pontos =
-            collider.GetPath(i);
-
-        float area =
-            Mathf.Abs(
-                CalcularAreaPoligono(pontos)
-            );
-
-        if (area > maiorArea)
-        {
-            maiorArea = area;
-
-            centroEscolhido =
-                CalcularCentroPoligono(pontos);
-        }
-    }
-
-    obj.transform.localPosition =
-        new Vector3(
-            centroEscolhido.x,
-            centroEscolhido.y,
-            0f
-        );
-
-    // -------------------------------------------------
-    // Escala automática conforme a área do território.
-    // -------------------------------------------------
-
-    float escala =
-        Mathf.Sqrt(
-            maiorArea / 0.65f
-        );
-
-    escala =
-        Mathf.Clamp(
-            escala,
-            0.68f,
-            1.00f
-        );
-
-    obj.transform.localScale =
-        new Vector3(
-            escala,
-            escala,
-            1f
-        );
-
-    contadorTropas =
-    obj.AddComponent<ContadorTropas>();
-
-contadorTropas.Configurar(this);
-}
 
 public void AdicionarTropa()
 {
-    tropas++;
+    if (territorioTropas == null)
+        return;
 
-    if (contadorTropas != null)
-        contadorTropas.Atualizar();
+    territorioTropas.Adicionar();
+
+    territorioContador.Atualizar();
 }
 
 public void RemoverTropa()
 {
-    if (tropas <= 1)
+    if (territorioTropas == null)
         return;
 
-    tropas--;
+    territorioTropas.Remover();
 
-    if (contadorTropas != null)
-        contadorTropas.Atualizar();
+    territorioContador.Atualizar();
 }
 
-
-private float CalcularAreaPoligono(
-    Vector2[] pontos)
+public bool RemoverTropas(int quantidade)
 {
-    if (pontos == null ||
-        pontos.Length < 3)
-        return 0f;
+    if (territorioTropas == null)
+        return false;
 
-    float area = 0f;
-
-    for (int i = 0;
-         i < pontos.Length;
-         i++)
-    {
-        Vector2 atual =
-            pontos[i];
-
-        Vector2 proximo =
-            pontos[
-                (i + 1) %
-                pontos.Length
-            ];
-
-        area +=
-            atual.x * proximo.y -
-            proximo.x * atual.y;
-    }
-
-    return area * 0.5f;
+    return territorioTropas
+        .RemoverQuantidade(quantidade);
 }
 
-private Vector2 CalcularCentroPoligono(
-    Vector2[] pontos)
+public void DefinirTropas(int quantidade)
 {
-    if (pontos == null ||
-        pontos.Length == 0)
-        return Vector2.zero;
+    if (territorioTropas == null)
+        return;
 
-    Vector2 soma =
-        Vector2.zero;
-
-    foreach (Vector2 ponto in pontos)
-    {
-        soma += ponto;
-    }
-
-    return soma /
-        pontos.Length;
+    territorioTropas
+        .DefinirQuantidade(quantidade);
 }
 
 public bool EhVizinho(TerritorioClique outro)
@@ -262,52 +177,28 @@ public bool EhVizinho(TerritorioClique outro)
     return territorioFronteiras.EhVizinho(outro);
 }
 
-    public void AtualizarCor()
-    {
-        if (sr == null)
-            sr = GetComponent<SpriteRenderer>();
-
-        switch (dono)
-        {
-            case Dono.Jogador1:
-                sr.color = Color.red;
-                break;
-
-            case Dono.Jogador2:
-                sr.color = Color.blue;
-                break;
-
-            case Dono.Jogador3:
-                sr.color = Color.green;
-                break;
-
-            case Dono.Jogador4:
-                sr.color = Color.magenta;
-                break;
-
-            default:
-                sr.color = Color.white;
-                break;
-        }
-    }
+public void AtualizarCor()
+{
+    if (territorioVisual != null)
+        territorioVisual.AtualizarCor();
+}
 
 public void DestacarContinente(Color cor)
 {
-    if (sr == null)
-        sr = GetComponent<SpriteRenderer>();
-
-    sr.color = cor;
+    if (territorioVisual != null)
+        territorioVisual.DestacarContinente(cor);
 }
 
 public void RestaurarCor()
 {
-    AtualizarCor();
+    if (territorioVisual != null)
+        territorioVisual.RestaurarCor();
 }
-    public void DestacarSelecao()
-    {
-        if (sr == null)
-            sr = GetComponent<SpriteRenderer>();
 
-        sr.color = Color.yellow;
-    }
-}
+public void DestacarSelecao()
+{
+    if (territorioVisual != null)
+        territorioVisual.DestacarSelecao();
+} // Essa chave fecha o MÉTODO
+
+} // Essa chave fecha a CLASSE

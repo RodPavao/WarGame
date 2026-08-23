@@ -10,13 +10,53 @@ public class ContadorTropas : MonoBehaviour
     private SpriteRenderer borda;
     private TextMeshPro numero;
 
-    public void Configurar(TerritorioClique territorioAlvo)
-    {
-        territorio = territorioAlvo;
+    private Vector3 escalaOriginal;
+    private Coroutine animacaoAtual;
+    private void OnValidate()
+{
+    if (Application.isPlaying)
+        return;
 
-        CriarVisual();
-        Atualizar();
-    }
+    territorio =
+        GetComponentInParent<TerritorioClique>();
+
+    Transform bordaExistente =
+        transform.Find("Borda");
+
+    Transform fundoExistente =
+        transform.Find("Fundo");
+
+    Transform numeroExistente =
+        transform.Find("Numero");
+
+    if (territorio == null ||
+        bordaExistente == null ||
+        fundoExistente == null ||
+        numeroExistente == null)
+        return;
+
+    borda =
+        bordaExistente.GetComponent<SpriteRenderer>();
+
+    fundo =
+        fundoExistente.GetComponent<SpriteRenderer>();
+
+    numero =
+        numeroExistente.GetComponent<TextMeshPro>();
+
+    Atualizar();
+}
+
+    public void Configurar(TerritorioClique territorioAlvo)
+{
+    territorio = territorioAlvo;
+
+    CriarVisual();
+
+    escalaOriginal = transform.localScale;
+
+    Atualizar();
+}
 
     private void CriarVisual()
 {
@@ -37,6 +77,8 @@ public class ContadorTropas : MonoBehaviour
 
         numero =
             numeroExistente.GetComponent<TextMeshPro>();
+
+        GarantirCollider();
 
         return;
     }
@@ -178,12 +220,33 @@ public class ContadorTropas : MonoBehaviour
         // O objeto SEMPRE fica exatamente no centro.
         rectNumero.localPosition =
             Vector3.zero;
+
+            GarantirCollider();
     }
 
+
+private void GarantirCollider()
+{
+    BoxCollider2D colliderContador =
+        GetComponent<BoxCollider2D>();
+
+    if (colliderContador == null)
+    {
+        colliderContador =
+            gameObject.AddComponent<BoxCollider2D>();
+    }
+
+    colliderContador.size =
+        new Vector2(
+            0.55f,
+            0.55f
+        );
+}
 
     // =========================================================
     // ATUALIZAR CONTADOR
     // =========================================================
+
 
     public void Atualizar()
     {
@@ -192,7 +255,7 @@ public class ContadorTropas : MonoBehaviour
             return;
 
         numero.text =
-            territorio.tropas.ToString();
+            territorio.Tropas.ToString();
 
         int quantidadeDigitos =
             numero.text.Length;
@@ -220,6 +283,72 @@ else
             );
     }
 
+public void Clicar()
+{
+    if (territorio == null)
+        return;
+
+    if (GameManager.instance == null)
+        return;
+
+    int tropasAntes =
+        territorio.Tropas;
+
+    GameManager.instance
+        .TentarAdicionarReforco(territorio);
+
+    if (territorio.Tropas > tropasAntes)
+    {
+        AnimarAdicao();
+    }
+}
+
+private void AnimarAdicao()
+{
+    if (animacaoAtual != null)
+        StopCoroutine(animacaoAtual);
+
+    animacaoAtual =
+        StartCoroutine(
+            AnimacaoAdicao()
+        );
+}
+
+private System.Collections.IEnumerator AnimacaoAdicao()
+{
+    float duracao = 0.16f;
+    float tempo = 0f;
+
+    Vector3 escalaMaior =
+        escalaOriginal * 1.14f;
+
+    while (tempo < duracao)
+    {
+        tempo += Time.deltaTime;
+
+        float progresso =
+            tempo / duracao;
+
+        float curva =
+            Mathf.Sin(
+                progresso * Mathf.PI
+            );
+
+        transform.localScale =
+            Vector3.Lerp(
+                escalaOriginal,
+                escalaMaior,
+                curva
+            );
+
+        yield return null;
+    }
+
+    transform.localScale =
+        escalaOriginal;
+
+    animacaoAtual = null;
+}
 
     // =========================================================
     // CENTRALIZAÇÃO GEOMÉTRICA REAL

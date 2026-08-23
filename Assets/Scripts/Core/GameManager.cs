@@ -9,153 +9,262 @@ public class GameManager : MonoBehaviour
     public TerritorioClique.Dono jogadorLocal =
         TerritorioClique.Dono.Jogador1;
 
-public enum FaseTurno
-{
-    Reforco,
-    Ataque
-}
+    private FilaAcoes filaAcoes;
+    private SistemaAtaque sistemaAtaque;
+    private ResolvedorCombate resolvedorCombate;
 
-public FaseTurno faseAtual = FaseTurno.Reforco;
+    public enum FaseTurno
+    {
+        Reforco,
+        Ataque,
+        Resolucao
+    }
 
-public int reforcosDisponiveis = 8;
+    public FaseTurno faseAtual =
+        FaseTurno.Reforco;
 
-    void Awake()
+    public int reforcosDisponiveis = 8;
+
+    // =====================================================
+    // QUANTIDADE DA PRÓXIMA ORDEM
+    // =====================================================
+
+    [Min(1)]
+    public int quantidadeAtaqueSelecionada = 1;
+
+    public int QuantidadeOrdensPreparadas =>
+        filaAcoes != null
+            ? filaAcoes.QuantidadeAtaques
+            : 0;
+
+    // =====================================================
+    // INICIALIZAÇÃO
+    // =====================================================
+
+    private void Awake()
     {
         instance = this;
-    }
 
-public void TentarAdicionarReforco(TerritorioClique t)
-{
-    if (faseAtual != FaseTurno.Reforco)
-        return;
+        filaAcoes =
+            GetComponent<FilaAcoes>();
 
-    if (t == null)
-        return;
+        if (filaAcoes == null)
+        {
+            filaAcoes =
+                gameObject.AddComponent<FilaAcoes>();
+        }
 
-    if (t.dono != jogadorLocal)
-    {
-        Debug.Log(
-            "Reforço impossível: território não pertence ao jogador."
+        sistemaAtaque =
+            GetComponent<SistemaAtaque>();
+
+        if (sistemaAtaque == null)
+        {
+            sistemaAtaque =
+                gameObject.AddComponent<SistemaAtaque>();
+        }
+
+        resolvedorCombate =
+            GetComponent<ResolvedorCombate>();
+
+        if (resolvedorCombate == null)
+        {
+            resolvedorCombate =
+                gameObject.AddComponent<ResolvedorCombate>();
+        }
+
+        sistemaAtaque.Inicializar(
+            filaAcoes
         );
-
-        return;
     }
 
-    if (reforcosDisponiveis <= 0)
+    // =====================================================
+    // QUANTIDADE DO ATAQUE
+    // =====================================================
+
+    public void DefinirQuantidadeAtaque(
+        int quantidade)
     {
+        quantidadeAtaqueSelecionada =
+            Mathf.Max(
+                1,
+                quantidade
+            );
+
         Debug.Log(
-            "Não há mais tropas disponíveis para distribuir."
+            "Quantidade da próxima ordem: " +
+            quantidadeAtaqueSelecionada
         );
-
-        return;
     }
 
-    t.AdicionarTropa();
-
-    reforcosDisponiveis--;
-
-    Debug.Log(
-        "Tropa adicionada em " +
-        t.name +
-        " | Tropas no território: " +
-        t.tropas +
-        " | Reforços restantes: " +
-        reforcosDisponiveis
-    );
-}
-
-    public void ClicarTerritorio(TerritorioClique t)
+    public void AumentarQuantidadeAtaque()
     {
-        if (faseAtual == FaseTurno.Reforco)
-{
-    TentarAdicionarReforco(t);
-    return;
-}
-        // Nenhum território selecionado
+        quantidadeAtaqueSelecionada++;
+    }
+
+    public void DiminuirQuantidadeAtaque()
+    {
+        quantidadeAtaqueSelecionada =
+            Mathf.Max(
+                1,
+                quantidadeAtaqueSelecionada - 1
+            );
+    }
+
+    // =====================================================
+    // REFORÇOS
+    // =====================================================
+
+    public void TentarAdicionarReforco(
+        TerritorioClique t)
+    {
+        if (faseAtual != FaseTurno.Reforco)
+            return;
+
+        if (t == null)
+            return;
+
+        if (t.dono != jogadorLocal)
+            return;
+
+        if (reforcosDisponiveis <= 0)
+            return;
+
+        t.AdicionarTropa();
+
+        reforcosDisponiveis--;
+
+        Debug.Log(
+            "Tropa adicionada em " +
+            t.name +
+            " | Tropas: " +
+            t.Tropas +
+            " | Restantes: " +
+            reforcosDisponiveis
+        );
+    }
+
+    // =====================================================
+    // CLIQUE NO TERRITÓRIO
+    // =====================================================
+
+    public void ClicarTerritorio(
+        TerritorioClique t)
+    {
+        if (t == null)
+            return;
+
+        if (faseAtual ==
+            FaseTurno.Resolucao)
+            return;
+
+        // Nenhuma origem selecionada.
         if (territorioSelecionado == null)
         {
             if (t.dono != jogadorLocal)
-            {
-                Debug.Log("Este território não pertence ao jogador.");
                 return;
-            }
 
             territorioSelecionado = t;
-            territorioSelecionado.DestacarSelecao();
 
             Debug.Log(
-                "Território selecionado: " +
+                "Origem selecionada: " +
                 t.name +
                 " | Tropas: " +
-                t.tropas
+                t.Tropas
             );
 
             return;
         }
 
-        // Clicou novamente no território selecionado
+        // Tocou novamente na origem.
         if (t == territorioSelecionado)
         {
-            territorioSelecionado.AtualizarCor();
             territorioSelecionado = null;
 
-            Debug.Log("Seleção cancelada.");
+            Debug.Log(
+                "Seleção cancelada."
+            );
+
             return;
         }
 
-        // Selecionou outro território próprio
+        // Selecionou outro território próprio.
         if (t.dono == jogadorLocal)
         {
-            territorioSelecionado.AtualizarCor();
-
             territorioSelecionado = t;
-            territorioSelecionado.DestacarSelecao();
 
             Debug.Log(
-                "Novo território selecionado: " +
+                "Nova origem: " +
                 t.name +
                 " | Tropas: " +
-                t.tropas
+                t.Tropas
             );
 
             return;
         }
 
-        // Tentativa de ataque a território não vizinho
-        if (!territorioSelecionado.EhVizinho(t))
-        {
-            Debug.Log(
-                "Ataque impossível: " +
-                t.name +
-                " não é vizinho de " +
-                territorioSelecionado.name
+        if (faseAtual !=
+            FaseTurno.Ataque)
+            return;
+
+        bool registrado =
+            sistemaAtaque.RegistrarAtaque(
+                territorioSelecionado,
+                t,
+                quantidadeAtaqueSelecionada,
+                jogadorLocal
             );
 
-            return;
-        }
-
-        // Precisa deixar pelo menos uma tropa no território
-        if (territorioSelecionado.tropas <= 1)
+        if (registrado)
         {
             Debug.Log(
-                "Ataque impossível: " +
+                "Ataque preparado | Ordem " +
+                QuantidadeOrdensPreparadas +
+                " | " +
                 territorioSelecionado.name +
-                " possui apenas " +
-                territorioSelecionado.tropas +
-                " tropa."
+                " -> " +
+                t.name +
+                " | Tropas: " +
+                quantidadeAtaqueSelecionada
             );
-
-            return;
         }
 
-        Debug.Log(
-            "ATAQUE VÁLIDO: " +
-            territorioSelecionado.name +
-            " -> " +
-            t.name
+        territorioSelecionado = null;
+    }
+
+    // =====================================================
+    // CANCELAMENTO
+    // =====================================================
+
+    [ContextMenu("Cancelar Ultima Ordem")]
+    public void CancelarUltimaOrdem()
+    {
+        if (filaAcoes == null)
+            return;
+
+        filaAcoes.RemoverUltimoAtaque();
+    }
+
+    // =====================================================
+    // RESOLUÇÃO
+    // =====================================================
+
+    [ContextMenu("Resolver Rodada Agora")]
+    public void ResolverRodadaAgora()
+    {
+        if (filaAcoes == null ||
+            resolvedorCombate == null)
+            return;
+
+        faseAtual =
+            FaseTurno.Resolucao;
+
+        resolvedorCombate.Resolver(
+            filaAcoes
         );
 
-        territorioSelecionado.AtualizarCor();
         territorioSelecionado = null;
+
+        faseAtual =
+            FaseTurno.Reforco;
     }
 }

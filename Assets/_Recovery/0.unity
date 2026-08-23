@@ -446,6 +446,7 @@ MonoBehaviour:
   chaveTraducao: territory_yakutsk
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &21092337
 SpriteRenderer:
   serializedVersion: 2
@@ -742,6 +743,7 @@ MonoBehaviour:
   chaveTraducao: territory_argentina
   continente: 1
   dono: 0
+  tropas: 1
 --- !u!212 &33567521
 SpriteRenderer:
   serializedVersion: 2
@@ -2207,8 +2209,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2604,7 +2606,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.47, y: 3.27, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1.0814071, y: 1.0707, z: 1.0707}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 92253189}
@@ -2735,6 +2737,7 @@ MonoBehaviour:
   chaveTraducao: territory_arabia
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!60 &86341326
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -3824,7 +3827,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.38, y: 3.79, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1215182962}
@@ -3928,8 +3931,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4052,7 +4055,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.02, y: -1.98, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1680950255}
@@ -4124,6 +4127,7 @@ MonoBehaviour:
   chaveTraducao: territory_india
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &146567035
 SpriteRenderer:
   serializedVersion: 2
@@ -4500,8 +4504,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5165,8 +5169,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5346,8 +5350,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5880,7 +5884,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.07, y: 0.36004, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.97879, y: 0.97879, z: 0.97879}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1421643945}
@@ -6331,8 +6335,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6455,7 +6459,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.97999996, y: 3.3647, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.833884, y: 0.833884, z: 1.2263}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 410989502}
@@ -6815,8 +6819,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6996,8 +7000,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7145,6 +7149,7 @@ MonoBehaviour:
   chaveTraducao: territory_ethiopia
   continente: 2
   dono: 0
+  tropas: 1
 --- !u!212 &321909376
 SpriteRenderer:
   serializedVersion: 2
@@ -7639,7 +7644,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.77, y: 1.08, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1068383872}
@@ -7743,8 +7748,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8271,8 +8276,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8578,7 +8583,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.32, y: 0.51987, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.9730662, y: 0.9730662, z: 1.0849}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 344564820}
@@ -8682,8 +8687,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9016,7 +9021,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.32, y: 1.97, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1541112132}
@@ -9063,7 +9068,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.276111, y: -1.8462961, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2135335728}
@@ -9320,7 +9325,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.51, y: 3.36, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 745436131}
@@ -9582,7 +9587,6 @@ GameObject:
   - component: {fileID: 436067159}
   - component: {fileID: 436067161}
   - component: {fileID: 436067162}
-  - component: {fileID: 436067163}
   m_Layer: 0
   m_Name: Brazil
   m_TagString: Untagged
@@ -9622,6 +9626,7 @@ MonoBehaviour:
   chaveTraducao: territory_brazil
   continente: 1
   dono: 1
+  tropas: 1
 --- !u!212 &436067160
 SpriteRenderer:
   serializedVersion: 2
@@ -9785,24 +9790,6 @@ MonoBehaviour:
   - {fileID: 1270550438}
   - {fileID: 33567520}
   - {fileID: 1009009641}
---- !u!114 &436067163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436067156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddefb4e832e812a40863535b8dd801a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TerritorioBordaVisual
-  corBorda:
-    r: 0
-    g: 0
-    b: 0
-    a: 1
-  espessura: 0.025
 --- !u!1 &442890857
 GameObject:
   m_ObjectHideFlags: 0
@@ -10759,6 +10746,7 @@ MonoBehaviour:
   chaveTraducao: territory_scandinavia
   continente: 3
   dono: 0
+  tropas: 1
 --- !u!212 &468653013
 SpriteRenderer:
   serializedVersion: 2
@@ -11177,6 +11165,7 @@ MonoBehaviour:
   chaveTraducao: territory_west_usa
   continente: 0
   dono: 0
+  tropas: 1
 --- !u!212 &492773718
 SpriteRenderer:
   serializedVersion: 2
@@ -11880,6 +11869,7 @@ MonoBehaviour:
   chaveTraducao: territory_south_africa
   continente: 2
   dono: 0
+  tropas: 1
 --- !u!212 &505826416
 SpriteRenderer:
   serializedVersion: 2
@@ -12331,7 +12321,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.87, y: 0.68, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1869405549}
@@ -12915,6 +12905,7 @@ MonoBehaviour:
   chaveTraducao: territory_east_australia
   continente: 5
   dono: 0
+  tropas: 1
 --- !u!212 &563699230
 SpriteRenderer:
   serializedVersion: 2
@@ -13348,7 +13339,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.37, y: 2.81, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.9813647, y: 0.9813647, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1850651528}
@@ -13441,7 +13432,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.9853571, y: -1.65, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1584487409}
@@ -13682,8 +13673,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -14041,6 +14032,7 @@ MonoBehaviour:
   chaveTraducao: territory_indonesia
   continente: 5
   dono: 0
+  tropas: 1
 --- !u!212 &607065176
 SpriteRenderer:
   serializedVersion: 2
@@ -14433,7 +14425,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.66, y: 2.34, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1339303010}
@@ -14765,8 +14757,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -15247,8 +15239,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -15533,6 +15525,7 @@ MonoBehaviour:
   chaveTraducao: territory_venezuela
   continente: 1
   dono: 0
+  tropas: 1
 --- !u!212 &678598688
 SpriteRenderer:
   serializedVersion: 2
@@ -16295,6 +16288,7 @@ MonoBehaviour:
   chaveTraducao: territory_kamchatka
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &708237756
 SpriteRenderer:
   serializedVersion: 2
@@ -16567,6 +16561,7 @@ MonoBehaviour:
   chaveTraducao: territory_greenland
   continente: 0
   dono: 0
+  tropas: 1
 --- !u!212 &727027601
 SpriteRenderer:
   serializedVersion: 2
@@ -17387,8 +17382,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -18380,8 +18375,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -18561,8 +18556,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -18731,7 +18726,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.36794114, y: 2.5625, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.934864, y: 0.934864, z: 1.3748}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1729504696}
@@ -19255,8 +19250,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -19737,8 +19732,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -19861,7 +19856,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.651666, y: 1.8522, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.930036, y: 0.930036, z: 1.3677}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 699134764}
@@ -19908,7 +19903,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.07, y: -0.58, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1098747291}
@@ -20421,7 +20416,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.5318964, y: 2.7903442, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.9634472, y: 0.9634472, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1723595616}
@@ -20468,7 +20463,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.3810863, y: 3.8465214, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1414420851}
@@ -20725,7 +20720,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.4742307, y: 2.4853845, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1649739643}
@@ -20829,8 +20824,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -21279,6 +21274,7 @@ MonoBehaviour:
   chaveTraducao: territory_ural
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &927104107
 SpriteRenderer:
   serializedVersion: 2
@@ -21880,6 +21876,7 @@ MonoBehaviour:
   chaveTraducao: territory_united_kingdom
   continente: 3
   dono: 0
+  tropas: 1
 --- !u!212 &942877665
 SpriteRenderer:
   serializedVersion: 2
@@ -22078,6 +22075,7 @@ MonoBehaviour:
   chaveTraducao: territory_yukon
   continente: 0
   dono: 0
+  tropas: 1
 --- !u!212 &943108817
 SpriteRenderer:
   serializedVersion: 2
@@ -22280,6 +22278,7 @@ MonoBehaviour:
   chaveTraducao: territory_irkutsk
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &944304640
 SpriteRenderer:
   serializedVersion: 2
@@ -22572,6 +22571,7 @@ MonoBehaviour:
   chaveTraducao: territory_new_guinea
   continente: 5
   dono: 0
+  tropas: 1
 --- !u!212 &961364781
 SpriteRenderer:
   serializedVersion: 2
@@ -22973,6 +22973,7 @@ MonoBehaviour:
   chaveTraducao: territory_siberia
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &975415951
 SpriteRenderer:
   serializedVersion: 2
@@ -23394,6 +23395,7 @@ MonoBehaviour:
   chaveTraducao: territory_west_australia
   continente: 5
   dono: 0
+  tropas: 1
 --- !u!212 &980353345
 SpriteRenderer:
   serializedVersion: 2
@@ -23627,8 +23629,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -23842,7 +23844,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.669, y: 3.764, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1274240506}
@@ -23960,6 +23962,7 @@ MonoBehaviour:
   chaveTraducao: territory_algeria
   continente: 2
   dono: 0
+  tropas: 1
 --- !u!212 &1009009642
 SpriteRenderer:
   serializedVersion: 2
@@ -24147,7 +24150,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.8987503, y: 0.99336, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.97025824, y: 0.97025824, z: 1.0495}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 248679291}
@@ -24194,7 +24197,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.9249997, y: -0.97733, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.843472, y: 0.843472, z: 1.2404}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9774700}
@@ -24481,8 +24484,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -25100,8 +25103,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -25699,7 +25702,7 @@ SpriteRenderer:
   m_SortingOrder: 20
   m_MaskInteraction: 0
   m_Sprite: {fileID: 46116176}
-  m_Color: {r: 1, g: 0.22, b: 0.15, a: 1}
+  m_Color: {r: 0.55, g: 0.58, b: 0.62, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -25760,6 +25763,7 @@ MonoBehaviour:
   chaveTraducao: territory_egypt
   continente: 2
   dono: 0
+  tropas: 1
 --- !u!212 &1102966856
 SpriteRenderer:
   serializedVersion: 2
@@ -26592,8 +26596,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -26853,7 +26857,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.935, y: -0.54813, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.843472, y: 0.843472, z: 1.2404}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 62442533}
@@ -26925,6 +26929,7 @@ MonoBehaviour:
   chaveTraducao: territory_east_usa
   continente: 0
   dono: 0
+  tropas: 1
 --- !u!212 &1184048669
 SpriteRenderer:
   serializedVersion: 2
@@ -27105,7 +27110,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.44, y: -0.35, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 334898166}
@@ -27419,8 +27424,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -27874,8 +27879,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -27998,7 +28003,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.73, y: -1.88, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 511452300}
@@ -28136,7 +28141,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.38, y: 0.85, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1106547842}
@@ -28770,8 +28775,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -28919,6 +28924,7 @@ MonoBehaviour:
   chaveTraducao: territory_peru
   continente: 1
   dono: 0
+  tropas: 1
 --- !u!212 &1270550439
 SpriteRenderer:
   serializedVersion: 2
@@ -29987,6 +29993,7 @@ MonoBehaviour:
   chaveTraducao: territory_italy
   continente: 3
   dono: 0
+  tropas: 1
 --- !u!212 &1296137477
 SpriteRenderer:
   serializedVersion: 2
@@ -30766,6 +30773,7 @@ MonoBehaviour:
   chaveTraducao: territory_congo
   continente: 2
   dono: 0
+  tropas: 1
 --- !u!212 &1305076811
 SpriteRenderer:
   serializedVersion: 2
@@ -31171,6 +31179,7 @@ MonoBehaviour:
   chaveTraducao: territory_indochina
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &1314110157
 SpriteRenderer:
   serializedVersion: 2
@@ -31347,9 +31356,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   territorioSelecionado: {fileID: 0}
   jogadorLocal: 1
-  faseAtual: 1
+  faseAtual: 0
   reforcosDisponiveis: 8
-  quantidadeAtaqueSelecionada: 3
 --- !u!4 &1325349520
 Transform:
   m_ObjectHideFlags: 0
@@ -31449,8 +31457,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -31755,7 +31763,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.9395454, y: -1.5849, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.88535535, y: 0.88535535, z: 1.3019931}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1493960146}
@@ -31802,7 +31810,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.38166663, y: 1.8438, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.94699854, y: 0.91941607, z: 1.0778}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 442890858}
@@ -32478,6 +32486,7 @@ MonoBehaviour:
   chaveTraducao: territory_russia
   continente: 3
   dono: 0
+  tropas: 1
 --- !u!212 &1374051232
 SpriteRenderer:
   serializedVersion: 2
@@ -32737,8 +32746,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -33429,8 +33438,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -34527,6 +34536,7 @@ MonoBehaviour:
   chaveTraducao: territory_alaska
   continente: 0
   dono: 0
+  tropas: 1
 --- !u!212 &1439669901
 SpriteRenderer:
   serializedVersion: 2
@@ -34825,6 +34835,7 @@ MonoBehaviour:
   chaveTraducao: territory_japan
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &1459063864
 SpriteRenderer:
   serializedVersion: 2
@@ -35029,6 +35040,7 @@ MonoBehaviour:
   chaveTraducao: territory_alberta
   continente: 0
   dono: 0
+  tropas: 1
 --- !u!212 &1462150138
 SpriteRenderer:
   serializedVersion: 2
@@ -35235,7 +35247,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.54, y: 2.68, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1392190734}
@@ -35398,6 +35410,7 @@ MonoBehaviour:
   chaveTraducao: territory_mongolia
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &1511314731
 SpriteRenderer:
   serializedVersion: 2
@@ -35636,8 +35649,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -35785,6 +35798,7 @@ MonoBehaviour:
   chaveTraducao: territory_ontario
   continente: 0
   dono: 0
+  tropas: 1
 --- !u!212 &1516220972
 SpriteRenderer:
   serializedVersion: 2
@@ -36301,7 +36315,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.212, y: 2.898, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1600700048}
@@ -36464,6 +36478,7 @@ MonoBehaviour:
   chaveTraducao: territory_spain
   continente: 3
   dono: 0
+  tropas: 1
 --- !u!212 &1543686204
 SpriteRenderer:
   serializedVersion: 2
@@ -37198,7 +37213,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.68, y: 3.2, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1361438843}
@@ -37480,6 +37495,7 @@ MonoBehaviour:
   chaveTraducao: territory_mexico
   continente: 0
   dono: 0
+  tropas: 1
 --- !u!212 &1582874305
 SpriteRenderer:
   serializedVersion: 2
@@ -38107,7 +38123,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.22, y: 2.06, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1275096505}
@@ -39384,6 +39400,7 @@ MonoBehaviour:
   chaveTraducao: territory_china
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &1675100782
 SpriteRenderer:
   serializedVersion: 2
@@ -39759,7 +39776,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.74833333, y: -0.67809516, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 984556490}
@@ -39863,8 +39880,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -39987,7 +40004,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.08, y: 0.1, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1741552502}
@@ -40091,8 +40108,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -40215,7 +40232,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.04, y: 1.52, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 905680930}
@@ -40547,8 +40564,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -40728,8 +40745,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -41336,7 +41353,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.60822576, y: 1.7567743, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1670929209}
@@ -41803,7 +41820,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.73, y: 2, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 727577800}
@@ -42117,8 +42134,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -42542,7 +42559,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.8289472, y: 4.019211, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 641404083}
@@ -42646,8 +42663,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -42980,7 +42997,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.28, y: 3.12, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 0.97456115, y: 0.97456115, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1298492593}
@@ -43340,8 +43357,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -43464,7 +43481,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.15, y: 3.72, z: 0}
-  m_LocalScale: {x: 0.9004408, y: 0.9004408, z: 1.215004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1678208170}
@@ -44261,8 +44278,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -44995,6 +45012,7 @@ MonoBehaviour:
   chaveTraducao: territory_afghanistan
   continente: 4
   dono: 0
+  tropas: 1
 --- !u!212 &1990659340
 SpriteRenderer:
   serializedVersion: 2
@@ -45228,8 +45246,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -45468,6 +45486,7 @@ MonoBehaviour:
   chaveTraducao: territory_iceland
   continente: 3
   dono: 0
+  tropas: 1
 --- !u!212 &1996798097
 SpriteRenderer:
   serializedVersion: 2
@@ -45658,6 +45677,7 @@ MonoBehaviour:
   chaveTraducao: territory_germany
   continente: 3
   dono: 0
+  tropas: 1
 --- !u!212 &2013523424
 SpriteRenderer:
   serializedVersion: 2
@@ -45914,6 +45934,7 @@ MonoBehaviour:
   chaveTraducao: territory_madagascar
   continente: 2
   dono: 0
+  tropas: 1
 --- !u!212 &2041682352
 SpriteRenderer:
   serializedVersion: 2
@@ -46923,8 +46944,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -47118,6 +47139,7 @@ MonoBehaviour:
   chaveTraducao: territory_quebec
   continente: 0
   dono: 0
+  tropas: 1
 --- !u!212 &2106538212
 SpriteRenderer:
   serializedVersion: 2
@@ -47735,8 +47757,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 5.2
+  m_fontSizeBase: 5.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
