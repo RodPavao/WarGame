@@ -29,13 +29,15 @@ public class TerritorioClique : MonoBehaviour
     // =====================================================
 
     public enum Dono
-    {
-        Neutro,
-        Jogador1,
-        Jogador2,
-        Jogador3,
-        Jogador4
-    }
+{
+    Neutro,
+    Jogador1,
+    Jogador2,
+    Jogador3,
+    Jogador4,
+    Jogador5,
+    Jogador6
+}
 
     public Dono dono = Dono.Neutro;
 
@@ -45,15 +47,28 @@ public class TerritorioClique : MonoBehaviour
 
     public int tropas = 1;
 
+private ContadorTropas contadorTropas;
+
     // =====================================================
     // FRONTEIRAS
     // =====================================================
 
-    public TerritorioClique[] vizinhos;
+    private TerritorioFronteiras territorioFronteiras;
 
     void Start()
 {
     sr = GetComponent<SpriteRenderer>();
+
+    territorioFronteiras =
+    GetComponent<TerritorioFronteiras>();
+
+if (territorioFronteiras == null)
+{
+    Debug.LogError(
+        "TerritorioFronteiras ausente em " +
+        name
+    );
+}
 
     AtualizarCor();
 
@@ -61,17 +76,31 @@ public class TerritorioClique : MonoBehaviour
 }
 
     void OnMouseDown()
+{
+    if (GameManager.instance == null)
     {
-        GameManager.instance.ClicarTerritorio(this);
+        Debug.LogError("GameManager não encontrado na Scene.");
+        return;
     }
+
+    GameManager.instance.ClicarTerritorio(this);
+}
 
 private void CriarContadorModerno()
 {
     Transform existente =
-        transform.Find("ContadorModerno");
+    transform.Find("ContadorModerno");
 
-    if (existente != null)
-        return;
+if (existente != null)
+{
+    contadorTropas =
+        existente.GetComponent<ContadorTropas>();
+
+    if (contadorTropas != null)
+        contadorTropas.Configurar(this);
+
+    return;
+}
 
     PolygonCollider2D collider =
         GetComponent<PolygonCollider2D>();
@@ -150,11 +179,31 @@ private void CriarContadorModerno()
             1f
         );
 
-    ContadorTropas contador =
-        obj.AddComponent<ContadorTropas>();
+    contadorTropas =
+    obj.AddComponent<ContadorTropas>();
 
-    contador.Configurar(this);
+contadorTropas.Configurar(this);
 }
+
+public void AdicionarTropa()
+{
+    tropas++;
+
+    if (contadorTropas != null)
+        contadorTropas.Atualizar();
+}
+
+public void RemoverTropa()
+{
+    if (tropas <= 1)
+        return;
+
+    tropas--;
+
+    if (contadorTropas != null)
+        contadorTropas.Atualizar();
+}
+
 
 private float CalcularAreaPoligono(
     Vector2[] pontos)
@@ -207,16 +256,10 @@ private Vector2 CalcularCentroPoligono(
 
 public bool EhVizinho(TerritorioClique outro)
 {
-    if (outro == null || vizinhos == null)
+    if (territorioFronteiras == null)
         return false;
 
-    foreach (TerritorioClique vizinho in vizinhos)
-    {
-        if (vizinho == outro)
-            return true;
-    }
-
-    return false;
+    return territorioFronteiras.EhVizinho(outro);
 }
 
     public void AtualizarCor()

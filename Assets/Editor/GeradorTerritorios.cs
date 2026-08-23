@@ -1146,10 +1146,13 @@ GUI.EndScrollView();
             territorio.chaveTraducao = "territory_" + ConverterParaChave(nome);
             territorio.continente = ObterContinente(nome);
 
-            if (territorio.vizinhos == null)
+            TerritorioFronteiras fronteiras =
+                objeto.GetComponent<TerritorioFronteiras>();
+
+            if (fronteiras == null)
             {
-                territorio.vizinhos =
-                    new TerritorioClique[0];
+                fronteiras =
+                    objeto.AddComponent<TerritorioFronteiras>();
             }
 
             // Recria o collider para refletir
@@ -1616,9 +1619,20 @@ public static void ConfigurarVizinhos()
                 lista.Add(vizinho);
         }
 
-        territorio.vizinhos = lista.ToArray();
+        TerritorioFronteiras fronteiras =
+    territorio.GetComponent<TerritorioFronteiras>();
 
-        EditorUtility.SetDirty(territorio);
+if (fronteiras == null)
+{
+    fronteiras =
+        territorio.gameObject.AddComponent<TerritorioFronteiras>();
+}
+
+fronteiras.Configurar(
+    lista.ToArray()
+);
+
+EditorUtility.SetDirty(fronteiras);
 
         configurados++;
     }

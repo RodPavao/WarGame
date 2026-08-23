@@ -140,6 +140,9 @@ public class ContadorTropas : MonoBehaviour
         numero.fontStyle =
             FontStyles.Normal;
 
+        numero.fontWeight =
+            FontWeight.Medium;
+
         numero.color =
             Color.white;
 
@@ -195,17 +198,17 @@ public class ContadorTropas : MonoBehaviour
             numero.text.Length;
 
         if (quantidadeDigitos == 1)
-        {
-            numero.fontSize = 5.2f;
-        }
-        else if (quantidadeDigitos == 2)
-        {
-            numero.fontSize = 4.5f;
-        }
-        else
-        {
-            numero.fontSize = 3.7f;
-        }
+{
+    numero.fontSize = 4.0f;
+}
+else if (quantidadeDigitos == 2)
+{
+    numero.fontSize = 3.7f;
+}
+else
+{
+    numero.fontSize = 3.1f;
+}
 
         numero.ForceMeshUpdate();
 

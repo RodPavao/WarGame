@@ -406,6 +406,7 @@ GameObject:
   - component: {fileID: 21092337}
   - component: {fileID: 21092336}
   - component: {fileID: 21092338}
+  - component: {fileID: 21092339}
   m_Layer: 0
   m_Name: Yakutsk
   m_TagString: Untagged
@@ -587,6 +588,22 @@ PolygonCollider2D:
       - {x: 4.305, y: 3.4499998}
       - {x: 4.525, y: 3.51}
   m_UseDelaunayMesh: 1
+--- !u!114 &21092339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21092333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 975415950}
+  - {fileID: 944304639}
+  - {fileID: 708237755}
 --- !u!1 &22051290
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,6 +707,7 @@ GameObject:
   - component: {fileID: 33567521}
   - component: {fileID: 33567520}
   - component: {fileID: 33567522}
+  - component: {fileID: 33567523}
   m_Layer: 0
   m_Name: Argentina
   m_TagString: Untagged
@@ -866,6 +884,21 @@ PolygonCollider2D:
       - {x: -2.585, y: -2.6299999}
       - {x: -2.695, y: -2.47}
   m_UseDelaunayMesh: 1
+--- !u!114 &33567523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33567517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 436067159}
+  - {fileID: 1270550438}
 --- !u!213 &33760993
 Sprite:
   m_ObjectHideFlags: 0
@@ -1059,7 +1092,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -1269,7 +1302,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -1570,7 +1603,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -1780,7 +1813,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -2036,7 +2069,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -2612,6 +2645,7 @@ GameObject:
   - component: {fileID: 86341323}
   - component: {fileID: 86341325}
   - component: {fileID: 86341326}
+  - component: {fileID: 86341327}
   m_Layer: 0
   m_Name: Arabia
   m_TagString: Untagged
@@ -2811,6 +2845,25 @@ PolygonCollider2D:
       - {x: 2.385, y: 0.17}
       - {x: 2.435, y: 0.22}
   m_UseDelaunayMesh: 1
+--- !u!114 &86341327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86341321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1296137476}
+  - {fileID: 1374051231}
+  - {fileID: 1990659339}
+  - {fileID: 146567034}
+  - {fileID: 321909375}
+  - {fileID: 1102966855}
 --- !u!28 &89325587
 Texture2D:
   m_ObjectHideFlags: 0
@@ -3278,7 +3331,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -3534,7 +3587,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -3744,7 +3797,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -4048,6 +4101,7 @@ GameObject:
   - component: {fileID: 146567035}
   - component: {fileID: 146567034}
   - component: {fileID: 146567036}
+  - component: {fileID: 146567037}
   m_Layer: 0
   m_Name: India
   m_TagString: Untagged
@@ -4230,6 +4284,23 @@ PolygonCollider2D:
       - {x: 3.625, y: 0.22}
       - {x: 3.635, y: 0.35}
   m_UseDelaunayMesh: 1
+--- !u!114 &146567037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146567031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 86341325}
+  - {fileID: 1990659339}
+  - {fileID: 1675100781}
+  - {fileID: 1314110156}
 --- !u!28 &153402219
 Texture2D:
   m_ObjectHideFlags: 0
@@ -4925,7 +4996,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -6136,7 +6207,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -6666,7 +6737,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -7057,6 +7128,7 @@ GameObject:
   - component: {fileID: 321909376}
   - component: {fileID: 321909375}
   - component: {fileID: 321909377}
+  - component: {fileID: 321909378}
   m_Layer: 0
   m_Name: Ethiopia
   m_TagString: Untagged
@@ -7251,6 +7323,25 @@ PolygonCollider2D:
       - {x: 1.6949999, y: -0.98999995}
       - {x: 1.685, y: -0.78}
   m_UseDelaunayMesh: 1
+--- !u!114 &321909378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321909372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1102966855}
+  - {fileID: 1009009641}
+  - {fileID: 1305076810}
+  - {fileID: 505826415}
+  - {fileID: 2041682351}
+  - {fileID: 86341325}
 --- !u!213 &331746016
 Sprite:
   m_ObjectHideFlags: 0
@@ -7444,7 +7535,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -7973,7 +8064,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -8912,7 +9003,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -9216,7 +9307,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -9521,6 +9612,7 @@ GameObject:
   - component: {fileID: 436067160}
   - component: {fileID: 436067159}
   - component: {fileID: 436067161}
+  - component: {fileID: 436067162}
   m_Layer: 0
   m_Name: Brazil
   m_TagString: Untagged
@@ -9559,7 +9651,7 @@ MonoBehaviour:
   idTerritorio: Brazil
   chaveTraducao: territory_brazil
   continente: 1
-  dono: 0
+  dono: 1
   tropas: 1
   vizinhos:
   - {fileID: 678598687}
@@ -9712,6 +9804,23 @@ PolygonCollider2D:
       - {x: -1.865, y: -1.22}
       - {x: -1.8349999, y: -1.0699999}
   m_UseDelaunayMesh: 1
+--- !u!114 &436067162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436067156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 678598687}
+  - {fileID: 1270550438}
+  - {fileID: 33567520}
+  - {fileID: 1009009641}
 --- !u!1 &442890857
 GameObject:
   m_ObjectHideFlags: 0
@@ -10179,7 +10288,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -10389,7 +10498,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -10599,7 +10708,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -10628,6 +10737,7 @@ GameObject:
   - component: {fileID: 468653013}
   - component: {fileID: 468653012}
   - component: {fileID: 468653014}
+  - component: {fileID: 468653015}
   m_Layer: 0
   m_Name: Scandinavia
   m_TagString: Untagged
@@ -10812,6 +10922,23 @@ PolygonCollider2D:
       - {x: 0.505, y: 2.97}
       - {x: 0.625, y: 3.08}
   m_UseDelaunayMesh: 1
+--- !u!114 &468653015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468653009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1996798096}
+  - {fileID: 942877664}
+  - {fileID: 2013523423}
+  - {fileID: 1374051231}
 --- !u!213 &488407519
 Sprite:
   m_ObjectHideFlags: 0
@@ -11005,7 +11132,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -11034,6 +11161,7 @@ GameObject:
   - component: {fileID: 492773718}
   - component: {fileID: 492773717}
   - component: {fileID: 492773719}
+  - component: {fileID: 492773720}
   m_Layer: 0
   m_Name: WestUSA
   m_TagString: Untagged
@@ -11201,6 +11329,23 @@ PolygonCollider2D:
       - {x: -3.8349998, y: 1.6999999}
       - {x: -3.8049998, y: 1.81}
   m_UseDelaunayMesh: 1
+--- !u!114 &492773720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492773714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1462150137}
+  - {fileID: 1516220971}
+  - {fileID: 1184048668}
+  - {fileID: 1582874304}
 --- !u!213 &493796077
 Sprite:
   m_ObjectHideFlags: 0
@@ -11394,7 +11539,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -11696,7 +11841,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -11725,6 +11870,7 @@ GameObject:
   - component: {fileID: 505826416}
   - component: {fileID: 505826415}
   - component: {fileID: 505826417}
+  - component: {fileID: 505826418}
   m_Layer: 0
   m_Name: SouthAfrica
   m_TagString: Untagged
@@ -11903,6 +12049,22 @@ PolygonCollider2D:
       - {x: 1.3249999, y: -1.9799999}
       - {x: 1.3349999, y: -1.93}
   m_UseDelaunayMesh: 1
+--- !u!114 &505826418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505826412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1305076810}
+  - {fileID: 321909375}
+  - {fileID: 2041682351}
 --- !u!1 &511452299
 GameObject:
   m_ObjectHideFlags: 0
@@ -12417,7 +12579,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -12673,7 +12835,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -12748,6 +12910,7 @@ GameObject:
   - component: {fileID: 563699230}
   - component: {fileID: 563699229}
   - component: {fileID: 563699231}
+  - component: {fileID: 563699232}
   m_Layer: 0
   m_Name: EastAustralia
   m_TagString: Untagged
@@ -12926,6 +13089,21 @@ PolygonCollider2D:
       - {x: 6.285, y: -2.48}
       - {x: 6.365, y: -2.3799999}
   m_UseDelaunayMesh: 1
+--- !u!114 &563699232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563699226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 961364780}
+  - {fileID: 980353344}
 --- !u!213 &565338760
 Sprite:
   m_ObjectHideFlags: 0
@@ -13119,7 +13297,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -13833,7 +14011,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -13862,6 +14040,7 @@ GameObject:
   - component: {fileID: 607065176}
   - component: {fileID: 607065175}
   - component: {fileID: 607065177}
+  - component: {fileID: 607065178}
   m_Layer: 0
   m_Name: Indonesia
   m_TagString: Untagged
@@ -14045,6 +14224,22 @@ PolygonCollider2D:
       - {x: 5.075, y: -0.63}
       - {x: 5.075, y: -0.58}
   m_UseDelaunayMesh: 1
+--- !u!114 &607065178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607065172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1314110156}
+  - {fileID: 961364780}
+  - {fileID: 980353344}
 --- !u!213 &621984529
 Sprite:
   m_ObjectHideFlags: 0
@@ -14238,7 +14433,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -14904,7 +15099,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -15342,6 +15537,7 @@ GameObject:
   - component: {fileID: 678598688}
   - component: {fileID: 678598687}
   - component: {fileID: 678598689}
+  - component: {fileID: 678598690}
   m_Layer: 0
   m_Name: Venezuela
   m_TagString: Untagged
@@ -15523,6 +15719,22 @@ PolygonCollider2D:
       - {x: -2.935, y: -0.47}
       - {x: -3.0549998, y: -0.37}
   m_UseDelaunayMesh: 1
+--- !u!114 &678598690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678598684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1582874304}
+  - {fileID: 436067159}
+  - {fileID: 1270550438}
 --- !u!213 &688279990
 Sprite:
   m_ObjectHideFlags: 0
@@ -15716,7 +15928,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -15926,7 +16138,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -16092,6 +16304,7 @@ GameObject:
   - component: {fileID: 708237756}
   - component: {fileID: 708237755}
   - component: {fileID: 708237757}
+  - component: {fileID: 708237758}
   m_Layer: 0
   m_Name: Kamchatka
   m_TagString: Untagged
@@ -16294,6 +16507,24 @@ PolygonCollider2D:
       - {x: 5.085, y: 2.95}
       - {x: 4.995, y: 3.05}
   m_UseDelaunayMesh: 1
+--- !u!114 &708237758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708237752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 21092336}
+  - {fileID: 944304639}
+  - {fileID: 1511314730}
+  - {fileID: 1459063863}
+  - {fileID: 1439669900}
 --- !u!28 &715686292
 Texture2D:
   m_ObjectHideFlags: 0
@@ -16352,6 +16583,7 @@ GameObject:
   - component: {fileID: 727027601}
   - component: {fileID: 727027600}
   - component: {fileID: 727027602}
+  - component: {fileID: 727027603}
   m_Layer: 0
   m_Name: Greenland
   m_TagString: Untagged
@@ -16541,6 +16773,23 @@ PolygonCollider2D:
       - {x: -1.645, y: 3.61}
       - {x: -1.5849999, y: 3.6699998}
   m_UseDelaunayMesh: 1
+--- !u!114 &727027603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727027597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 943108816}
+  - {fileID: 1516220971}
+  - {fileID: 2106538211}
+  - {fileID: 1996798096}
 --- !u!1 &727577799
 GameObject:
   m_ObjectHideFlags: 0
@@ -17008,7 +17257,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -17490,7 +17739,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -17791,7 +18040,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -18001,7 +18250,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -18757,7 +19006,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -18967,7 +19216,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -19358,7 +19607,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -19934,7 +20183,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -20190,7 +20439,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -20494,7 +20743,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -21023,7 +21272,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -21052,6 +21301,7 @@ GameObject:
   - component: {fileID: 927104107}
   - component: {fileID: 927104106}
   - component: {fileID: 927104108}
+  - component: {fileID: 927104109}
   m_Layer: 0
   m_Name: Ural
   m_TagString: Untagged
@@ -21237,6 +21487,23 @@ PolygonCollider2D:
       - {x: 3.215, y: 2.5}
       - {x: 3.175, y: 2.73}
   m_UseDelaunayMesh: 1
+--- !u!114 &927104109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927104103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1374051231}
+  - {fileID: 975415950}
+  - {fileID: 1675100781}
+  - {fileID: 1990659339}
 --- !u!1 &936853843
 GameObject:
   m_ObjectHideFlags: 0
@@ -21521,7 +21788,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -21641,6 +21908,7 @@ GameObject:
   - component: {fileID: 942877665}
   - component: {fileID: 942877664}
   - component: {fileID: 942877666}
+  - component: {fileID: 942877667}
   m_Layer: 0
   m_Name: UnitedKingdom
   m_TagString: Untagged
@@ -21815,6 +22083,23 @@ PolygonCollider2D:
       - {x: -0.48499998, y: 2.51}
       - {x: -0.48499998, y: 2.6799998}
   m_UseDelaunayMesh: 1
+--- !u!114 &942877667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942877661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1996798096}
+  - {fileID: 468653012}
+  - {fileID: 2013523423}
+  - {fileID: 1543686203}
 --- !u!1 &943108813
 GameObject:
   m_ObjectHideFlags: 0
@@ -21827,6 +22112,7 @@ GameObject:
   - component: {fileID: 943108817}
   - component: {fileID: 943108816}
   - component: {fileID: 943108818}
+  - component: {fileID: 943108819}
   m_Layer: 0
   m_Name: Yukon
   m_TagString: Untagged
@@ -22005,6 +22291,23 @@ PolygonCollider2D:
       - {x: -3.3049998, y: 3.3799999}
       - {x: -3.145, y: 3.53}
   m_UseDelaunayMesh: 1
+--- !u!114 &943108819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943108813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1439669900}
+  - {fileID: 1462150137}
+  - {fileID: 1516220971}
+  - {fileID: 727027600}
 --- !u!1 &944304636
 GameObject:
   m_ObjectHideFlags: 0
@@ -22017,6 +22320,7 @@ GameObject:
   - component: {fileID: 944304640}
   - component: {fileID: 944304639}
   - component: {fileID: 944304641}
+  - component: {fileID: 944304642}
   m_Layer: 0
   m_Name: Irkutsk
   m_TagString: Untagged
@@ -22194,6 +22498,23 @@ PolygonCollider2D:
       - {x: 4.575, y: 2.6499999}
       - {x: 4.415, y: 2.82}
   m_UseDelaunayMesh: 1
+--- !u!114 &944304642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944304636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 975415950}
+  - {fileID: 21092336}
+  - {fileID: 708237755}
+  - {fileID: 1511314730}
 --- !u!1 &951019850
 GameObject:
   m_ObjectHideFlags: 0
@@ -22297,6 +22618,7 @@ GameObject:
   - component: {fileID: 961364781}
   - component: {fileID: 961364780}
   - component: {fileID: 961364782}
+  - component: {fileID: 961364783}
   m_Layer: 0
   m_Name: NewGuinea
   m_TagString: Untagged
@@ -22464,6 +22786,22 @@ PolygonCollider2D:
       - {x: 6.335, y: -1.1899999}
       - {x: 6.165, y: -1.04}
   m_UseDelaunayMesh: 1
+--- !u!114 &961364783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961364777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 607065175}
+  - {fileID: 980353344}
+  - {fileID: 563699229}
 --- !u!213 &974799806
 Sprite:
   m_ObjectHideFlags: 0
@@ -22657,7 +22995,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -22686,6 +23024,7 @@ GameObject:
   - component: {fileID: 975415951}
   - component: {fileID: 975415950}
   - component: {fileID: 975415952}
+  - component: {fileID: 975415953}
   m_Layer: 0
   m_Name: Siberia
   m_TagString: Untagged
@@ -22873,6 +23212,24 @@ PolygonCollider2D:
       - {x: 4.015, y: 2.48}
       - {x: 4.005, y: 2.69}
   m_UseDelaunayMesh: 1
+--- !u!114 &975415953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975415947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 927104106}
+  - {fileID: 21092336}
+  - {fileID: 944304639}
+  - {fileID: 1511314730}
+  - {fileID: 1675100781}
 --- !u!213 &978072891
 Sprite:
   m_ObjectHideFlags: 0
@@ -23066,7 +23423,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -23095,6 +23452,7 @@ GameObject:
   - component: {fileID: 980353345}
   - component: {fileID: 980353344}
   - component: {fileID: 980353346}
+  - component: {fileID: 980353347}
   m_Layer: 0
   m_Name: WestAustralia
   m_TagString: Untagged
@@ -23272,6 +23630,22 @@ PolygonCollider2D:
       - {x: 5.315, y: -2.3}
       - {x: 5.525, y: -2.21}
   m_UseDelaunayMesh: 1
+--- !u!114 &980353347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980353341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 607065175}
+  - {fileID: 961364780}
+  - {fileID: 563699229}
 --- !u!1 &983954734
 GameObject:
   m_ObjectHideFlags: 0
@@ -23649,6 +24023,7 @@ GameObject:
   - component: {fileID: 1009009642}
   - component: {fileID: 1009009641}
   - component: {fileID: 1009009643}
+  - component: {fileID: 1009009644}
   m_Layer: 0
   m_Name: Algeria
   m_TagString: Untagged
@@ -23837,6 +24212,25 @@ PolygonCollider2D:
       - {x: 0.85499996, y: -0.16}
       - {x: 0.85499996, y: -0.13}
   m_UseDelaunayMesh: 1
+--- !u!114 &1009009644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1009009638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 436067159}
+  - {fileID: 1543686203}
+  - {fileID: 1296137476}
+  - {fileID: 1102966855}
+  - {fileID: 321909375}
+  - {fileID: 1305076810}
 --- !u!1 &1020792633
 GameObject:
   m_ObjectHideFlags: 0
@@ -24488,7 +24882,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -25107,7 +25501,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -25317,7 +25711,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -25437,6 +25831,7 @@ GameObject:
   - component: {fileID: 1102966856}
   - component: {fileID: 1102966855}
   - component: {fileID: 1102966857}
+  - component: {fileID: 1102966858}
   m_Layer: 0
   m_Name: Egypt
   m_TagString: Untagged
@@ -25610,6 +26005,23 @@ PolygonCollider2D:
       - {x: 1.345, y: 0.45}
       - {x: 1.515, y: 0.47}
   m_UseDelaunayMesh: 1
+--- !u!114 &1102966858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102966852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1009009641}
+  - {fileID: 1296137476}
+  - {fileID: 86341325}
+  - {fileID: 321909375}
 --- !u!1 &1106547841
 GameObject:
   m_ObjectHideFlags: 0
@@ -25940,7 +26352,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -26196,7 +26608,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -26590,6 +27002,7 @@ GameObject:
   - component: {fileID: 1184048669}
   - component: {fileID: 1184048668}
   - component: {fileID: 1184048670}
+  - component: {fileID: 1184048671}
   m_Layer: 0
   m_Name: EastUSA
   m_TagString: Untagged
@@ -26771,6 +27184,23 @@ PolygonCollider2D:
       - {x: -3.095, y: 1.49}
       - {x: -2.895, y: 1.74}
   m_UseDelaunayMesh: 1
+--- !u!114 &1184048671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184048665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1516220971}
+  - {fileID: 2106538211}
+  - {fileID: 492773717}
+  - {fileID: 1582874304}
 --- !u!1 &1185451831
 GameObject:
   m_ObjectHideFlags: 0
@@ -27011,7 +27441,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -28042,7 +28472,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -28572,6 +29002,7 @@ GameObject:
   - component: {fileID: 1270550439}
   - component: {fileID: 1270550438}
   - component: {fileID: 1270550440}
+  - component: {fileID: 1270550441}
   m_Layer: 0
   m_Name: Peru
   m_TagString: Untagged
@@ -28739,6 +29170,22 @@ PolygonCollider2D:
       - {x: -2.5349998, y: -1.29}
       - {x: -2.445, y: -1.29}
   m_UseDelaunayMesh: 1
+--- !u!114 &1270550441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270550435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 678598687}
+  - {fileID: 436067159}
+  - {fileID: 33567520}
 --- !u!28 &1271905564
 Texture2D:
   m_ObjectHideFlags: 0
@@ -29024,7 +29471,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -29416,7 +29863,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -29628,6 +30075,7 @@ GameObject:
   - component: {fileID: 1296137477}
   - component: {fileID: 1296137476}
   - component: {fileID: 1296137478}
+  - component: {fileID: 1296137479}
   m_Layer: 0
   m_Name: Italy
   m_TagString: Untagged
@@ -29826,6 +30274,25 @@ PolygonCollider2D:
       - {x: 0.84499997, y: 1.55}
       - {x: 0.91499996, y: 1.5999999}
   m_UseDelaunayMesh: 1
+--- !u!114 &1296137479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296137473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1543686203}
+  - {fileID: 2013523423}
+  - {fileID: 1374051231}
+  - {fileID: 86341325}
+  - {fileID: 1102966855}
+  - {fileID: 1009009641}
 --- !u!213 &1296571112
 Sprite:
   m_ObjectHideFlags: 0
@@ -30019,7 +30486,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -30366,7 +30833,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -30395,6 +30862,7 @@ GameObject:
   - component: {fileID: 1305076811}
   - component: {fileID: 1305076810}
   - component: {fileID: 1305076812}
+  - component: {fileID: 1305076813}
   m_Layer: 0
   m_Name: Congo
   m_TagString: Untagged
@@ -30566,6 +31034,22 @@ PolygonCollider2D:
       - {x: 1.2049999, y: -0.74}
       - {x: 1.135, y: -0.7}
   m_UseDelaunayMesh: 1
+--- !u!114 &1305076813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305076807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1009009641}
+  - {fileID: 321909375}
+  - {fileID: 505826415}
 --- !u!213 &1310463503
 Sprite:
   m_ObjectHideFlags: 0
@@ -30759,7 +31243,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -30788,6 +31272,7 @@ GameObject:
   - component: {fileID: 1314110157}
   - component: {fileID: 1314110156}
   - component: {fileID: 1314110158}
+  - component: {fileID: 1314110159}
   m_Layer: 0
   m_Name: Indochina
   m_TagString: Untagged
@@ -30961,6 +31446,22 @@ PolygonCollider2D:
       - {x: 4.515, y: -0.08}
       - {x: 4.335, y: 0.14999999}
   m_UseDelaunayMesh: 1
+--- !u!114 &1314110159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314110153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 146567034}
+  - {fileID: 1675100781}
+  - {fileID: 607065175}
 --- !u!1 &1325349518
 GameObject:
   m_ObjectHideFlags: 0
@@ -30992,6 +31493,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   territorioSelecionado: {fileID: 0}
   jogadorLocal: 1
+  faseAtual: 0
+  reforcosDisponiveis: 8
 --- !u!4 &1325349520
 Transform:
   m_ObjectHideFlags: 0
@@ -31795,7 +32298,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -32051,7 +32554,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -32080,6 +32583,7 @@ GameObject:
   - component: {fileID: 1374051232}
   - component: {fileID: 1374051231}
   - component: {fileID: 1374051233}
+  - component: {fileID: 1374051234}
   m_Layer: 0
   m_Name: Russia
   m_TagString: Untagged
@@ -32283,6 +32787,25 @@ PolygonCollider2D:
       - {x: 1.8149999, y: 2.02}
       - {x: 1.875, y: 2.05}
   m_UseDelaunayMesh: 1
+--- !u!114 &1374051234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374051228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 468653012}
+  - {fileID: 2013523423}
+  - {fileID: 1296137476}
+  - {fileID: 927104106}
+  - {fileID: 1990659339}
+  - {fileID: 86341325}
 --- !u!1 &1376848106
 GameObject:
   m_ObjectHideFlags: 0
@@ -32657,7 +33180,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -32867,7 +33390,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -33349,7 +33872,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -33832,7 +34355,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -34088,7 +34611,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -34117,6 +34640,7 @@ GameObject:
   - component: {fileID: 1439669901}
   - component: {fileID: 1439669900}
   - component: {fileID: 1439669902}
+  - component: {fileID: 1439669903}
   m_Layer: 0
   m_Name: Alaska
   m_TagString: Untagged
@@ -34299,6 +34823,22 @@ PolygonCollider2D:
       - {x: -4.685, y: 3.28}
       - {x: -4.705, y: 3.32}
   m_UseDelaunayMesh: 1
+--- !u!114 &1439669903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439669897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 943108816}
+  - {fileID: 1462150137}
+  - {fileID: 708237755}
 --- !u!28 &1444531774
 Texture2D:
   m_ObjectHideFlags: 0
@@ -34403,6 +34943,7 @@ GameObject:
   - component: {fileID: 1459063864}
   - component: {fileID: 1459063863}
   - component: {fileID: 1459063865}
+  - component: {fileID: 1459063866}
   m_Layer: 0
   m_Name: Japan
   m_TagString: Untagged
@@ -34583,6 +35124,21 @@ PolygonCollider2D:
       - {x: 5.9049997, y: 2.48}
       - {x: 5.9049997, y: 2.56}
   m_UseDelaunayMesh: 1
+--- !u!114 &1459063866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459063860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 708237755}
+  - {fileID: 1511314730}
 --- !u!1 &1462150134
 GameObject:
   m_ObjectHideFlags: 0
@@ -34595,6 +35151,7 @@ GameObject:
   - component: {fileID: 1462150138}
   - component: {fileID: 1462150137}
   - component: {fileID: 1462150139}
+  - component: {fileID: 1462150140}
   m_Layer: 0
   m_Name: Alberta
   m_TagString: Untagged
@@ -34756,6 +35313,23 @@ PolygonCollider2D:
       - {x: -3.7749999, y: 2.86}
       - {x: -3.7849998, y: 3.33}
   m_UseDelaunayMesh: 1
+--- !u!114 &1462150140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462150134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1439669900}
+  - {fileID: 943108816}
+  - {fileID: 1516220971}
+  - {fileID: 492773717}
 --- !u!28 &1478607050
 Texture2D:
   m_ObjectHideFlags: 0
@@ -34952,6 +35526,7 @@ GameObject:
   - component: {fileID: 1511314731}
   - component: {fileID: 1511314730}
   - component: {fileID: 1511314732}
+  - component: {fileID: 1511314733}
   m_Layer: 0
   m_Name: Mongolia
   m_TagString: Untagged
@@ -35134,6 +35709,24 @@ PolygonCollider2D:
       - {x: 5.125, y: 1.8299999}
       - {x: 4.955, y: 2.01}
   m_UseDelaunayMesh: 1
+--- !u!114 &1511314733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511314727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 975415950}
+  - {fileID: 944304639}
+  - {fileID: 708237755}
+  - {fileID: 1459063863}
+  - {fileID: 1675100781}
 --- !u!1 &1513629116
 GameObject:
   m_ObjectHideFlags: 0
@@ -35327,6 +35920,7 @@ GameObject:
   - component: {fileID: 1516220972}
   - component: {fileID: 1516220971}
   - component: {fileID: 1516220973}
+  - component: {fileID: 1516220974}
   m_Layer: 0
   m_Name: Ontario
   m_TagString: Untagged
@@ -35496,6 +36090,25 @@ PolygonCollider2D:
       - {x: -2.875, y: 2.4099998}
       - {x: -2.895, y: 2.46}
   m_UseDelaunayMesh: 1
+--- !u!114 &1516220974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516220968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 943108816}
+  - {fileID: 1462150137}
+  - {fileID: 727027600}
+  - {fileID: 2106538211}
+  - {fileID: 492773717}
+  - {fileID: 1184048668}
 --- !u!28 &1525148298
 Texture2D:
   m_ObjectHideFlags: 0
@@ -35781,7 +36394,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -35994,6 +36607,7 @@ GameObject:
   - component: {fileID: 1543686204}
   - component: {fileID: 1543686203}
   - component: {fileID: 1543686205}
+  - component: {fileID: 1543686206}
   m_Layer: 0
   m_Name: Spain
   m_TagString: Untagged
@@ -36171,6 +36785,23 @@ PolygonCollider2D:
       - {x: -0.074999996, y: 1.7199999}
       - {x: -0.044999998, y: 1.8199999}
   m_UseDelaunayMesh: 1
+--- !u!114 &1543686206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543686200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 942877664}
+  - {fileID: 2013523423}
+  - {fileID: 1296137476}
+  - {fileID: 1009009641}
 --- !u!28 &1550055902
 Texture2D:
   m_ObjectHideFlags: 0
@@ -36410,7 +37041,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -36712,7 +37343,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -36969,7 +37600,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -36998,6 +37629,7 @@ GameObject:
   - component: {fileID: 1582874305}
   - component: {fileID: 1582874304}
   - component: {fileID: 1582874306}
+  - component: {fileID: 1582874307}
   m_Layer: 0
   m_Name: Mexico
   m_TagString: Untagged
@@ -37188,6 +37820,22 @@ PolygonCollider2D:
       - {x: -3.335, y: 0.48}
       - {x: -3.375, y: 0.53}
   m_UseDelaunayMesh: 1
+--- !u!114 &1582874307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582874301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 492773717}
+  - {fileID: 1184048668}
+  - {fileID: 678598687}
 --- !u!1 &1584487408
 GameObject:
   m_ObjectHideFlags: 0
@@ -37472,7 +38120,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -37866,7 +38514,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -38076,7 +38724,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -38469,7 +39117,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -38770,7 +39418,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -38890,6 +39538,7 @@ GameObject:
   - component: {fileID: 1675100782}
   - component: {fileID: 1675100781}
   - component: {fileID: 1675100783}
+  - component: {fileID: 1675100784}
   m_Layer: 0
   m_Name: China
   m_TagString: Untagged
@@ -39084,6 +39733,25 @@ PolygonCollider2D:
       - {x: 4.765, y: 0.79999995}
       - {x: 4.895, y: 1.0799999}
   m_UseDelaunayMesh: 1
+--- !u!114 &1675100784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675100778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 927104106}
+  - {fileID: 975415950}
+  - {fileID: 1511314730}
+  - {fileID: 1314110156}
+  - {fileID: 146567034}
+  - {fileID: 1990659339}
 --- !u!1 &1678208169
 GameObject:
   m_ObjectHideFlags: 0
@@ -40689,7 +41357,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -41083,7 +41751,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -41293,7 +41961,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -41550,7 +42218,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -41941,7 +42609,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -42470,7 +43138,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -42727,7 +43395,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -43484,7 +44152,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -43694,7 +44362,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -44131,7 +44799,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -44341,7 +45009,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -44489,6 +45157,7 @@ GameObject:
   - component: {fileID: 1990659340}
   - component: {fileID: 1990659339}
   - component: {fileID: 1990659341}
+  - component: {fileID: 1990659342}
   m_Layer: 0
   m_Name: Afghanistan
   m_TagString: Untagged
@@ -44666,6 +45335,24 @@ PolygonCollider2D:
       - {x: 3.2549999, y: 1.5899999}
       - {x: 3.2949998, y: 1.86}
   m_UseDelaunayMesh: 1
+--- !u!114 &1990659342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990659336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1374051231}
+  - {fileID: 927104106}
+  - {fileID: 1675100781}
+  - {fileID: 146567034}
+  - {fileID: 86341325}
 --- !u!1 &1993935860
 GameObject:
   m_ObjectHideFlags: 0
@@ -44950,6 +45637,7 @@ GameObject:
   - component: {fileID: 1996798097}
   - component: {fileID: 1996798096}
   - component: {fileID: 1996798098}
+  - component: {fileID: 1996798099}
   m_Layer: 0
   m_Name: Iceland
   m_TagString: Untagged
@@ -45116,6 +45804,22 @@ PolygonCollider2D:
       - {x: -0.49499997, y: 3.24}
       - {x: -0.49499997, y: 3.26}
   m_UseDelaunayMesh: 1
+--- !u!114 &1996798099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996798093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 727027600}
+  - {fileID: 942877664}
+  - {fileID: 468653012}
 --- !u!1 &2013523420
 GameObject:
   m_ObjectHideFlags: 0
@@ -45128,6 +45832,7 @@ GameObject:
   - component: {fileID: 2013523424}
   - component: {fileID: 2013523423}
   - component: {fileID: 2013523425}
+  - component: {fileID: 2013523426}
   m_Layer: 0
   m_Name: Germany
   m_TagString: Untagged
@@ -45314,6 +46019,24 @@ PolygonCollider2D:
       - {x: 0.45499998, y: 2.24}
       - {x: 0.625, y: 2.1699998}
   m_UseDelaunayMesh: 1
+--- !u!114 &2013523426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013523420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 942877664}
+  - {fileID: 468653012}
+  - {fileID: 1374051231}
+  - {fileID: 1296137476}
+  - {fileID: 1543686203}
 --- !u!28 &2030809632
 Texture2D:
   m_ObjectHideFlags: 0
@@ -45372,6 +46095,7 @@ GameObject:
   - component: {fileID: 2041682352}
   - component: {fileID: 2041682351}
   - component: {fileID: 2041682353}
+  - component: {fileID: 2041682354}
   m_Layer: 0
   m_Name: Madagascar
   m_TagString: Untagged
@@ -45540,6 +46264,21 @@ PolygonCollider2D:
       - {x: 2.185, y: -1.4499999}
       - {x: 2.185, y: -1.14}
   m_UseDelaunayMesh: 1
+--- !u!114 &2041682354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041682348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 321909375}
+  - {fileID: 505826415}
 --- !u!1 &2044269799
 GameObject:
   m_ObjectHideFlags: 0
@@ -45824,7 +46563,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -46308,7 +47047,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 104
-      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000080be0ad7a33e000000000ad7a33e0ad7a3be000000000ad7a33e0ad7a33e000000000ad7a3be8fc2753e000000000ad7a3be0ad7a3be00000000000000000000e03d0000803f0000803f000000000000803f0000803f000000000000603f0000000000000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -46564,6 +47303,7 @@ GameObject:
   - component: {fileID: 2106538212}
   - component: {fileID: 2106538211}
   - component: {fileID: 2106538213}
+  - component: {fileID: 2106538214}
   m_Layer: 0
   m_Name: Quebec
   m_TagString: Untagged
@@ -46760,6 +47500,22 @@ PolygonCollider2D:
       - {x: -1.9449999, y: 2.6299999}
       - {x: -2.075, y: 2.75}
   m_UseDelaunayMesh: 1
+--- !u!114 &2106538214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106538208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5ac8c3c6e47bc4284c8314fee256f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerritorioFronteiras
+  vizinhos:
+  - {fileID: 1516220971}
+  - {fileID: 727027600}
+  - {fileID: 1184048668}
 --- !u!1 &2112633855
 GameObject:
   m_ObjectHideFlags: 0

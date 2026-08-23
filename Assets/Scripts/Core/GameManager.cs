@@ -9,13 +9,68 @@ public class GameManager : MonoBehaviour
     public TerritorioClique.Dono jogadorLocal =
         TerritorioClique.Dono.Jogador1;
 
+public enum FaseTurno
+{
+    Reforco,
+    Ataque
+}
+
+public FaseTurno faseAtual = FaseTurno.Reforco;
+
+public int reforcosDisponiveis = 8;
+
     void Awake()
     {
         instance = this;
     }
 
+public void TentarAdicionarReforco(TerritorioClique t)
+{
+    if (faseAtual != FaseTurno.Reforco)
+        return;
+
+    if (t == null)
+        return;
+
+    if (t.dono != jogadorLocal)
+    {
+        Debug.Log(
+            "Reforço impossível: território não pertence ao jogador."
+        );
+
+        return;
+    }
+
+    if (reforcosDisponiveis <= 0)
+    {
+        Debug.Log(
+            "Não há mais tropas disponíveis para distribuir."
+        );
+
+        return;
+    }
+
+    t.AdicionarTropa();
+
+    reforcosDisponiveis--;
+
+    Debug.Log(
+        "Tropa adicionada em " +
+        t.name +
+        " | Tropas no território: " +
+        t.tropas +
+        " | Reforços restantes: " +
+        reforcosDisponiveis
+    );
+}
+
     public void ClicarTerritorio(TerritorioClique t)
     {
+        if (faseAtual == FaseTurno.Reforco)
+{
+    TentarAdicionarReforco(t);
+    return;
+}
         // Nenhum território selecionado
         if (territorioSelecionado == null)
         {
