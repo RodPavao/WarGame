@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour
 
     public TerritorioClique territorioSelecionado;
 
-    // Só para teste agora:
-    public TerritorioClique.Dono jogadorLocal = TerritorioClique.Dono.Jogador1;
+    public TerritorioClique.Dono jogadorLocal =
+        TerritorioClique.Dono.Jogador1;
 
     void Awake()
     {
@@ -16,34 +16,91 @@ public class GameManager : MonoBehaviour
 
     public void ClicarTerritorio(TerritorioClique t)
     {
-        // Se não é meu território e não tenho nada selecionado, não faz nada
-        if (territorioSelecionado == null && t.dono != jogadorLocal)
+        // Nenhum território selecionado
+        if (territorioSelecionado == null)
         {
-            return;
-        }
-
-        // Se é meu território, seleciona
-        if (t.dono == jogadorLocal)
-        {
-            if (territorioSelecionado != null)
+            if (t.dono != jogadorLocal)
             {
-                territorioSelecionado.AtualizarCor();
+                Debug.Log("Este território não pertence ao jogador.");
+                return;
             }
 
             territorioSelecionado = t;
             territorioSelecionado.DestacarSelecao();
-            Debug.Log("Território selecionado: " + t.name);
+
+            Debug.Log(
+                "Território selecionado: " +
+                t.name +
+                " | Tropas: " +
+                t.tropas
+            );
+
             return;
         }
 
-        // Se clicou em território inimigo depois de selecionar um meu
-        if (territorioSelecionado != null && t.dono != jogadorLocal)
+        // Clicou novamente no território selecionado
+        if (t == territorioSelecionado)
         {
-            Debug.Log("Ataque planejado de " + territorioSelecionado.name + " para " + t.name);
-
-            // Por enquanto, só registra no log
             territorioSelecionado.AtualizarCor();
             territorioSelecionado = null;
+
+            Debug.Log("Seleção cancelada.");
+            return;
         }
+
+        // Selecionou outro território próprio
+        if (t.dono == jogadorLocal)
+        {
+            territorioSelecionado.AtualizarCor();
+
+            territorioSelecionado = t;
+            territorioSelecionado.DestacarSelecao();
+
+            Debug.Log(
+                "Novo território selecionado: " +
+                t.name +
+                " | Tropas: " +
+                t.tropas
+            );
+
+            return;
+        }
+
+        // Tentativa de ataque a território não vizinho
+        if (!territorioSelecionado.EhVizinho(t))
+        {
+            Debug.Log(
+                "Ataque impossível: " +
+                t.name +
+                " não é vizinho de " +
+                territorioSelecionado.name
+            );
+
+            return;
+        }
+
+        // Precisa deixar pelo menos uma tropa no território
+        if (territorioSelecionado.tropas <= 1)
+        {
+            Debug.Log(
+                "Ataque impossível: " +
+                territorioSelecionado.name +
+                " possui apenas " +
+                territorioSelecionado.tropas +
+                " tropa."
+            );
+
+            return;
+        }
+
+        Debug.Log(
+            "ATAQUE VÁLIDO: " +
+            territorioSelecionado.name +
+            " -> " +
+            t.name
+        );
+
+        territorioSelecionado.AtualizarCor();
+        territorioSelecionado = null;
     }
 }
