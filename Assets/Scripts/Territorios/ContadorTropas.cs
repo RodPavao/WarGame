@@ -8,84 +8,124 @@ public class ContadorTropas : MonoBehaviour
 
     private SpriteRenderer fundo;
     private SpriteRenderer borda;
+    private SpriteRenderer bordaExterna;
+
     private TextMeshPro numero;
 
     private Vector3 escalaOriginal;
     private Coroutine animacaoAtual;
+
+    // =====================================================
+    // EDITOR
+    // =====================================================
+
     private void OnValidate()
-{
-    if (Application.isPlaying)
-        return;
-
-    territorio =
-        GetComponentInParent<TerritorioClique>();
-
-    Transform bordaExistente =
-        transform.Find("Borda");
-
-    Transform fundoExistente =
-        transform.Find("Fundo");
-
-    Transform numeroExistente =
-        transform.Find("Numero");
-
-    if (territorio == null ||
-        bordaExistente == null ||
-        fundoExistente == null ||
-        numeroExistente == null)
-        return;
-
-    borda =
-        bordaExistente.GetComponent<SpriteRenderer>();
-
-    fundo =
-        fundoExistente.GetComponent<SpriteRenderer>();
-
-    numero =
-        numeroExistente.GetComponent<TextMeshPro>();
-
-    Atualizar();
-}
-
-    public void Configurar(TerritorioClique territorioAlvo)
-{
-    territorio = territorioAlvo;
-
-    CriarVisual();
-
-    escalaOriginal = transform.localScale;
-
-    Atualizar();
-}
-
-    private void CriarVisual()
-{
-    // Se o visual já existe, reutiliza em vez de duplicar.
-    Transform bordaExistente = transform.Find("Borda");
-    Transform fundoExistente = transform.Find("Fundo");
-    Transform numeroExistente = transform.Find("Numero");
-
-    if (bordaExistente != null &&
-        fundoExistente != null &&
-        numeroExistente != null)
     {
+        if (Application.isPlaying)
+            return;
+
+        territorio =
+            GetComponentInParent<TerritorioClique>();
+
+        Transform bordaExistente =
+            transform.Find("Borda");
+
+        Transform fundoExistente =
+            transform.Find("Fundo");
+
+        Transform numeroExistente =
+            transform.Find("Numero");
+
+        if (territorio == null ||
+            bordaExistente == null ||
+            fundoExistente == null ||
+            numeroExistente == null)
+            return;
+
         borda =
-            bordaExistente.GetComponent<SpriteRenderer>();
+            bordaExistente
+                .GetComponent<SpriteRenderer>();
 
         fundo =
-            fundoExistente.GetComponent<SpriteRenderer>();
+            fundoExistente
+                .GetComponent<SpriteRenderer>();
 
         numero =
-            numeroExistente.GetComponent<TextMeshPro>();
+            numeroExistente
+                .GetComponent<TextMeshPro>();
 
-        GarantirCollider();
-
-        return;
+        // NÃO mexe na posição de nada.
+        Atualizar();
     }
 
-        // =====================================================
-        // BORDA
-        // =====================================================
+    // =====================================================
+    // CONFIGURAÇÃO
+    // =====================================================
+
+    public void Configurar(
+        TerritorioClique territorioAlvo)
+    {
+        territorio =
+            territorioAlvo;
+
+        // NÃO altera transform.localPosition.
+        CriarVisual();
+
+        escalaOriginal =
+            transform.localScale;
+
+        Atualizar();
+    }
+
+    // =====================================================
+    // VISUAL
+    // =====================================================
+
+    private void CriarVisual()
+    {
+        Transform bordaExistente =
+            transform.Find("Borda");
+
+        Transform fundoExistente =
+            transform.Find("Fundo");
+
+        Transform numeroExistente =
+            transform.Find("Numero");
+
+        // =================================================
+        // CONTADOR JÁ EXISTE
+        // =================================================
+
+        if (bordaExistente != null &&
+            fundoExistente != null &&
+            numeroExistente != null)
+        {
+            borda =
+                bordaExistente
+                    .GetComponent<SpriteRenderer>();
+
+            fundo =
+                fundoExistente
+                    .GetComponent<SpriteRenderer>();
+
+            numero =
+                numeroExistente
+                    .GetComponent<TextMeshPro>();
+
+            // Cria/reutiliza somente a borda externa.
+            // Copia exatamente a posição da borda existente.
+            GarantirBordaExterna(
+                bordaExistente
+            );
+
+            GarantirCollider();
+
+            return;
+        }
+
+        // =================================================
+        // BORDA INTERNA / SKIN
+        // =================================================
 
         GameObject objBorda =
             new GameObject("Borda");
@@ -96,12 +136,14 @@ public class ContadorTropas : MonoBehaviour
         );
 
         borda =
-            objBorda.AddComponent<SpriteRenderer>();
+            objBorda
+                .AddComponent<SpriteRenderer>();
 
         borda.sprite =
             CriarSpriteArredondado();
 
-        borda.sortingOrder = 20;
+        borda.sortingOrder =
+            20;
 
         objBorda.transform.localScale =
             new Vector3(
@@ -110,10 +152,14 @@ public class ContadorTropas : MonoBehaviour
                 1f
             );
 
+        // Cria a borda preta atrás dela.
+        GarantirBordaExterna(
+            objBorda.transform
+        );
 
-        // =====================================================
+        // =================================================
         // FUNDO
-        // =====================================================
+        // =================================================
 
         GameObject objFundo =
             new GameObject("Fundo");
@@ -124,12 +170,12 @@ public class ContadorTropas : MonoBehaviour
         );
 
         fundo =
-            objFundo.AddComponent<SpriteRenderer>();
+            objFundo
+                .AddComponent<SpriteRenderer>();
 
         fundo.sprite =
             CriarSpriteArredondado();
 
-        // Preto profundo
         fundo.color =
             new Color(
                 0.012f,
@@ -138,7 +184,8 @@ public class ContadorTropas : MonoBehaviour
                 1f
             );
 
-        fundo.sortingOrder = 21;
+        fundo.sortingOrder =
+            21;
 
         objFundo.transform.localScale =
             new Vector3(
@@ -147,10 +194,9 @@ public class ContadorTropas : MonoBehaviour
                 1f
             );
 
-
-        // =====================================================
+        // =================================================
         // NÚMERO
-        // =====================================================
+        // =================================================
 
         GameObject objNumero =
             new GameObject("Numero");
@@ -161,7 +207,8 @@ public class ContadorTropas : MonoBehaviour
         );
 
         numero =
-            objNumero.AddComponent<TextMeshPro>();
+            objNumero
+                .AddComponent<TextMeshPro>();
 
         TMP_FontAsset fonteNumero =
             Resources.Load<TMP_FontAsset>(
@@ -170,7 +217,8 @@ public class ContadorTropas : MonoBehaviour
 
         if (fonteNumero != null)
         {
-            numero.font = fonteNumero;
+            numero.font =
+                fonteNumero;
         }
         else
         {
@@ -206,10 +254,12 @@ public class ContadorTropas : MonoBehaviour
         numero.margin =
             Vector4.zero;
 
-        numero.sortingOrder = 22;
+        numero.sortingOrder =
+            22;
 
         RectTransform rectNumero =
-            objNumero.GetComponent<RectTransform>();
+            objNumero
+                .GetComponent<RectTransform>();
 
         rectNumero.sizeDelta =
             new Vector2(
@@ -217,41 +267,123 @@ public class ContadorTropas : MonoBehaviour
                 0.82f
             );
 
-        // O objeto SEMPRE fica exatamente no centro.
         rectNumero.localPosition =
             Vector3.zero;
 
-            GarantirCollider();
+        GarantirCollider();
     }
 
+    // =====================================================
+    // BORDA EXTERNA PRETA
+    // =====================================================
 
-private void GarantirCollider()
-{
-    BoxCollider2D colliderContador =
-        GetComponent<BoxCollider2D>();
-
-    if (colliderContador == null)
+    private void GarantirBordaExterna(
+        Transform bordaTransform)
     {
-        colliderContador =
-            gameObject.AddComponent<BoxCollider2D>();
+        if (bordaTransform == null)
+            return;
+
+        SpriteRenderer bordaAtual =
+            bordaTransform
+                .GetComponent<SpriteRenderer>();
+
+        if (bordaAtual == null)
+            return;
+
+        Transform existente =
+            transform.Find("BordaExterna");
+
+        GameObject obj;
+
+        if (existente == null)
+        {
+            obj =
+                new GameObject(
+                    "BordaExterna"
+                );
+
+            obj.transform.SetParent(
+                transform,
+                false
+            );
+        }
+        else
+        {
+            obj =
+                existente.gameObject;
+        }
+
+        bordaExterna =
+            obj.GetComponent<SpriteRenderer>();
+
+        if (bordaExterna == null)
+        {
+            bordaExterna =
+                obj.AddComponent<SpriteRenderer>();
+        }
+
+        // Mesma forma da borda interna.
+        bordaExterna.sprite =
+            bordaAtual.sprite;
+
+        bordaExterna.color =
+            Color.black;
+
+        bordaExterna.sortingOrder =
+            bordaAtual.sortingOrder - 1;
+
+        // IMPORTANTE:
+        // segue a borda.
+        // Não força nenhum contador a voltar para 0,0.
+        obj.transform.localPosition =
+            bordaTransform.localPosition;
+
+        obj.transform.localRotation =
+            bordaTransform.localRotation;
+
+        Vector3 escalaBorda =
+            bordaTransform.localScale;
+
+        obj.transform.localScale =
+            new Vector3(
+                escalaBorda.x * 1.10f,
+                escalaBorda.y * 1.10f,
+                escalaBorda.z
+            );
     }
 
-    colliderContador.size =
-        new Vector2(
-            0.55f,
-            0.55f
-        );
-}
+    // =====================================================
+    // COLLIDER
+    // =====================================================
 
-    // =========================================================
-    // ATUALIZAR CONTADOR
-    // =========================================================
+    private void GarantirCollider()
+    {
+        BoxCollider2D colliderContador =
+            GetComponent<BoxCollider2D>();
 
+        if (colliderContador == null)
+        {
+            colliderContador =
+                gameObject
+                    .AddComponent<BoxCollider2D>();
+        }
+
+        colliderContador.size =
+            new Vector2(
+                0.55f,
+                0.55f
+            );
+    }
+
+    // =====================================================
+    // ATUALIZAÇÃO
+    // =====================================================
 
     public void Atualizar()
     {
         if (territorio == null ||
-            numero == null)
+            numero == null ||
+            borda == null)
             return;
 
         numero.text =
@@ -261,98 +393,139 @@ private void GarantirCollider()
             numero.text.Length;
 
         if (quantidadeDigitos == 1)
-{
-    numero.fontSize = 4.0f;
-}
-else if (quantidadeDigitos == 2)
-{
-    numero.fontSize = 3.7f;
-}
-else
-{
-    numero.fontSize = 3.1f;
-}
+        {
+            numero.fontSize =
+                4.0f;
+        }
+        else if (quantidadeDigitos == 2)
+        {
+            numero.fontSize =
+                3.7f;
+        }
+        else
+        {
+            numero.fontSize =
+                3.1f;
+        }
 
         numero.ForceMeshUpdate();
 
         CentralizarMalhaNumero();
 
+        // =================================================
+        // REGRA FUNDAMENTAL:
+        //
+        // O contador NÃO escolhe cor.
+        // Ele apenas copia a skin do dono do território.
+        // =================================================
+
         borda.color =
-            ObterCorJogador(
-                territorio.dono
+            PaletaJogadores
+                .ObterCorAtiva(
+                    territorio.dono
+                );
+
+        if (bordaExterna != null)
+        {
+            bordaExterna.color =
+                Color.black;
+        }
+    }
+
+    // =====================================================
+    // CLIQUE
+    // =====================================================
+
+    public void Clicar()
+    {
+        if (territorio == null)
+            return;
+
+        if (GameManager.instance == null)
+            return;
+
+        int tropasAntes =
+            territorio.Tropas;
+
+        GameManager.instance
+            .TentarAdicionarReforco(
+                territorio
+            );
+
+        if (territorio.Tropas >
+            tropasAntes)
+        {
+            AnimarAdicao();
+        }
+    }
+
+    // =====================================================
+    // ANIMAÇÃO
+    // =====================================================
+
+    private void AnimarAdicao()
+    {
+        if (animacaoAtual != null)
+        {
+            StopCoroutine(
+                animacaoAtual
+            );
+        }
+
+        animacaoAtual =
+            StartCoroutine(
+                AnimacaoAdicao()
             );
     }
 
-public void Clicar()
-{
-    if (territorio == null)
-        return;
-
-    if (GameManager.instance == null)
-        return;
-
-    int tropasAntes =
-        territorio.Tropas;
-
-    GameManager.instance
-        .TentarAdicionarReforco(territorio);
-
-    if (territorio.Tropas > tropasAntes)
+    private System.Collections.IEnumerator
+        AnimacaoAdicao()
     {
-        AnimarAdicao();
-    }
-}
+        float duracao =
+            0.16f;
 
-private void AnimarAdicao()
-{
-    if (animacaoAtual != null)
-        StopCoroutine(animacaoAtual);
+        float tempo =
+            0f;
 
-    animacaoAtual =
-        StartCoroutine(
-            AnimacaoAdicao()
-        );
-}
+        Vector3 escalaMaior =
+            escalaOriginal *
+            1.14f;
 
-private System.Collections.IEnumerator AnimacaoAdicao()
-{
-    float duracao = 0.16f;
-    float tempo = 0f;
+        while (tempo < duracao)
+        {
+            tempo +=
+                Time.deltaTime;
 
-    Vector3 escalaMaior =
-        escalaOriginal * 1.14f;
+            float progresso =
+                tempo /
+                duracao;
 
-    while (tempo < duracao)
-    {
-        tempo += Time.deltaTime;
+            float curva =
+                Mathf.Sin(
+                    progresso *
+                    Mathf.PI
+                );
 
-        float progresso =
-            tempo / duracao;
+            transform.localScale =
+                Vector3.Lerp(
+                    escalaOriginal,
+                    escalaMaior,
+                    curva
+                );
 
-        float curva =
-            Mathf.Sin(
-                progresso * Mathf.PI
-            );
+            yield return null;
+        }
 
         transform.localScale =
-            Vector3.Lerp(
-                escalaOriginal,
-                escalaMaior,
-                curva
-            );
+            escalaOriginal;
 
-        yield return null;
+        animacaoAtual =
+            null;
     }
 
-    transform.localScale =
-        escalaOriginal;
-
-    animacaoAtual = null;
-}
-
-    // =========================================================
-    // CENTRALIZAÇÃO GEOMÉTRICA REAL
-    // =========================================================
+    // =====================================================
+    // CENTRALIZAÇÃO DO NÚMERO
+    // =====================================================
 
     private void CentralizarMalhaNumero()
     {
@@ -378,8 +551,6 @@ private System.Collections.IEnumerator AnimacaoAdicao()
         bool encontrou =
             false;
 
-        // Mede somente os pixels/vértices
-        // realmente usados pelos algarismos.
         for (int i = 0;
              i < info.characterCount;
              i++)
@@ -390,7 +561,8 @@ private System.Collections.IEnumerator AnimacaoAdicao()
             if (!caractere.isVisible)
                 continue;
 
-            encontrou = true;
+            encontrou =
+                true;
 
             int indiceVertice =
                 caractere.vertexIndex;
@@ -448,8 +620,6 @@ private System.Collections.IEnumerator AnimacaoAdicao()
                 0f
             );
 
-        // Move somente a geometria das letras.
-        // O RectTransform continua parado no centro.
         for (int i = 0;
              i < info.characterCount;
              i++)
@@ -486,65 +656,17 @@ private System.Collections.IEnumerator AnimacaoAdicao()
         );
     }
 
-
-    // =========================================================
-    // COR DO DONO
-    // =========================================================
-
-    private Color ObterCorJogador(
-        TerritorioClique.Dono dono)
-    {
-        switch (dono)
-        {
-            case TerritorioClique.Dono.Jogador1:
-                return new Color(
-                    1f,
-                    0.22f,
-                    0.15f
-                );
-
-            case TerritorioClique.Dono.Jogador2:
-                return new Color(
-                    0.15f,
-                    0.45f,
-                    1f
-                );
-
-            case TerritorioClique.Dono.Jogador3:
-                return new Color(
-                    0.15f,
-                    0.85f,
-                    0.35f
-                );
-
-            case TerritorioClique.Dono.Jogador4:
-                return new Color(
-                    0.8f,
-                    0.25f,
-                    1f
-                );
-
-            default:
-                return new Color(
-                    0.55f,
-                    0.58f,
-                    0.62f
-                );
-        }
-    }
-
-
-    // =========================================================
-    // SPRITE DO CONTADOR
-    // =========================================================
+    // =====================================================
+    // SPRITE ARREDONDADO
+    // =====================================================
 
     private Sprite CriarSpriteArredondado()
     {
-        const int tamanho = 64;
+        const int tamanho =
+            64;
 
-        // Quadrado com cantos arredondados,
-        // sem ficar circular.
-        const float raio = 19f;
+        const float raio =
+            19f;
 
         Texture2D textura =
             new Texture2D(
@@ -574,7 +696,8 @@ private System.Collections.IEnumerator AnimacaoAdicao()
                 float px =
                     Mathf.Max(
                         Mathf.Abs(
-                            x - tamanho / 2f
+                            x -
+                            tamanho / 2f
                         ) -
                         (
                             tamanho / 2f -
@@ -586,7 +709,8 @@ private System.Collections.IEnumerator AnimacaoAdicao()
                 float py =
                     Mathf.Max(
                         Mathf.Abs(
-                            y - tamanho / 2f
+                            y -
+                            tamanho / 2f
                         ) -
                         (
                             tamanho / 2f -

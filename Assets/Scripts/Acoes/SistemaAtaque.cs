@@ -31,10 +31,18 @@ public class SistemaAtaque : MonoBehaviour
             return false;
         }
 
-        if (destino.dono == jogador)
+        // =============================================
+        // REGRA 2x2 - NÃO ATACAR ALIADO
+        // =============================================
+
+        if (EquipesJogadores.SaoAliados(
+                jogador,
+                destino.dono))
         {
             Debug.Log(
-                "Ataque impossível: destino já pertence ao jogador."
+                "Ataque impossível: " +
+                destino.name +
+                " pertence a um aliado."
             );
 
             return false;

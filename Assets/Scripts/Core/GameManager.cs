@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private FilaAcoes filaAcoes;
     private SistemaAtaque sistemaAtaque;
     private ResolvedorCombate resolvedorCombate;
+    private GerenciadorRodada gerenciadorRodada;
 
     public enum FaseTurno
     {
@@ -23,7 +24,7 @@ public class GameManager : MonoBehaviour
     public FaseTurno faseAtual =
         FaseTurno.Reforco;
 
-    public int reforcosDisponiveis = 8;
+    public int reforcosDisponiveis = 0;
 
     // =====================================================
     // QUANTIDADE DA PRÓXIMA ORDEM
@@ -72,52 +73,45 @@ public class GameManager : MonoBehaviour
                 gameObject.AddComponent<ResolvedorCombate>();
         }
 
+        gerenciadorRodada =
+            GetComponent<GerenciadorRodada>();
+
+        if (gerenciadorRodada == null)
+        {
+            gerenciadorRodada =
+                gameObject.AddComponent<GerenciadorRodada>();
+        }
+
         sistemaAtaque.Inicializar(
             filaAcoes
         );
     }
 
-    // =====================================================
-    // QUANTIDADE DO ATAQUE
-    // =====================================================
-
-    public void DefinirQuantidadeAtaque(
-        int quantidade)
+    private void Start()
     {
-        quantidadeAtaqueSelecionada =
-            Mathf.Max(
-                1,
-                quantidade
-            );
-
-        Debug.Log(
-            "Quantidade da próxima ordem: " +
-            quantidadeAtaqueSelecionada
-        );
-    }
-
-    public void AumentarQuantidadeAtaque()
-    {
-        quantidadeAtaqueSelecionada++;
-    }
-
-    public void DiminuirQuantidadeAtaque()
-    {
-        quantidadeAtaqueSelecionada =
-            Mathf.Max(
-                1,
-                quantidadeAtaqueSelecionada - 1
-            );
+        gerenciadorRodada
+            .IniciarPartida();
     }
 
     // =====================================================
     // REFORÇOS
     // =====================================================
 
+    public void DefinirReforcos(
+        int quantidade)
+    {
+        reforcosDisponiveis =
+            Mathf.Max(
+                0,
+                quantidade
+            );
+    }
+
     public void TentarAdicionarReforco(
         TerritorioClique t)
     {
-        if (faseAtual != FaseTurno.Reforco)
+        if (faseAtual !=
+            FaseTurno.Reforco)
             return;
 
         if (t == null)
@@ -138,13 +132,54 @@ public class GameManager : MonoBehaviour
             t.name +
             " | Tropas: " +
             t.Tropas +
-            " | Restantes: " +
+            " | Reforços restantes: " +
             reforcosDisponiveis
         );
+
+        // Acabaram os reforços:
+        // inicia automaticamente preparação de ataques.
+        if (reforcosDisponiveis == 0)
+        {
+            faseAtual =
+                FaseTurno.Ataque;
+
+            Debug.Log(
+                "REFORÇOS ENCERRADOS | " +
+                "Fase de preparação iniciada."
+            );
+        }
     }
 
     // =====================================================
-    // CLIQUE NO TERRITÓRIO
+    // QUANTIDADE DO ATAQUE
+    // =====================================================
+
+    public void DefinirQuantidadeAtaque(
+        int quantidade)
+    {
+        quantidadeAtaqueSelecionada =
+            Mathf.Max(
+                1,
+                quantidade
+            );
+    }
+
+    public void AumentarQuantidadeAtaque()
+    {
+        quantidadeAtaqueSelecionada++;
+    }
+
+    public void DiminuirQuantidadeAtaque()
+    {
+        quantidadeAtaqueSelecionada =
+            Mathf.Max(
+                1,
+                quantidadeAtaqueSelecionada - 1
+            );
+    }
+
+    // =====================================================
+    // TERRITÓRIOS
     // =====================================================
 
     public void ClicarTerritorio(
@@ -157,7 +192,6 @@ public class GameManager : MonoBehaviour
             FaseTurno.Resolucao)
             return;
 
-        // Nenhuma origem selecionada.
         if (territorioSelecionado == null)
         {
             if (t.dono != jogadorLocal)
@@ -175,7 +209,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Tocou novamente na origem.
         if (t == territorioSelecionado)
         {
             territorioSelecionado = null;
@@ -187,7 +220,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Selecionou outro território próprio.
         if (t.dono == jogadorLocal)
         {
             territorioSelecionado = t;
@@ -232,7 +264,7 @@ public class GameManager : MonoBehaviour
     }
 
     // =====================================================
-    // CANCELAMENTO
+    // CANCELAR ORDEM
     // =====================================================
 
     [ContextMenu("Cancelar Ultima Ordem")]
@@ -252,7 +284,8 @@ public class GameManager : MonoBehaviour
     public void ResolverRodadaAgora()
     {
         if (filaAcoes == null ||
-            resolvedorCombate == null)
+            resolvedorCombate == null ||
+            gerenciadorRodada == null)
             return;
 
         faseAtual =
@@ -264,7 +297,9 @@ public class GameManager : MonoBehaviour
 
         territorioSelecionado = null;
 
-        faseAtual =
-            FaseTurno.Reforco;
+        // Acabou a resolução:
+        // próxima rodada automaticamente.
+        gerenciadorRodada
+            .IniciarProximaRodada();
     }
 }

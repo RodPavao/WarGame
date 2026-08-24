@@ -5,10 +5,46 @@ public class TerritorioVisual : MonoBehaviour
     private SpriteRenderer sr;
     private TerritorioClique territorio;
 
+    private static Material materialSemLuz;
+
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         territorio = GetComponent<TerritorioClique>();
+
+        GarantirMaterialSemLuz();
+    }
+
+    private void GarantirMaterialSemLuz()
+    {
+        if (sr == null)
+            return;
+
+        if (materialSemLuz == null)
+        {
+            Shader shader =
+                Shader.Find(
+                    "Universal Render Pipeline/2D/Sprite-Unlit-Default"
+                );
+
+            if (shader == null)
+            {
+                shader =
+                    Shader.Find("Sprites/Default");
+            }
+
+            if (shader != null)
+            {
+                materialSemLuz =
+                    new Material(shader);
+            }
+        }
+
+        if (materialSemLuz != null)
+        {
+            sr.sharedMaterial =
+                materialSemLuz;
+        }
     }
 
     public void AtualizarCor()
@@ -19,31 +55,16 @@ public class TerritorioVisual : MonoBehaviour
         if (territorio == null)
             territorio = GetComponent<TerritorioClique>();
 
-        if (territorio == null)
+        if (sr == null ||
+            territorio == null)
             return;
 
-        switch (territorio.dono)
-        {
-            case TerritorioClique.Dono.Jogador1:
-                sr.color = Color.red;
-                break;
+        GarantirMaterialSemLuz();
 
-            case TerritorioClique.Dono.Jogador2:
-                sr.color = Color.blue;
-                break;
-
-            case TerritorioClique.Dono.Jogador3:
-                sr.color = Color.green;
-                break;
-
-            case TerritorioClique.Dono.Jogador4:
-                sr.color = Color.magenta;
-                break;
-
-            default:
-                sr.color = Color.white;
-                break;
-        }
+        sr.color =
+            PaletaJogadores.ObterCorAtiva(
+                territorio.dono
+            );
     }
 
     public void DestacarContinente(Color cor)
@@ -51,7 +72,8 @@ public class TerritorioVisual : MonoBehaviour
         if (sr == null)
             sr = GetComponent<SpriteRenderer>();
 
-        sr.color = cor;
+        if (sr != null)
+            sr.color = cor;
     }
 
     public void RestaurarCor()
@@ -61,8 +83,6 @@ public class TerritorioVisual : MonoBehaviour
 
     public void DestacarSelecao()
     {
-        // Seleção visual desativada por enquanto.
-        // O território mantém sempre a cor/skin do dono.
     }
 
     public void RemoverDestaqueSelecao()
