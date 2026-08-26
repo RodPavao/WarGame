@@ -3,20 +3,34 @@ using UnityEngine;
 
 public class FilaAcoes : MonoBehaviour
 {
+    public const int MaximoAcoesPorRodada = 3;
+
     private readonly List<OrdemAtaque> ataques =
         new List<OrdemAtaque>();
 
     public int QuantidadeAtaques =>
         ataques.Count;
 
+    public bool EstaCheia =>
+        ataques.Count >= MaximoAcoesPorRodada;
+
     public IReadOnlyList<OrdemAtaque> Ataques =>
         ataques;
 
-    public void AdicionarAtaque(
+    public bool AdicionarAtaque(
         OrdemAtaque ordem)
     {
         if (ordem == null)
-            return;
+            return false;
+
+        if (EstaCheia)
+        {
+            Debug.Log(
+                "Limite de 3 ações terrestres atingido."
+            );
+
+            return false;
+        }
 
         ataques.Add(ordem);
 
@@ -30,6 +44,8 @@ public class FilaAcoes : MonoBehaviour
             " | Tropas: " +
             ordem.Tropas
         );
+
+        return true;
     }
 
     public int TropasReservadas(
@@ -52,6 +68,7 @@ public class FilaAcoes : MonoBehaviour
         if (origem == null)
             return 0;
 
+        // Sempre deixa 1 na origem.
         int disponiveis =
             origem.Tropas -
             1 -
@@ -69,7 +86,9 @@ public class FilaAcoes : MonoBehaviour
             return false;
 
         OrdemAtaque removida =
-            ataques[ataques.Count - 1];
+            ataques[
+                ataques.Count - 1
+            ];
 
         ataques.RemoveAt(
             ataques.Count - 1

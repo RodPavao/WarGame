@@ -3,12 +3,7 @@ using UnityEngine;
 
 public class ResolvedorCombate : MonoBehaviour
 {
-    // =====================================================
-    // RESOLVER FILA
-    // =====================================================
-
-    public void Resolver(
-        FilaAcoes fila)
+    public void Resolver(FilaAcoes fila)
     {
         if (fila == null)
             return;
@@ -16,9 +11,7 @@ public class ResolvedorCombate : MonoBehaviour
         List<OrdemAtaque> ordens =
             fila.CriarCopiaAtaques();
 
-        Debug.Log(
-            "=== INÍCIO DA RESOLUÇÃO ==="
-        );
+        Debug.Log("=== INÍCIO DA RESOLUÇÃO ===");
 
         foreach (OrdemAtaque ordem in ordens)
         {
@@ -27,14 +20,8 @@ public class ResolvedorCombate : MonoBehaviour
 
         fila.Limpar();
 
-        Debug.Log(
-            "=== FIM DA RESOLUÇÃO ==="
-        );
+        Debug.Log("=== FIM DA RESOLUÇÃO ===");
     }
-
-    // =====================================================
-    // ATAQUE
-    // =====================================================
 
     private ResultadoCombate ResolverAtaque(
         OrdemAtaque ordem)
@@ -71,9 +58,9 @@ public class ResolvedorCombate : MonoBehaviour
         int minimoParaConquistar =
             CalcularAtaqueMinimo(defesa);
 
-        // =================================================
+        // ================================================
         // CONQUISTA
-        // =================================================
+        // ================================================
 
         if (ataque >= minimoParaConquistar)
         {
@@ -84,14 +71,13 @@ public class ResolvedorCombate : MonoBehaviour
                 ataque
             );
 
-            destino.dono =
-                ordem.Jogador;
+            destino.DefinirDono(
+                ordem.Jogador
+            );
 
             destino.DefinirTropas(
                 sobreviventes
             );
-
-            destino.AtualizarCor();
 
             Debug.Log(
                 "CONQUISTA: " +
@@ -117,9 +103,9 @@ public class ResolvedorCombate : MonoBehaviour
             );
         }
 
-        // =================================================
-        // ATAQUE INSUFICIENTE
-        // =================================================
+        // ================================================
+        // ATAQUE REPELIDO
+        // ================================================
 
         int sobreviventesAtaque =
             Mathf.Max(
@@ -181,10 +167,6 @@ public class ResolvedorCombate : MonoBehaviour
         );
     }
 
-    // =====================================================
-    // REVALIDAÇÃO
-    // =====================================================
-
     private bool OrdemAindaValida(
         OrdemAtaque ordem)
     {
@@ -195,23 +177,21 @@ public class ResolvedorCombate : MonoBehaviour
             ordem.Destino == null)
             return false;
 
-        // Origem mudou de dono.
         if (ordem.Origem.dono !=
             ordem.Jogador)
             return false;
 
-        // O destino agora já pertence
-        // ao próprio jogador.
-        if (ordem.Destino.dono ==
-            ordem.Jogador)
+        // Não pode atacar território que,
+        // durante a resolução, virou aliado.
+        if (EquipesJogadores.SaoAliados(
+                ordem.Jogador,
+                ordem.Destino.dono))
             return false;
 
-        // Fronteira deixou de ser válida.
         if (!ordem.Origem.EhVizinho(
                 ordem.Destino))
             return false;
 
-        // Tropas foram gastas por ação anterior.
         if (ordem.Tropas >
             ordem.Origem.Tropas - 1)
             return false;
@@ -223,7 +203,7 @@ public class ResolvedorCombate : MonoBehaviour
     }
 
     // =====================================================
-    // REGRA V1 DE FORÇA
+    // REGRA DE FORÇA
     // =====================================================
 
     public int CalcularAtaqueMinimo(
@@ -235,15 +215,24 @@ public class ResolvedorCombate : MonoBehaviour
                 defesa
             );
 
-        float percentual =
-            defesa <= 10
-                ? 0.30f
-                : 0.15f;
+        // Até defesa 10:
+        // basta vantagem de +1.
+        //
+        // 1 defesa -> 2 ataque
+        // 2 defesa -> 3 ataque
+        // ...
+        // 10 defesa -> 11 ataque
+        if (defesa <= 10)
+        {
+            return defesa + 1;
+        }
 
+        // Defesa 11+:
+        // vantagem de 15%,
+        // com mínimo de +2.
         int vantagemPercentual =
             Mathf.CeilToInt(
-                defesa *
-                percentual
+                defesa * 0.15f
             );
 
         int vantagemNecessaria =

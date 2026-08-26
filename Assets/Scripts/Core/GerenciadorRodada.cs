@@ -8,7 +8,8 @@ public class GerenciadorRodada : MonoBehaviour
     [SerializeField]
     private int rodadaAtual = 1;
 
-    public int RodadaAtual => rodadaAtual;
+    public int RodadaAtual =>
+        rodadaAtual;
 
     private void Awake()
     {
@@ -16,27 +17,32 @@ public class GerenciadorRodada : MonoBehaviour
             GetComponent<GameManager>();
     }
 
-    // =====================================================
-    // INICIAR PARTIDA / RODADA
-    // =====================================================
-
     public void IniciarPartida()
     {
         rodadaAtual = 1;
 
-        PrepararReforcos();
+        IniciarRodada();
     }
 
     public void IniciarProximaRodada()
     {
         rodadaAtual++;
 
-        PrepararReforcos();
+        IniciarRodada();
     }
 
-    // =====================================================
-    // REFORÇOS
-    // =====================================================
+    private void IniciarRodada()
+    {
+        if (gameManager == null)
+            return;
+
+        // PRIMEIRO começa o relógio.
+        gameManager
+            .IniciarCronometroRound();
+
+        // Depois prepara os reforços.
+        PrepararReforcos();
+    }
 
     public void PrepararReforcos()
     {
@@ -59,20 +65,21 @@ public class GerenciadorRodada : MonoBehaviour
             "RODADA " +
             rodadaAtual +
             " | Reforços disponíveis: " +
-            reforcos
+            reforcos +
+            " | Cronômetro já iniciado."
         );
     }
 
     public int CalcularReforcos(
         TerritorioClique.Dono jogador)
     {
-        // Round 1:
-        // regra fixa já definida = 8 tropas.
         if (rodadaAtual == 1)
             return 8;
 
         TerritorioClique[] territorios =
-    FindObjectsByType<TerritorioClique>();
+            FindObjectsByType<TerritorioClique>(
+                FindObjectsSortMode.None
+            );
 
         int quantidadeTerritorios = 0;
 
@@ -80,15 +87,13 @@ public class GerenciadorRodada : MonoBehaviour
             TerritorioClique territorio
             in territorios)
         {
-            if (territorio.dono == jogador)
+            if (territorio.dono ==
+                jogador)
             {
                 quantidadeTerritorios++;
             }
         }
 
-        // Rounds seguintes:
-        // nº de territórios / 2
-        // divisão inteira.
         int reforcos =
             quantidadeTerritorios / 2;
 
@@ -97,10 +102,6 @@ public class GerenciadorRodada : MonoBehaviour
             reforcos
         );
     }
-
-    // =====================================================
-    // TESTES PELO INSPECTOR
-    // =====================================================
 
     [ContextMenu("Iniciar Partida Teste")]
     private void IniciarPartidaTeste()

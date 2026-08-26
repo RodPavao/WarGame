@@ -254,7 +254,17 @@ public class TerritorioClique : MonoBehaviour
     {
         if (territorioVisual != null)
         {
-            territorioVisual.DestacarSelecao();
+            territorioVisual
+                .DestacarSelecao();
+        }
+    }
+
+    public void RemoverDestaqueSelecao()
+    {
+        if (territorioVisual != null)
+        {
+            territorioVisual
+                .RemoverDestaqueSelecao();
         }
     }
 }

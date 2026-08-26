@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 [SelectionBase]
 public class ContadorTropas : MonoBehaviour
@@ -14,6 +15,28 @@ public class ContadorTropas : MonoBehaviour
 
     private Vector3 escalaOriginal;
     private Coroutine animacaoAtual;
+
+    // =====================================================
+    // TAMANHO VISUAL GLOBAL
+    // =====================================================
+
+    // 0.80 = todos os contadores ficam 20% menores.
+    // NÃO altera o tamanho da área clicável.
+    private const float escalaVisualGlobal = 0.80f;
+
+    // Área clicável maior que o desenho visual.
+    private const float tamanhoCollider = 0.82f;
+
+    // =====================================================
+    // CLIQUE LONGO
+    // =====================================================
+
+    private bool pressionando = false;
+    private bool cliqueLongoExecutado = false;
+
+    private float inicioPressao;
+
+    private const float tempoCliqueLongo = 1f;
 
     // =====================================================
     // EDITOR
@@ -43,18 +66,22 @@ public class ContadorTropas : MonoBehaviour
             return;
 
         borda =
-            bordaExistente
-                .GetComponent<SpriteRenderer>();
+            bordaExistente.GetComponent<SpriteRenderer>();
 
         fundo =
-            fundoExistente
-                .GetComponent<SpriteRenderer>();
+            fundoExistente.GetComponent<SpriteRenderer>();
 
         numero =
-            numeroExistente
-                .GetComponent<TextMeshPro>();
+            numeroExistente.GetComponent<TextMeshPro>();
 
-        // NÃO mexe na posição de nada.
+        AplicarEscalaVisual();
+
+        GarantirBordaExterna(
+            bordaExistente
+        );
+
+        GarantirCollider();
+
         Atualizar();
     }
 
@@ -65,16 +92,44 @@ public class ContadorTropas : MonoBehaviour
     public void Configurar(
         TerritorioClique territorioAlvo)
     {
-        territorio =
-            territorioAlvo;
+        territorio = territorioAlvo;
 
-        // NÃO altera transform.localPosition.
         CriarVisual();
+
+        AplicarEscalaVisual();
 
         escalaOriginal =
             transform.localScale;
 
         Atualizar();
+    }
+
+    // =====================================================
+    // UPDATE — HOLD 1 SEGUNDO
+    // =====================================================
+
+    private void Update()
+    {
+        if (!pressionando)
+            return;
+
+        if (cliqueLongoExecutado)
+            return;
+
+        if (GameManager.instance == null)
+            return;
+
+        if (GameManager.instance.faseAtual !=
+            GameManager.FaseTurno.Reforco)
+            return;
+
+        if (Time.unscaledTime - inicioPressao >=
+            tempoCliqueLongo)
+        {
+            cliqueLongoExecutado = true;
+
+            DespejarTodosReforcos();
+        }
     }
 
     // =====================================================
@@ -92,28 +147,19 @@ public class ContadorTropas : MonoBehaviour
         Transform numeroExistente =
             transform.Find("Numero");
 
-        // =================================================
-        // CONTADOR JÁ EXISTE
-        // =================================================
-
         if (bordaExistente != null &&
             fundoExistente != null &&
             numeroExistente != null)
         {
             borda =
-                bordaExistente
-                    .GetComponent<SpriteRenderer>();
+                bordaExistente.GetComponent<SpriteRenderer>();
 
             fundo =
-                fundoExistente
-                    .GetComponent<SpriteRenderer>();
+                fundoExistente.GetComponent<SpriteRenderer>();
 
             numero =
-                numeroExistente
-                    .GetComponent<TextMeshPro>();
+                numeroExistente.GetComponent<TextMeshPro>();
 
-            // Cria/reutiliza somente a borda externa.
-            // Copia exatamente a posição da borda existente.
             GarantirBordaExterna(
                 bordaExistente
             );
@@ -124,7 +170,7 @@ public class ContadorTropas : MonoBehaviour
         }
 
         // =================================================
-        // BORDA INTERNA / SKIN
+        // BORDA INTERNA
         // =================================================
 
         GameObject objBorda =
@@ -136,14 +182,12 @@ public class ContadorTropas : MonoBehaviour
         );
 
         borda =
-            objBorda
-                .AddComponent<SpriteRenderer>();
+            objBorda.AddComponent<SpriteRenderer>();
 
         borda.sprite =
             CriarSpriteArredondado();
 
-        borda.sortingOrder =
-            20;
+        borda.sortingOrder = 20;
 
         objBorda.transform.localScale =
             new Vector3(
@@ -152,7 +196,6 @@ public class ContadorTropas : MonoBehaviour
                 1f
             );
 
-        // Cria a borda preta atrás dela.
         GarantirBordaExterna(
             objBorda.transform
         );
@@ -170,8 +213,7 @@ public class ContadorTropas : MonoBehaviour
         );
 
         fundo =
-            objFundo
-                .AddComponent<SpriteRenderer>();
+            objFundo.AddComponent<SpriteRenderer>();
 
         fundo.sprite =
             CriarSpriteArredondado();
@@ -184,8 +226,7 @@ public class ContadorTropas : MonoBehaviour
                 1f
             );
 
-        fundo.sortingOrder =
-            21;
+        fundo.sortingOrder = 21;
 
         objFundo.transform.localScale =
             new Vector3(
@@ -207,8 +248,7 @@ public class ContadorTropas : MonoBehaviour
         );
 
         numero =
-            objNumero
-                .AddComponent<TextMeshPro>();
+            objNumero.AddComponent<TextMeshPro>();
 
         TMP_FontAsset fonteNumero =
             Resources.Load<TMP_FontAsset>(
@@ -217,8 +257,7 @@ public class ContadorTropas : MonoBehaviour
 
         if (fonteNumero != null)
         {
-            numero.font =
-                fonteNumero;
+            numero.font = fonteNumero;
         }
         else
         {
@@ -242,24 +281,17 @@ public class ContadorTropas : MonoBehaviour
         numero.verticalAlignment =
             VerticalAlignmentOptions.Middle;
 
-        numero.enableAutoSizing =
-            false;
+        numero.enableAutoSizing = false;
 
         numero.overflowMode =
             TextOverflowModes.Overflow;
 
-        numero.extraPadding =
-            true;
-
-        numero.margin =
-            Vector4.zero;
-
-        numero.sortingOrder =
-            22;
+        numero.extraPadding = true;
+        numero.margin = Vector4.zero;
+        numero.sortingOrder = 22;
 
         RectTransform rectNumero =
-            objNumero
-                .GetComponent<RectTransform>();
+            objNumero.GetComponent<RectTransform>();
 
         rectNumero.sizeDelta =
             new Vector2(
@@ -274,7 +306,60 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // BORDA EXTERNA PRETA
+    // ESCALA VISUAL GLOBAL
+    // =====================================================
+
+    private void AplicarEscalaVisual()
+    {
+        Transform bordaTransform =
+            transform.Find("Borda");
+
+        Transform fundoTransform =
+            transform.Find("Fundo");
+
+        Transform numeroTransform =
+            transform.Find("Numero");
+
+        if (bordaTransform != null)
+        {
+            bordaTransform.localScale =
+                new Vector3(
+                    0.82f * escalaVisualGlobal,
+                    0.82f * escalaVisualGlobal,
+                    1f
+                );
+        }
+
+        if (fundoTransform != null)
+        {
+            fundoTransform.localScale =
+                new Vector3(
+                    0.68f * escalaVisualGlobal,
+                    0.68f * escalaVisualGlobal,
+                    1f
+                );
+        }
+
+        if (numeroTransform != null)
+        {
+            numeroTransform.localScale =
+                new Vector3(
+                    escalaVisualGlobal,
+                    escalaVisualGlobal,
+                    1f
+                );
+        }
+
+        if (bordaTransform != null)
+        {
+            GarantirBordaExterna(
+                bordaTransform
+            );
+        }
+    }
+
+    // =====================================================
+    // BORDA EXTERNA
     // =====================================================
 
     private void GarantirBordaExterna(
@@ -284,8 +369,7 @@ public class ContadorTropas : MonoBehaviour
             return;
 
         SpriteRenderer bordaAtual =
-            bordaTransform
-                .GetComponent<SpriteRenderer>();
+            bordaTransform.GetComponent<SpriteRenderer>();
 
         if (bordaAtual == null)
             return;
@@ -309,8 +393,7 @@ public class ContadorTropas : MonoBehaviour
         }
         else
         {
-            obj =
-                existente.gameObject;
+            obj = existente.gameObject;
         }
 
         bordaExterna =
@@ -322,7 +405,6 @@ public class ContadorTropas : MonoBehaviour
                 obj.AddComponent<SpriteRenderer>();
         }
 
-        // Mesma forma da borda interna.
         bordaExterna.sprite =
             bordaAtual.sprite;
 
@@ -332,9 +414,6 @@ public class ContadorTropas : MonoBehaviour
         bordaExterna.sortingOrder =
             bordaAtual.sortingOrder - 1;
 
-        // IMPORTANTE:
-        // segue a borda.
-        // Não força nenhum contador a voltar para 0,0.
         obj.transform.localPosition =
             bordaTransform.localPosition;
 
@@ -364,15 +443,17 @@ public class ContadorTropas : MonoBehaviour
         if (colliderContador == null)
         {
             colliderContador =
-                gameObject
-                    .AddComponent<BoxCollider2D>();
+                gameObject.AddComponent<BoxCollider2D>();
         }
 
         colliderContador.size =
             new Vector2(
-                0.55f,
-                0.55f
+                tamanhoCollider,
+                tamanhoCollider
             );
+
+        colliderContador.offset =
+            Vector2.zero;
     }
 
     // =====================================================
@@ -393,37 +474,20 @@ public class ContadorTropas : MonoBehaviour
             numero.text.Length;
 
         if (quantidadeDigitos == 1)
-        {
-            numero.fontSize =
-                4.0f;
-        }
+            numero.fontSize = 4.0f;
         else if (quantidadeDigitos == 2)
-        {
-            numero.fontSize =
-                3.7f;
-        }
+            numero.fontSize = 3.7f;
         else
-        {
-            numero.fontSize =
-                3.1f;
-        }
+            numero.fontSize = 3.1f;
 
         numero.ForceMeshUpdate();
 
         CentralizarMalhaNumero();
 
-        // =================================================
-        // REGRA FUNDAMENTAL:
-        //
-        // O contador NÃO escolhe cor.
-        // Ele apenas copia a skin do dono do território.
-        // =================================================
-
         borda.color =
-            PaletaJogadores
-                .ObterCorAtiva(
-                    territorio.dono
-                );
+            PaletaJogadores.ObterCorAtiva(
+                territorio.dono
+            );
 
         if (bordaExterna != null)
         {
@@ -433,30 +497,169 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // CLIQUE
+    // INPUT CENTRALIZADO
+    // =====================================================
+    //
+    // IMPORTANTE:
+    // OnMouseDown / OnMouseUp / OnMouseExit foram removidos.
+    //
+    // Agora TODO clique/touch é detectado pelo InputPartida
+    // e encaminhado diretamente para estes métodos.
     // =====================================================
 
-    public void Clicar()
+    public void IniciarPressaoInput()
     {
-        if (territorio == null)
+        if (territorio == null ||
+            GameManager.instance == null)
             return;
 
-        if (GameManager.instance == null)
+        pressionando = true;
+
+        cliqueLongoExecutado = false;
+
+        inicioPressao =
+            Time.unscaledTime;
+    }
+
+    public void FinalizarPressaoInput()
+    {
+        if (!pressionando)
             return;
 
-        int tropasAntes =
-            territorio.Tropas;
+        pressionando = false;
 
-        GameManager.instance
-            .TentarAdicionarReforco(
+        if (territorio == null ||
+            GameManager.instance == null)
+            return;
+
+        // Hold de 1 segundo já executou.
+        // Soltar não pode executar clique curto também.
+        if (cliqueLongoExecutado)
+        {
+            cliqueLongoExecutado = false;
+            return;
+        }
+
+        ExecutarCliqueNormal();
+    }
+
+    public void CancelarPressaoInput()
+    {
+        pressionando = false;
+
+        cliqueLongoExecutado = false;
+    }
+
+    // =====================================================
+    // CLIQUE NORMAL
+    // =====================================================
+
+    private void ExecutarCliqueNormal()
+    {
+        GameManager gm =
+            GameManager.instance;
+
+        if (gm == null ||
+            territorio == null)
+            return;
+
+        // =================================================
+        // REFORÇO
+        // =================================================
+
+        if (gm.faseAtual ==
+            GameManager.FaseTurno.Reforco)
+        {
+            int tropasAntes =
+                territorio.Tropas;
+
+            gm.TentarAdicionarReforco(
                 territorio
             );
 
-        if (territorio.Tropas >
-            tropasAntes)
-        {
-            AnimarAdicao();
+            if (territorio.Tropas >
+                tropasAntes)
+            {
+                AnimarAdicao();
+            }
+
+            return;
         }
+
+        // =================================================
+        // PREPARAÇÃO / ATAQUE
+        // =================================================
+
+        if (gm.faseAtual ==
+            GameManager.FaseTurno.Ataque)
+        {
+            gm.ClicarTerritorio(
+                territorio
+            );
+        }
+    }
+
+    // Mantido por compatibilidade com possíveis
+    // componentes/scripts antigos.
+    public void Clicar()
+    {
+        ExecutarCliqueNormal();
+    }
+
+    // =====================================================
+    // HOLD 1 SEGUNDO
+    // =====================================================
+
+    private void DespejarTodosReforcos()
+    {
+        GameManager gm =
+            GameManager.instance;
+
+        if (gm == null ||
+            territorio == null)
+            return;
+
+        if (gm.faseAtual !=
+            GameManager.FaseTurno.Reforco)
+            return;
+
+        // Durante o modo de diagnóstico do GameManager,
+        // a própria regra de TentarAdicionarReforco()
+        // decide se qualquer território pode receber tropas.
+        //
+        // Fora do diagnóstico, mantém a regra normal.
+        if (!gm.modoTesteCliquesTodosTerritorios &&
+            territorio.dono != gm.jogadorLocal)
+        {
+            return;
+        }
+
+        int quantidade =
+            gm.reforcosDisponiveis;
+
+        if (quantidade <= 0)
+            return;
+
+        for (int i = 0;
+             i < quantidade;
+             i++)
+        {
+            gm.TentarAdicionarReforco(
+                territorio
+            );
+        }
+
+        Atualizar();
+
+        AnimarAdicao();
+
+        Debug.Log(
+            "REFORÇO RÁPIDO | " +
+            territorio.name +
+            " recebeu " +
+            quantidade +
+            " tropa(s)."
+        );
     }
 
     // =====================================================
@@ -478,32 +681,24 @@ public class ContadorTropas : MonoBehaviour
             );
     }
 
-    private System.Collections.IEnumerator
-        AnimacaoAdicao()
+    private IEnumerator AnimacaoAdicao()
     {
-        float duracao =
-            0.16f;
-
-        float tempo =
-            0f;
+        float duracao = 0.16f;
+        float tempo = 0f;
 
         Vector3 escalaMaior =
-            escalaOriginal *
-            1.14f;
+            escalaOriginal * 1.14f;
 
         while (tempo < duracao)
         {
-            tempo +=
-                Time.deltaTime;
+            tempo += Time.deltaTime;
 
             float progresso =
-                tempo /
-                duracao;
+                tempo / duracao;
 
             float curva =
                 Mathf.Sin(
-                    progresso *
-                    Mathf.PI
+                    progresso * Mathf.PI
                 );
 
             transform.localScale =
@@ -519,8 +714,7 @@ public class ContadorTropas : MonoBehaviour
         transform.localScale =
             escalaOriginal;
 
-        animacaoAtual =
-            null;
+        animacaoAtual = null;
     }
 
     // =====================================================
@@ -536,20 +730,12 @@ public class ContadorTropas : MonoBehaviour
             info.characterCount == 0)
             return;
 
-        float minX =
-            float.MaxValue;
+        float minX = float.MaxValue;
+        float maxX = float.MinValue;
+        float minY = float.MaxValue;
+        float maxY = float.MinValue;
 
-        float maxX =
-            float.MinValue;
-
-        float minY =
-            float.MaxValue;
-
-        float maxY =
-            float.MinValue;
-
-        bool encontrou =
-            false;
+        bool encontrou = false;
 
         for (int i = 0;
              i < info.characterCount;
@@ -561,8 +747,7 @@ public class ContadorTropas : MonoBehaviour
             if (!caractere.isVisible)
                 continue;
 
-            encontrou =
-                true;
+            encontrou = true;
 
             int indiceVertice =
                 caractere.vertexIndex;
@@ -575,9 +760,7 @@ public class ContadorTropas : MonoBehaviour
                     indiceMaterial
                 ].vertices;
 
-            for (int j = 0;
-                 j < 4;
-                 j++)
+            for (int j = 0; j < 4; j++)
             {
                 Vector3 vertice =
                     vertices[
@@ -641,9 +824,7 @@ public class ContadorTropas : MonoBehaviour
                     indiceMaterial
                 ].vertices;
 
-            for (int j = 0;
-                 j < 4;
-                 j++)
+            for (int j = 0; j < 4; j++)
             {
                 vertices[
                     indiceVertice + j
@@ -657,16 +838,13 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // SPRITE ARREDONDADO
+    // SPRITE DO CONTADOR
     // =====================================================
 
     private Sprite CriarSpriteArredondado()
     {
-        const int tamanho =
-            64;
-
-        const float raio =
-            19f;
+        const int tamanho = 64;
+        const float raio = 19f;
 
         Texture2D textura =
             new Texture2D(
@@ -696,8 +874,7 @@ public class ContadorTropas : MonoBehaviour
                 float px =
                     Mathf.Max(
                         Mathf.Abs(
-                            x -
-                            tamanho / 2f
+                            x - tamanho / 2f
                         ) -
                         (
                             tamanho / 2f -
@@ -709,8 +886,7 @@ public class ContadorTropas : MonoBehaviour
                 float py =
                     Mathf.Max(
                         Mathf.Abs(
-                            y -
-                            tamanho / 2f
+                            y - tamanho / 2f
                         ) -
                         (
                             tamanho / 2f -

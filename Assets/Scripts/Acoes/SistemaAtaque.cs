@@ -31,10 +31,6 @@ public class SistemaAtaque : MonoBehaviour
             return false;
         }
 
-        // =============================================
-        // REGRA 2x2 - NÃO ATACAR ALIADO
-        // =============================================
-
         if (EquipesJogadores.SaoAliados(
                 jogador,
                 destino.dono))
@@ -78,12 +74,6 @@ public class SistemaAtaque : MonoBehaviour
         int quantidade,
         TerritorioClique.Dono jogador)
     {
-        if (!PodeAtacar(
-                origem,
-                destino,
-                jogador))
-            return false;
-
         if (filaAcoes == null)
         {
             Debug.LogError(
@@ -93,6 +83,21 @@ public class SistemaAtaque : MonoBehaviour
             return false;
         }
 
+        if (filaAcoes.EstaCheia)
+        {
+            Debug.Log(
+                "Máximo de 3 ações terrestres por rodada."
+            );
+
+            return false;
+        }
+
+        if (!PodeAtacar(
+                origem,
+                destino,
+                jogador))
+            return false;
+
         int disponiveis =
             filaAcoes.TropasDisponiveis(
                 origem
@@ -101,7 +106,7 @@ public class SistemaAtaque : MonoBehaviour
         if (quantidade < 1)
         {
             Debug.Log(
-                "Ataque impossível: quantidade mínima = 1."
+                "Quantidade mínima = 1."
             );
 
             return false;
@@ -110,11 +115,10 @@ public class SistemaAtaque : MonoBehaviour
         if (quantidade > disponiveis)
         {
             Debug.Log(
-                "Ataque impossível: " +
                 origem.name +
                 " possui apenas " +
                 disponiveis +
-                " tropas ainda disponíveis para novas ordens."
+                " tropas disponíveis para novas ordens."
             );
 
             return false;
@@ -128,10 +132,8 @@ public class SistemaAtaque : MonoBehaviour
                 jogador
             );
 
-        filaAcoes.AdicionarAtaque(
+        return filaAcoes.AdicionarAtaque(
             ordem
         );
-
-        return true;
     }
 }
