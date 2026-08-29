@@ -164,14 +164,20 @@ public class GerenciadorRodada : MonoBehaviour
         if (rodadaAtual == 1)
             return 8;
 
-        TerritorioClique[] territorios =
-            FindObjectsByType<TerritorioClique>();
+        return CalcularReforcosRegulares(jogador, out _, out _);
+    }
+
+    public int CalcularReforcosRegulares(
+        TerritorioClique.Dono jogador,
+        out int baseTerritorial,
+        out int bonusRegioes)
+    {
 
         int quantidadeTerritorios = 0;
 
         foreach (
             TerritorioClique territorio
-            in territorios)
+            in MapaAtivo.ObterTerritoriosOuCena())
         {
             if (territorio.dono ==
                 jogador)
@@ -180,13 +186,12 @@ public class GerenciadorRodada : MonoBehaviour
             }
         }
 
-        int reforcos =
-            quantidadeTerritorios / 2;
+        baseTerritorial = quantidadeTerritorios / 2;
+        bonusRegioes = MapaAtivo.Instance != null
+            ? MapaAtivo.Instance.CalcularBonusRegioes(jogador)
+            : 0;
 
-        return Mathf.Max(
-            1,
-            reforcos
-        );
+        return baseTerritorial + bonusRegioes;
     }
 
     // =====================================================
@@ -207,7 +212,7 @@ public class GerenciadorRodada : MonoBehaviour
             new SortedSet<TerritorioClique.Dono>(jogadoresParticipantes);
 
         foreach (TerritorioClique territorio in
-                 FindObjectsByType<TerritorioClique>())
+                 MapaAtivo.ObterTerritoriosOuCena())
         {
             if (territorio.dono != TerritorioClique.Dono.Neutro)
                 jogadores.Add(territorio.dono);
@@ -222,7 +227,7 @@ public class GerenciadorRodada : MonoBehaviour
             new SortedSet<TerritorioClique.Dono>();
 
         foreach (TerritorioClique territorio in
-                 FindObjectsByType<TerritorioClique>())
+                 MapaAtivo.ObterTerritoriosOuCena())
         {
             if (territorio.dono != TerritorioClique.Dono.Neutro)
                 ativos.Add(territorio.dono);
@@ -422,7 +427,7 @@ public class GerenciadorRodada : MonoBehaviour
     private static List<TerritorioClique> ObterTerritoriosOrdenadosTeste()
     {
         List<TerritorioClique> territorios =
-            new List<TerritorioClique>(FindObjectsByType<TerritorioClique>());
+            new List<TerritorioClique>(MapaAtivo.ObterTerritoriosOuCena());
 
         territorios.Sort((a, b) => string.CompareOrdinal(
             ObterIdTerritorioTeste(a),

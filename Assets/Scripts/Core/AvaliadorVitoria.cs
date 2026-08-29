@@ -38,7 +38,7 @@ public class AvaliadorVitoria : MonoBehaviour
         }
 
         foreach (TerritorioClique territorio in
-                 FindObjectsByType<TerritorioClique>())
+                 MapaAtivo.ObterTerritoriosOuCena())
         {
             if (territorio.dono == TerritorioClique.Dono.Neutro)
                 continue;

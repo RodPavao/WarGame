@@ -166,8 +166,30 @@ public class GameManager : MonoBehaviour
         QuantidadeOrdensPreparadas > 0 ||
         TransferenciaPreparada != null;
 
+#if UNITY_EDITOR
     // =====================================================
-    // 8. INICIALIZAÇÃO
+    // 8. TESTE LOCAL DE PARTICIPANTES SIMULADOS
+    // =====================================================
+
+    private bool autoenviarJogadoresSimuladosEditor;
+
+    [ContextMenu("Teste Editor/Ativar Autoenvio de Jogadores Simulados")]
+    private void AtivarAutoenvioJogadoresSimuladosEditor()
+    {
+        autoenviarJogadoresSimuladosEditor = true;
+        Debug.Log("TESTE LOCAL | Autoenvio dos jogadores simulados ATIVADO.");
+    }
+
+    [ContextMenu("Teste Editor/Desativar Autoenvio de Jogadores Simulados")]
+    private void DesativarAutoenvioJogadoresSimuladosEditor()
+    {
+        autoenviarJogadoresSimuladosEditor = false;
+        Debug.Log("TESTE LOCAL | Autoenvio dos jogadores simulados DESATIVADO.");
+    }
+#endif
+
+    // =====================================================
+    // 9. INICIALIZAÇÃO
     // =====================================================
 
     private void Awake()
@@ -251,7 +273,7 @@ public class GameManager : MonoBehaviour
     }
 
     // =====================================================
-    // 9. CICLO DA PREPARAÇÃO
+    // 10. CICLO DA PREPARAÇÃO
     // =====================================================
 
     private void Update()
@@ -786,6 +808,16 @@ public class GameManager : MonoBehaviour
 
         CancelarSelecaoTransferencia();
         CancelarSelecaoAtual();
+
+#if UNITY_EDITOR
+        if (autoenviarJogadoresSimuladosEditor)
+        {
+            Debug.Log(
+                "TESTE LOCAL | Jogadores simulados considerados enviados; " +
+                "seguindo pelo fechamento real da preparação.");
+            FecharPreparacaoEIniciarResolucao();
+        }
+#endif
     }
 
     public void CancelarEnvio()
@@ -883,10 +915,7 @@ public class GameManager : MonoBehaviour
 
     private void AtualizarHighlightsPreparacao()
     {
-        TerritorioClique[] territorios =
-            FindObjectsByType<TerritorioClique>();
-
-        foreach (TerritorioClique territorio in territorios)
+        foreach (TerritorioClique territorio in MapaAtivo.ObterTerritoriosOuCena())
         {
             if (DeveManterHighlight(territorio))
                 territorio.DestacarSelecao();

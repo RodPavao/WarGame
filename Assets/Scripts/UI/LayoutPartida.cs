@@ -169,36 +169,15 @@ public class LayoutPartida : MonoBehaviour
 
     private void AjustarMapaPelaAltura()
     {
-        GameObject mapa =
-            GameObject.Find("classic_0");
-
-
-        if (mapa == null)
+        if (MapaAtivo.Instance == null ||
+            !MapaAtivo.Instance.TentarObterLimitesVisuais(out Bounds limitesMapa))
         {
             Debug.LogError(
-                "LAYOUT | classic_0 não encontrado."
+                "LAYOUT | Visual do mapa ativo não encontrado."
             );
 
             return;
         }
-
-
-        SpriteRenderer spriteMapa =
-            mapa.GetComponent<SpriteRenderer>();
-
-
-        if (spriteMapa == null)
-        {
-            Debug.LogError(
-                "LAYOUT | classic_0 não possui SpriteRenderer."
-            );
-
-            return;
-        }
-
-
-        Bounds limitesMapa =
-            spriteMapa.bounds;
 
 
         // =================================================

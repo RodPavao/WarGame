@@ -23,12 +23,9 @@ public class DistribuidorTerritorios : MonoBehaviour
     [ContextMenu("Distribuir Territorios 2x2")]
     public void Distribuir()
     {
-        TerritorioClique[] territorios =
-            FindObjectsByType<TerritorioClique>();
-
         List<TerritorioClique> lista =
             new List<TerritorioClique>(
-                territorios
+                MapaAtivo.ObterTerritoriosOuCena()
             );
 
         Embaralhar(lista);
