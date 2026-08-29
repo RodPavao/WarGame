@@ -12,12 +12,21 @@ public static class NomesTerritoriosSceneView
     private const string ChaveEditar = "WarGame.Visualizacao.EditarPosicoesNomesTerritorios";
     internal const int TamanhoFonteMinimo = 8;
     internal const int TamanhoFonteMaximo = 32;
+    private const int TamanhoFonteAutomatico = 10;
+    private const int TamanhoFonteAutomaticoReduzido = 9;
+    private const float ProporcaoZoomParaExibir = 0.72f;
 
     private static GUIStyle estiloNome;
     private static string territorioEmArraste;
     private static DefinicaoMapa mapaPendenteSalvar;
 
     static NomesTerritoriosSceneView()
+    {
+        EditorApplication.delayCall -= Inicializar;
+        EditorApplication.delayCall += Inicializar;
+    }
+
+    private static void Inicializar()
     {
         SceneView.duringSceneGui -= DesenharNomes;
         SceneView.duringSceneGui += DesenharNomes;
@@ -83,6 +92,8 @@ public static class NomesTerritoriosSceneView
         GUIStyle estilo = ObterEstiloNome();
         DefinicaoMapa mapa = ObterMapaAtivo();
         if (estilo == null || mapa == null)
+            return;
+        if (!EdicaoAtiva && !ZoomPermiteExibirNomes(sceneView, mapa))
             return;
 
         TerritorioClique[] territorios = UnityEngine.Object.FindObjectsByType<TerritorioClique>(FindObjectsInactive.Include);
@@ -164,6 +175,14 @@ public static class NomesTerritoriosSceneView
         return estiloNome;
     }
 
+    private static bool ZoomPermiteExibirNomes(SceneView sceneView, DefinicaoMapa mapa)
+    {
+        if (sceneView == null)
+            return false;
+        float tamanhoMapa = Mathf.Max(0.01f, mapa.TamanhoOrtografico);
+        return sceneView.size <= tamanhoMapa * ProporcaoZoomParaExibir;
+    }
+
     private static void AplicarCorPreta(GUIStyleState estado) => estado.textColor = Color.black;
 
     internal readonly struct DadosLabel
@@ -182,7 +201,7 @@ public static class NomesTerritoriosSceneView
         PolygonCollider2D collider = territorio.GetComponent<PolygonCollider2D>();
         Vector2[] maiorPath = ObterMaiorPath(collider);
         int automatico = maiorPath == null || maiorPath.Length < 3
-            ? 12
+            ? TamanhoFonteAutomatico
             : CalcularTamanhoFonte(territorio, maiorPath, nomeExibido);
         int tamanho = dadosMapa.tamanhoFonteNome > 0
             ? Mathf.Clamp(dadosMapa.tamanhoFonteNome, TamanhoFonteMinimo, TamanhoFonteMaximo)
@@ -376,9 +395,11 @@ public static class NomesTerritoriosSceneView
         }
         float largura = Mathf.Abs(maximo.x - minimo.x);
         float altura = Mathf.Abs(maximo.y - minimo.y);
-        int porAltura = Mathf.FloorToInt(altura * 0.22f);
-        int porLargura = Mathf.FloorToInt(largura * 0.82f / Mathf.Max(1f, nomeExibido.Length * 0.56f));
-        return Mathf.Clamp(Mathf.Min(12, porAltura, porLargura), 8, 12);
+        float larguraNecessaria = nomeExibido.Length * TamanhoFonteAutomatico * 0.56f;
+        float alturaNecessaria = TamanhoFonteAutomatico * 1.2f;
+        return largura >= larguraNecessaria && altura >= alturaNecessaria
+            ? TamanhoFonteAutomatico
+            : TamanhoFonteAutomaticoReduzido;
     }
 
     private static float CalcularArea(Vector2[] pontos)

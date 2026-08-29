@@ -138,7 +138,7 @@ MonoBehaviour:
     regiaoId: africa
     posicaoContador: {x: 0.87, y: 0.68}
     possuiPosicaoContador: 1
-    posicaoNomeManual: {x: 1.2583178, y: 0.5661662}
+    posicaoNomeManual: {x: 1.2119442, y: 0.6283729}
     possuiPosicaoNomeManual: 1
     tamanhoFonteNome: 0
     metadados: []
@@ -178,7 +178,7 @@ MonoBehaviour:
     regiaoId: europa
     posicaoContador: {x: -1.045, y: 3.34}
     possuiPosicaoContador: 1
-    posicaoNomeManual: {x: -0.6444538, y: 3.2984977}
+    posicaoNomeManual: {x: -0.70242053, y: 3.2984974}
     possuiPosicaoNomeManual: 1
     tamanhoFonteNome: 0
     metadados: []
@@ -248,7 +248,7 @@ MonoBehaviour:
     regiaoId: asia
     posicaoContador: {x: 5.38, y: 3.79}
     possuiPosicaoContador: 1
-    posicaoNomeManual: {x: 5.2239323, y: 3.5350242}
+    posicaoNomeManual: {x: 5.13391, y: 3.5736659}
     possuiPosicaoNomeManual: 1
     tamanhoFonteNome: 0
     metadados: []
@@ -288,7 +288,7 @@ MonoBehaviour:
     regiaoId: oceania
     posicaoContador: {x: 5.885, y: -0.92}
     possuiPosicaoContador: 1
-    posicaoNomeManual: {x: 5.9416184, y: -0.70791405}
+    posicaoNomeManual: {x: 5.7705517, y: -0.70158327}
     possuiPosicaoNomeManual: 1
     tamanhoFonteNome: 0
     metadados: []
@@ -338,7 +338,7 @@ MonoBehaviour:
     regiaoId: europa
     posicaoContador: {x: 0.51, y: 3.36}
     possuiPosicaoContador: 1
-    posicaoNomeManual: {x: 0.5005065, y: 3.613563}
+    posicaoNomeManual: {x: 0.64542335, y: 3.6197836}
     possuiPosicaoNomeManual: 1
     tamanhoFonteNome: 0
     metadados: []
@@ -358,7 +358,7 @@ MonoBehaviour:
     regiaoId: africa
     posicaoContador: {x: 0.9853571, y: -1.65}
     possuiPosicaoContador: 1
-    posicaoNomeManual: {x: 0.989933, y: -1.4023283}
+    posicaoNomeManual: {x: 1.0157758, y: -1.3838387}
     possuiPosicaoNomeManual: 1
     tamanhoFonteNome: 0
     metadados: []
@@ -378,7 +378,7 @@ MonoBehaviour:
     regiaoId: europa
     posicaoContador: {x: -0.435, y: 2.66}
     possuiPosicaoContador: 1
-    posicaoNomeManual: {x: -0.53667265, y: 2.4048154}
+    posicaoNomeManual: {x: -0.39175567, y: 2.4421387}
     possuiPosicaoNomeManual: 1
     tamanhoFonteNome: 0
     metadados: []

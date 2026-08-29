@@ -9,6 +9,9 @@ public sealed class MapaAtivo : MonoBehaviour
     // ============================================================
 
     private const string CaminhoCatalogo = "Mapas/CatalogoMapas";
+#if UNITY_EDITOR
+    public const string ChaveMapaTesteEditor = "WarGame.MapaSelecionadoEditor";
+#endif
     private static MapaAtivo instance;
 
     [SerializeField] private DefinicaoMapa definicao;
@@ -39,7 +42,22 @@ public sealed class MapaAtivo : MonoBehaviour
             return;
         }
 
-        instance.definicao = catalogo.MapaPadrao;
+        instance.definicao = ObterDefinicaoInicial(catalogo);
+    }
+
+    private static DefinicaoMapa ObterDefinicaoInicial(CatalogoMapas catalogo)
+    {
+#if UNITY_EDITOR
+        string mapaIdSelecionado = PlayerPrefs.GetString(
+            ChaveMapaTesteEditor,
+            catalogo.MapaPadrao.MapaId);
+        foreach (DefinicaoMapa mapa in catalogo.Mapas)
+        {
+            if (mapa != null && mapa.MapaId == mapaIdSelecionado)
+                return mapa;
+        }
+#endif
+        return catalogo.MapaPadrao;
     }
 
     private void Awake()

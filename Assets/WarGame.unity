@@ -10647,7 +10647,7 @@ MonoBehaviour:
   idTerritorio: Brazil
   chaveTraducao: territory_brazil
   continente: 1
-  dono: 1
+  dono: 0
 --- !u!212 &436067160
 SpriteRenderer:
   serializedVersion: 2
@@ -28553,7 +28553,7 @@ SpriteRenderer:
   m_SortingOrder: 20
   m_MaskInteraction: 0
   m_Sprite: {fileID: 46116176}
-  m_Color: {r: 0.4509804, g: 0.04913491, b: 0.35686275, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

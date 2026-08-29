@@ -97,6 +97,9 @@ public static class ValidadorDefinicaoMapa
         }
 
         HashSet<string> conexoes = new HashSet<string>(StringComparer.Ordinal);
+        Dictionary<string, int> quantidadeConexoes = new Dictionary<string, int>(StringComparer.Ordinal);
+        foreach (string id in territorioIds)
+            quantidadeConexoes[id] = 0;
         foreach (DefinicaoConexaoMapa conexao in mapa.Conexoes)
         {
             if (conexao == null)
@@ -111,7 +114,15 @@ public static class ValidadorDefinicaoMapa
             string chave = ChaveConexao(conexao);
             if (!conexoes.Add(chave))
                 Erro(problemas, "CONEXAO_DUPLICADA", $"Conexão duplicada: {conexao.origemId} -> {conexao.destinoId} ({conexao.tipo}).");
+            if (quantidadeConexoes.ContainsKey(conexao.origemId))
+                quantidadeConexoes[conexao.origemId]++;
+            if (quantidadeConexoes.ContainsKey(conexao.destinoId))
+                quantidadeConexoes[conexao.destinoId]++;
         }
+
+        foreach (KeyValuePair<string, int> item in quantidadeConexoes)
+            if (item.Value == 0)
+                Erro(problemas, "TERRITORIO_ISOLADO", $"{item.Key} não possui nenhuma conexão.");
 
         foreach (ReferenciaCondicaoEstrategicaMapa condicao in mapa.CondicoesEstrategicas)
         {

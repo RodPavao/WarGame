@@ -92,7 +92,11 @@ public static class DefinicaoMapaClassicEditor
             catalogo = ScriptableObject.CreateInstance<CatalogoMapas>();
             AssetDatabase.CreateAsset(catalogo, CaminhoCatalogo);
         }
-        catalogo.ConfigurarNoEditor(mapa, new List<DefinicaoMapa> { mapa });
+        List<DefinicaoMapa> mapasCatalogados = new List<DefinicaoMapa> { mapa };
+        foreach (DefinicaoMapa mapaCatalogado in catalogo.Mapas)
+            if (mapaCatalogado != null && mapaCatalogado != mapa)
+                mapasCatalogados.Add(mapaCatalogado);
+        catalogo.ConfigurarNoEditor(mapa, mapasCatalogados);
         EditorUtility.SetDirty(catalogo);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
