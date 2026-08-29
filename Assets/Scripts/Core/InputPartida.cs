@@ -3,10 +3,18 @@ using UnityEngine.InputSystem;
 
 public class InputPartida : MonoBehaviour
 {
+    // =====================================================
+    // 1. REFERÊNCIAS E ESTADO
+    // =====================================================
+
     private Camera cameraPrincipal;
 
     // Contador que está sendo pressionado neste momento.
     private ContadorTropas contadorPressionado;
+
+    // =====================================================
+    // 2. INICIALIZAÇÃO
+    // =====================================================
 
     private void Awake()
     {
@@ -27,7 +35,7 @@ public class InputPartida : MonoBehaviour
         }
 
         // =================================================
-        // SOLTOU O CONTADOR
+        // 3. SOLTOU O CONTADOR
         // =================================================
 
         if (contadorPressionado != null &&
@@ -42,7 +50,7 @@ public class InputPartida : MonoBehaviour
         }
 
         // =================================================
-        // NOVO CLIQUE / TOQUE
+        // 4. NOVO CLIQUE / TOQUE
         // =================================================
 
         if (!Pointer.current.press.wasPressedThisFrame)
@@ -69,7 +77,18 @@ public class InputPartida : MonoBehaviour
             );
 
         // =================================================
-        // PRIORIDADE ABSOLUTA: CONTADOR
+        // 5. PRIORIDADE CONTEXTUAL: MODO TRANSFERÊNCIA
+        // =================================================
+
+        if (GameManager.instance != null &&
+            GameManager.instance.EmModoTransferencia &&
+            TentarSelecionarTerritorioTransferencia(atingidos))
+        {
+            return;
+        }
+
+        // =================================================
+        // 6. PRIORIDADE NORMAL: CONTADOR
         // =================================================
 
         foreach (Collider2D collider in atingidos)
@@ -98,7 +117,7 @@ public class InputPartida : MonoBehaviour
         }
 
         // =================================================
-        // SEGUNDA PRIORIDADE: TERRITÓRIO
+        // 7. SEGUNDA PRIORIDADE: TERRITÓRIO
         // =================================================
 
         foreach (Collider2D collider in atingidos)
@@ -125,6 +144,47 @@ public class InputPartida : MonoBehaviour
         }
     }
 
+    // =====================================================
+    // 8. SELEÇÃO CONTEXTUAL DE TRANSFERÊNCIA
+    // =====================================================
+
+    private bool TentarSelecionarTerritorioTransferencia(
+        Collider2D[] atingidos)
+    {
+        foreach (Collider2D collider in atingidos)
+        {
+            TerritorioClique territorio =
+                collider.GetComponent<TerritorioClique>();
+
+            if (territorio == null)
+                territorio = collider.GetComponentInParent<TerritorioClique>();
+
+            if (territorio == null)
+            {
+                ContadorTropas contador =
+                    collider.GetComponent<ContadorTropas>();
+
+                if (contador == null)
+                    contador = collider.GetComponentInParent<ContadorTropas>();
+
+                if (contador != null)
+                    territorio = contador.Territorio;
+            }
+
+            if (territorio == null)
+                continue;
+
+            territorio.Clicar();
+            return true;
+        }
+
+        return false;
+    }
+
+    // =====================================================
+    // 9. CÂMERA
+    // =====================================================
+
     private void EncontrarCamera()
     {
         cameraPrincipal =
@@ -143,6 +203,10 @@ public class InputPartida : MonoBehaviour
             );
         }
     }
+
+    // =====================================================
+    // 10. CRIAÇÃO AUTOMÁTICA
+    // =====================================================
 
     [RuntimeInitializeOnLoadMethod(
         RuntimeInitializeLoadType.AfterSceneLoad

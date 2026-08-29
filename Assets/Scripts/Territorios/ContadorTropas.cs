@@ -7,6 +7,8 @@ public class ContadorTropas : MonoBehaviour
 {
     private TerritorioClique territorio;
 
+    public TerritorioClique Territorio => territorio;
+
     private SpriteRenderer fundo;
     private SpriteRenderer borda;
     private SpriteRenderer bordaExterna;

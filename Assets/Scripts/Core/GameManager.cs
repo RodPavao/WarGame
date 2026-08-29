@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     private SistemaAcoesTerrestres sistemaAcoesTerrestres;
     private ResolvedorCombate resolvedorCombate;
     private ResolvedorAcoesTerrestres resolvedorAcoesTerrestres;
+    private FilaTransferencias filaTransferencias;
+    private SistemaTransferencias sistemaTransferencias;
+    private ResolvedorTransferencias resolvedorTransferencias;
     private GerenciadorRodada gerenciadorRodada;
     private readonly HistoricoReforcos historicoReforcos =
         new HistoricoReforcos();
@@ -60,6 +63,9 @@ public class GameManager : MonoBehaviour
     public ModoAcao modoAcao =
         ModoAcao.Nenhum;
 
+    public TerritorioClique territorioTransferenciaSelecionado;
+    public string feedbackTransferencia = string.Empty;
+
     // =====================================================
     // 4. REFORÇOS
     // =====================================================
@@ -76,6 +82,10 @@ public class GameManager : MonoBehaviour
 
     public bool AcoesEnviadas =>
         estadoPreparacao == EstadoPreparacao.Enviado;
+
+    public bool EmModoTransferencia =>
+        PodeEditarPreparacao &&
+        modoAcao == ModoAcao.Transferir;
 
     // =====================================================
     // 5. AÇÕES TERRESTRES
@@ -126,6 +136,36 @@ public class GameManager : MonoBehaviour
             ? gerenciadorRodada.RodadaAtual
             : 1;
 
+    public GerenciadorRodada.EstadoPartida EstadoAtualPartida =>
+        gerenciadorRodada != null
+            ? gerenciadorRodada.EstadoAtual
+            : GerenciadorRodada.EstadoPartida.EmPreparacao;
+
+    public ResultadoPartida ResultadoPartidaAtual =>
+        gerenciadorRodada != null
+            ? gerenciadorRodada.ResultadoAtual
+            : null;
+
+    public bool PartidaEncerrada =>
+        gerenciadorRodada != null && gerenciadorRodada.PartidaEncerrada;
+
+    public int RoundMorteSubita =>
+        gerenciadorRodada != null
+            ? gerenciadorRodada.RoundMorteSubita
+            : 0;
+
+    public OrdemTransferencia TransferenciaPreparada =>
+        filaTransferencias != null
+            ? filaTransferencias.ObterPara(jogadorLocal)
+            : null;
+
+    public bool LimiteTransferenciaAtingido =>
+        TransferenciaPreparada != null;
+
+    public bool PossuiPreparacaoParaEnviar =>
+        QuantidadeOrdensPreparadas > 0 ||
+        TransferenciaPreparada != null;
+
     // =====================================================
     // 8. INICIALIZAÇÃO
     // =====================================================
@@ -170,6 +210,21 @@ public class GameManager : MonoBehaviour
                 gameObject.AddComponent<ResolvedorAcoesTerrestres>();
         }
 
+        filaTransferencias = GetComponent<FilaTransferencias>();
+
+        if (filaTransferencias == null)
+            filaTransferencias = gameObject.AddComponent<FilaTransferencias>();
+
+        sistemaTransferencias = GetComponent<SistemaTransferencias>();
+
+        if (sistemaTransferencias == null)
+            sistemaTransferencias = gameObject.AddComponent<SistemaTransferencias>();
+
+        resolvedorTransferencias = GetComponent<ResolvedorTransferencias>();
+
+        if (resolvedorTransferencias == null)
+            resolvedorTransferencias = gameObject.AddComponent<ResolvedorTransferencias>();
+
         gerenciadorRodada =
             GetComponent<GerenciadorRodada>();
 
@@ -186,6 +241,7 @@ public class GameManager : MonoBehaviour
 
         sistemaAcoesTerrestres.Inicializar(filaAcoes);
         resolvedorAcoesTerrestres.Inicializar(resolvedorCombate);
+        sistemaTransferencias.Inicializar(filaTransferencias);
     }
 
     private void Start()
@@ -226,6 +282,9 @@ public class GameManager : MonoBehaviour
             ModoAcao.AcaoTerrestre;
 
         quantidadeAcaoSelecionada = 1;
+
+        territorioTransferenciaSelecionado = null;
+        feedbackTransferencia = string.Empty;
 
         CancelarSelecaoAtual();
 
@@ -328,6 +387,25 @@ public class GameManager : MonoBehaviour
         modoAcao =
             ModoAcao.AcaoTerrestre;
 
+        CancelarSelecaoTransferencia();
+        CancelarSelecaoAtual();
+    }
+
+    public void SelecionarModoTransferencia()
+    {
+        if (!PodeEditarPreparacao)
+            return;
+
+        if (LimiteTransferenciaAtingido)
+        {
+            feedbackTransferencia = "Limite de 1 transferência atingido.";
+            return;
+        }
+
+        modoAcao = ModoAcao.Transferir;
+        feedbackTransferencia =
+            "Selecione um território seu e depois seu aliado.";
+
         CancelarSelecaoAtual();
     }
 
@@ -392,6 +470,12 @@ public class GameManager : MonoBehaviour
 
         if (!PodeEditarPreparacao)
             return;
+
+        if (modoAcao == ModoAcao.Transferir)
+        {
+            ClicarTerritorioTransferencia(territorio);
+            return;
+        }
 
         if (modoAcao !=
             ModoAcao.AcaoTerrestre)
@@ -610,7 +694,86 @@ public class GameManager : MonoBehaviour
     }
 
     // =====================================================
-    // 17. ENVIO LOCAL
+    // 17. PREPARAÇÃO DA TRANSFERÊNCIA
+    // =====================================================
+
+    private void ClicarTerritorioTransferencia(TerritorioClique territorio)
+    {
+        if (LimiteTransferenciaAtingido)
+        {
+            feedbackTransferencia = "Limite de 1 transferência atingido.";
+            CancelarSelecaoTransferencia();
+            return;
+        }
+
+        if (territorio.dono != jogadorLocal)
+        {
+            feedbackTransferencia = "Selecione um território que pertence a você.";
+            territorioTransferenciaSelecionado = null;
+            AtualizarHighlightsPreparacao();
+            return;
+        }
+
+        territorioTransferenciaSelecionado = territorio;
+        feedbackTransferencia = "Agora selecione o slot do seu aliado.";
+        AtualizarHighlightsPreparacao();
+    }
+
+    public void TentarPrepararTransferenciaPara(
+        TerritorioClique.Dono jogador)
+    {
+        if (!EmModoTransferencia || sistemaTransferencias == null)
+            return;
+
+        if (territorioTransferenciaSelecionado == null)
+        {
+            feedbackTransferencia = "Selecione primeiro um território seu.";
+            return;
+        }
+
+        bool registrada = sistemaTransferencias.Registrar(
+            territorioTransferenciaSelecionado,
+            jogadorLocal,
+            jogador,
+            out string motivo);
+
+        feedbackTransferencia = motivo;
+
+        if (!registrada)
+            return;
+
+        territorioTransferenciaSelecionado = null;
+        modoAcao = ModoAcao.AcaoTerrestre;
+        AtualizarHighlightsPreparacao();
+    }
+
+    public IReadOnlyList<TerritorioClique.Dono> ObterJogadoresTransferencia()
+    {
+        return gerenciadorRodada != null
+            ? gerenciadorRodada.ObterJogadoresNoTabuleiro()
+            : new List<TerritorioClique.Dono>();
+    }
+
+    public void RemoverTransferencia()
+    {
+        if (!PodeEditarPreparacao || filaTransferencias == null)
+            return;
+
+        if (!filaTransferencias.RemoverPara(jogadorLocal))
+            return;
+
+        feedbackTransferencia = "Transferência removida.";
+        AtualizarHighlightsPreparacao();
+    }
+
+    public void CancelarSelecaoTransferencia()
+    {
+        territorioTransferenciaSelecionado = null;
+        AtualizarHighlightsPreparacao();
+    }
+
+    // =====================================================
+    // 18. ENVIO LOCAL
     // =====================================================
 
     public void EnviarAcoes()
@@ -621,6 +784,7 @@ public class GameManager : MonoBehaviour
         estadoPreparacao =
             EstadoPreparacao.Enviado;
 
+        CancelarSelecaoTransferencia();
         CancelarSelecaoAtual();
     }
 
@@ -638,7 +802,7 @@ public class GameManager : MonoBehaviour
     }
 
     // =====================================================
-    // 18. FECHAMENTO DA PREPARAÇÃO
+    // 19. FECHAMENTO DA PREPARAÇÃO
     // =====================================================
 
     public void FecharPreparacaoEIniciarResolucao()
@@ -655,19 +819,22 @@ public class GameManager : MonoBehaviour
         reforcosDisponiveis = 0;
         historicoReforcos.Limpar();
 
+        CancelarSelecaoTransferencia();
         CancelarSelecaoAtual();
 
         ResolverRodadaAgora();
     }
 
     // =====================================================
-    // 19. RESOLUÇÃO
+    // 20. RESOLUÇÃO
     // =====================================================
 
     public void ResolverRodadaAgora()
     {
         if (filaAcoes == null ||
             resolvedorAcoesTerrestres == null ||
+            filaTransferencias == null ||
+            resolvedorTransferencias == null ||
             gerenciadorRodada == null)
         {
             return;
@@ -679,14 +846,19 @@ public class GameManager : MonoBehaviour
         estadoPreparacao =
             EstadoPreparacao.Resolvendo;
 
+        gerenciadorRodada.NotificarInicioResolucao();
+
+        resolvedorTransferencias.Resolver(
+            filaTransferencias,
+            gerenciadorRodada.ObterPrioridadeJogadores());
+
         resolvedorAcoesTerrestres.Resolver(
             filaAcoes,
             gerenciadorRodada.ObterPrioridadeJogadores());
 
         CancelarSelecaoAtual();
 
-        gerenciadorRodada
-            .IniciarProximaRodada();
+        gerenciadorRodada.ConcluirResolucao();
     }
 
     private IReadOnlyList<OrdemTerrestre> ObterOrdensDoJogadorLocal()
@@ -706,7 +878,7 @@ public class GameManager : MonoBehaviour
     }
 
     // =====================================================
-    // 20. HIGHLIGHTS DERIVADOS DA FILA
+    // 21. HIGHLIGHTS DERIVADOS DAS FILAS
     // =====================================================
 
     private void AtualizarHighlightsPreparacao()
@@ -736,7 +908,8 @@ public class GameManager : MonoBehaviour
             return false;
 
         if (territorio == territorioSelecionado ||
-            territorio == territorioDestinoSelecionado)
+            territorio == territorioDestinoSelecionado ||
+            territorio == territorioTransferenciaSelecionado)
             return true;
 
         if (filaAcoes == null)
@@ -749,6 +922,31 @@ public class GameManager : MonoBehaviour
                 return true;
         }
 
+        if (filaTransferencias != null)
+        {
+            foreach (OrdemTransferencia ordem in filaTransferencias.Ordens)
+            {
+                if (ordem.Territorio == territorio)
+                    return true;
+            }
+        }
+
         return false;
     }
+
+#if UNITY_EDITOR
+    // =====================================================
+    // 22. ISOLAMENTO DOS CENÁRIOS DE TESTE DO EDITOR
+    // =====================================================
+
+    public void LimparPreparacaoParaTesteEditor()
+    {
+        filaAcoes?.Limpar();
+        filaTransferencias?.Limpar();
+        territorioSelecionado = null;
+        territorioDestinoSelecionado = null;
+        territorioTransferenciaSelecionado = null;
+        AtualizarHighlightsPreparacao();
+    }
+#endif
 }

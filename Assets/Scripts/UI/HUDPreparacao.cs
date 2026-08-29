@@ -1,7 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HUDPreparacao : MonoBehaviour
 {
+    private class GrupoJogadoresHUD
+    {
+        public readonly List<TerritorioClique.Dono> Jogadores =
+            new List<TerritorioClique.Dono>();
+    }
+
     private GameManager gm;
     private bool confirmarEnvioSemAcoes;
     private int ultimoRoundExibido = -1;
@@ -430,7 +437,9 @@ public class HUDPreparacao : MonoBehaviour
         );
 
         GUILayout.Label(
-            "ROUND " + gm.RodadaAtual,
+            gm.EstadoAtualPartida == GerenciadorRodada.EstadoPartida.MorteSubita
+                ? "MORTE SÚBITA " + gm.RoundMorteSubita
+                : "ROUND " + gm.RodadaAtual,
             tituloRound,
             GUILayout.Height(Altura(22))
         );
@@ -603,7 +612,8 @@ public class HUDPreparacao : MonoBehaviour
         // AÇÃO TERRESTRE
         // =================================================
 
-        if (gm.PodeEditarPreparacao)
+        if (gm.PodeEditarPreparacao &&
+            gm.modoAcao == GameManager.ModoAcao.AcaoTerrestre)
         {
             GUILayout.Space(Espaco(5));
 
@@ -737,6 +747,12 @@ public class HUDPreparacao : MonoBehaviour
             }
         }
 
+        if (gm.PodeEditarPreparacao &&
+            gm.modoAcao == GameManager.ModoAcao.Transferir)
+        {
+            DesenharPreparacaoTransferencia();
+        }
+
         GUILayout.EndArea();
     }
 
@@ -773,6 +789,13 @@ public class HUDPreparacao : MonoBehaviour
             GUILayout.Height(Altura(28))
         );
 
+        if (gm.PartidaEncerrada)
+        {
+            DesenharResultadoPartida();
+            GUILayout.EndArea();
+            return;
+        }
+
         GUILayout.Label(
             "PREPARADAS",
             tituloRound,
@@ -793,6 +816,36 @@ public class HUDPreparacao : MonoBehaviour
                 textoCentral,
                 GUILayout.Height(Altura(28))
             );
+        }
+
+        OrdemTransferencia transferencia = gm.TransferenciaPreparada;
+
+        GUILayout.Label(
+            transferencia != null ? "TRANSFERÊNCIA 1/1" : "TRANSFERÊNCIA 0/1",
+            tituloSecao,
+            GUILayout.Height(Altura(20))
+        );
+
+        if (transferencia != null)
+        {
+            GUILayout.Label(
+                "Território: " + transferencia.Territorio.name +
+                "\nPara: " + transferencia.Destinatario,
+                linhaAcao,
+                GUILayout.Height(Altura(42))
+            );
+
+            GUI.enabled = gm.PodeEditarPreparacao;
+
+            if (GUILayout.Button(
+                    "REMOVER TRANSFERÊNCIA",
+                    botaoCancelar,
+                    GUILayout.Height(Altura(25))))
+            {
+                gm.RemoverTransferencia();
+            }
+
+            GUI.enabled = true;
         }
 
         GUILayout.Space(Espaco(5));
@@ -863,7 +916,7 @@ public class HUDPreparacao : MonoBehaviour
             GameManager.FaseTurno.Preparacao)
         {
             if (confirmarEnvioSemAcoes &&
-                gm.QuantidadeOrdensPreparadas > 0)
+                gm.PossuiPreparacaoParaEnviar)
             {
                 confirmarEnvioSemAcoes = false;
             }
@@ -920,15 +973,25 @@ public class HUDPreparacao : MonoBehaviour
             }
             else if (gm.PodeEditarPreparacao)
             {
-                GUI.enabled = false;
+                GUILayout.BeginHorizontal();
 
-                GUILayout.Button(
-                    "TRANSFERIR",
-                    botao,
-                    GUILayout.Height(Altura(28))
-                );
+                if (GUILayout.Button(
+                        "AÇÃO",
+                        botao,
+                        GUILayout.Height(Altura(28))))
+                {
+                    gm.SelecionarModoAcaoTerrestre();
+                }
 
-                GUI.enabled = true;
+                if (GUILayout.Button(
+                        "TRANSFERIR",
+                        botao,
+                        GUILayout.Height(Altura(28))))
+                {
+                    gm.SelecionarModoTransferencia();
+                }
+
+                GUILayout.EndHorizontal();
 
                 GUILayout.Space(Espaco(4));
 
@@ -949,7 +1012,7 @@ public class HUDPreparacao : MonoBehaviour
                         GUILayout.Height(Altura(36))
                     ))
                 {
-                    if (gm.QuantidadeOrdensPreparadas == 0)
+                    if (!gm.PossuiPreparacaoParaEnviar)
                     {
                         confirmarEnvioSemAcoes = true;
                     }
@@ -965,7 +1028,156 @@ public class HUDPreparacao : MonoBehaviour
     }
 
     // =====================================================
-    // 9. UTILIDADES
+    // 9. TRANSFERÊNCIA E RESULTADO PROVISÓRIOS
+    // =====================================================
+
+    private void DesenharPreparacaoTransferencia()
+    {
+        GUILayout.Space(Espaco(5));
+        DesenharSeparador(new Color(1f, 1f, 1f, 0.10f));
+        GUILayout.Space(Espaco(6));
+
+        GUILayout.Label(
+            "MODO TRANSFERÊNCIA",
+            tituloSecao,
+            GUILayout.Height(Altura(18)));
+
+        GUILayout.Label(
+            "Selecione um território seu\ne depois seu aliado.",
+            textoCentral,
+            GUILayout.Height(Altura(34)));
+
+        string territorio = gm.territorioTransferenciaSelecionado != null
+            ? gm.territorioTransferenciaSelecionado.name
+            : "—";
+
+        GUILayout.Label("TERRITÓRIO", tituloSecao, GUILayout.Height(Altura(16)));
+        GUILayout.Label(territorio, textoCentral, GUILayout.Height(Altura(20)));
+
+        DesenharPainelJogadoresAgrupados();
+
+        GUILayout.Label(
+            gm.feedbackTransferencia,
+            textoCentral,
+            GUILayout.Height(Altura(34)));
+
+        if (GUILayout.Button(
+                "SAIR DO MODO",
+                botaoCancelar,
+                GUILayout.Height(Altura(27))))
+        {
+            gm.SelecionarModoAcaoTerrestre();
+        }
+    }
+
+    private void DesenharPainelJogadoresAgrupados()
+    {
+        List<GrupoJogadoresHUD> grupos = CriarGruposJogadores();
+
+        for (int i = 0; i < grupos.Count; i++)
+        {
+            GrupoJogadoresHUD grupo = grupos[i];
+            bool grupoLocal = grupo.Jogadores.Contains(gm.jogadorLocal);
+
+            GUILayout.Label(
+                "EQUIPE " + (i + 1) + (grupoLocal ? " — SEU TIME" : string.Empty),
+                tituloSecao,
+                GUILayout.Height(Altura(18)));
+
+            foreach (TerritorioClique.Dono jogador in grupo.Jogadores)
+                DesenharSlotJogador(jogador);
+        }
+    }
+
+    private List<GrupoJogadoresHUD> CriarGruposJogadores()
+    {
+        List<GrupoJogadoresHUD> grupos = new List<GrupoJogadoresHUD>();
+        Dictionary<EquipesJogadores.Equipe, GrupoJogadoresHUD> porEquipe =
+            new Dictionary<EquipesJogadores.Equipe, GrupoJogadoresHUD>();
+
+        foreach (TerritorioClique.Dono jogador in gm.ObterJogadoresTransferencia())
+        {
+            EquipesJogadores.Equipe equipe = EquipesJogadores.ObterEquipe(jogador);
+            GrupoJogadoresHUD grupo;
+
+            if (equipe == EquipesJogadores.Equipe.Nenhuma)
+            {
+                grupo = new GrupoJogadoresHUD();
+                grupos.Add(grupo);
+            }
+            else if (!porEquipe.TryGetValue(equipe, out grupo))
+            {
+                grupo = new GrupoJogadoresHUD();
+                porEquipe.Add(equipe, grupo);
+                grupos.Add(grupo);
+            }
+
+            grupo.Jogadores.Add(jogador);
+        }
+
+        return grupos;
+    }
+
+    private void DesenharSlotJogador(TerritorioClique.Dono jogador)
+    {
+        GUILayout.BeginHorizontal();
+
+        Rect avatar = GUILayoutUtility.GetRect(
+            Mathf.Max(18f, 22f * escalaHUD),
+            Altura(24),
+            GUILayout.Width(Mathf.Max(18f, 22f * escalaHUD)));
+
+        GUI.DrawTexture(
+            avatar,
+            Texture2D.whiteTexture,
+            ScaleMode.StretchToFill,
+            true,
+            0f,
+            PaletaJogadores.ObterCorAtiva(jogador),
+            0f,
+            3f);
+
+        string rotulo = jogador == gm.jogadorLocal
+            ? jogador + " (VOCÊ)"
+            : jogador.ToString();
+
+        if (GUILayout.Button(
+                rotulo,
+                botao,
+                GUILayout.Height(Altura(24))))
+        {
+            gm.TentarPrepararTransferenciaPara(jogador);
+        }
+
+        GUILayout.EndHorizontal();
+    }
+
+    private void DesenharResultadoPartida()
+    {
+        ResultadoPartida resultado = gm.ResultadoPartidaAtual;
+
+        GUILayout.Space(Espaco(12));
+        GUILayout.Label("PARTIDA ENCERRADA", tituloRound, GUILayout.Height(Altura(28)));
+
+        if (resultado == null)
+            return;
+
+        string vencedor = resultado.Tipo == ResultadoPartida.TipoVencedor.Equipe
+            ? resultado.EquipeVencedora.ToString()
+            : resultado.JogadorVencedor.ToString();
+
+        GUILayout.Label("VENCEDOR", tituloSecao, GUILayout.Height(Altura(18)));
+        GUILayout.Label(vencedor, numeroDourado, GUILayout.Height(Altura(32)));
+        GUILayout.Label(
+            resultado.QuantidadeTerritorios + " territórios\nRound " +
+            resultado.RoundFinal +
+            (resultado.HouveMorteSubita ? "\nApós morte súbita" : string.Empty),
+            textoCentral,
+            GUILayout.Height(Altura(58)));
+    }
+
+    // =====================================================
+    // 10. UTILIDADES
     // =====================================================
 
     private void DesenharSeparador(
@@ -995,6 +1207,17 @@ public class HUDPreparacao : MonoBehaviour
 
     private string NomeFase()
     {
+        if (gm.PartidaEncerrada)
+            return "ENCERRADA";
+
+        if (gm.EstadoAtualPartida ==
+            GerenciadorRodada.EstadoPartida.MorteSubita)
+        {
+            return gm.faseAtual == GameManager.FaseTurno.Resolucao
+                ? "MORTE SÚBITA — RESOLUÇÃO"
+                : "MORTE SÚBITA — PREPARAÇÃO";
+        }
+
         switch (gm.faseAtual)
         {
             case GameManager.FaseTurno.Preparacao:
