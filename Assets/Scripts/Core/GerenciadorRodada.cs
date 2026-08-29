@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GerenciadorRodada : MonoBehaviour
@@ -14,6 +15,9 @@ public class GerenciadorRodada : MonoBehaviour
 
     public int RodadaAtual =>
         rodadaAtual;
+
+    private readonly List<TerritorioClique.Dono> prioridadeJogadores =
+        new List<TerritorioClique.Dono>();
 
     private void Awake()
     {
@@ -50,6 +54,8 @@ public class GerenciadorRodada : MonoBehaviour
 
         // Depois prepara os reforços.
         PrepararReforcos();
+
+        AtualizarPrioridadeJogadores();
     }
 
     public void PrepararReforcos()
@@ -103,7 +109,52 @@ public class GerenciadorRodada : MonoBehaviour
     }
 
     // =====================================================
-    // 4. CONTROLES DE TESTE NO INSPECTOR
+    // 4. PRIORIDADE DETERMINÍSTICA ENTRE JOGADORES
+    // =====================================================
+
+    public IReadOnlyList<TerritorioClique.Dono> ObterPrioridadeJogadores()
+    {
+        if (prioridadeJogadores.Count == 0)
+            AtualizarPrioridadeJogadores();
+
+        return prioridadeJogadores;
+    }
+
+    private void AtualizarPrioridadeJogadores()
+    {
+        SortedSet<TerritorioClique.Dono> ativos =
+            new SortedSet<TerritorioClique.Dono>();
+
+        foreach (TerritorioClique territorio in
+                 FindObjectsByType<TerritorioClique>())
+        {
+            if (territorio.dono != TerritorioClique.Dono.Neutro)
+                ativos.Add(territorio.dono);
+        }
+
+        prioridadeJogadores.Clear();
+
+        if (ativos.Count == 0)
+            return;
+
+        List<TerritorioClique.Dono> baseOrdenada =
+            new List<TerritorioClique.Dono>(ativos);
+
+        int deslocamento = (rodadaAtual - 1) % baseOrdenada.Count;
+
+        for (int i = 0; i < baseOrdenada.Count; i++)
+        {
+            prioridadeJogadores.Add(
+                baseOrdenada[(i + deslocamento) % baseOrdenada.Count]);
+        }
+
+        Debug.Log(
+            "PRIORIDADE ROUND " + rodadaAtual + ": " +
+            string.Join(" -> ", prioridadeJogadores));
+    }
+
+    // =====================================================
+    // 5. CONTROLES DE TESTE NO INSPECTOR
     // =====================================================
 
     [ContextMenu("Iniciar Partida Teste")]

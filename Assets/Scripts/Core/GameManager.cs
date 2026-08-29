@@ -20,8 +20,9 @@ public class GameManager : MonoBehaviour
     // =====================================================
 
     private FilaAcoes filaAcoes;
-    private SistemaAtaque sistemaAtaque;
+    private SistemaAcoesTerrestres sistemaAcoesTerrestres;
     private ResolvedorCombate resolvedorCombate;
+    private ResolvedorAcoesTerrestres resolvedorAcoesTerrestres;
     private GerenciadorRodada gerenciadorRodada;
     private readonly HistoricoReforcos historicoReforcos =
         new HistoricoReforcos();
@@ -46,8 +47,7 @@ public class GameManager : MonoBehaviour
     public enum ModoAcao
     {
         Nenhum,
-        Atacar,
-        Mover,
+        AcaoTerrestre,
         Transferir
     }
 
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
     // =====================================================
 
     [Min(1)]
-    public int quantidadeAtaqueSelecionada = 1;
+    public int quantidadeAcaoSelecionada = 1;
 
     // =====================================================
     // 6. CRONÔMETRO
@@ -103,14 +103,23 @@ public class GameManager : MonoBehaviour
 
     public int QuantidadeOrdensPreparadas =>
         filaAcoes != null
-            ? filaAcoes.QuantidadeAtaques
+            ? filaAcoes.QuantidadePara(jogadorLocal)
             : 0;
 
-    public IReadOnlyList<OrdemAtaque>
+    public IReadOnlyList<OrdemTerrestre>
         OrdensPreparadas =>
             filaAcoes != null
-                ? filaAcoes.Ataques
+                ? ObterOrdensDoJogadorLocal()
                 : null;
+
+    public string TipoAcaoSelecionadaEsperado =>
+        SistemaAcoesTerrestres.ObterTipoEsperado(
+            jogadorLocal,
+            territorioDestinoSelecionado);
+
+    public bool LimiteAcoesAtingido =>
+        filaAcoes != null &&
+        filaAcoes.EstaCheiaPara(jogadorLocal);
 
     public int RodadaAtual =>
         gerenciadorRodada != null
@@ -134,13 +143,13 @@ public class GameManager : MonoBehaviour
                 gameObject.AddComponent<FilaAcoes>();
         }
 
-        sistemaAtaque =
-            GetComponent<SistemaAtaque>();
+        sistemaAcoesTerrestres =
+            GetComponent<SistemaAcoesTerrestres>();
 
-        if (sistemaAtaque == null)
+        if (sistemaAcoesTerrestres == null)
         {
-            sistemaAtaque =
-                gameObject.AddComponent<SistemaAtaque>();
+            sistemaAcoesTerrestres =
+                gameObject.AddComponent<SistemaAcoesTerrestres>();
         }
 
         resolvedorCombate =
@@ -150,6 +159,15 @@ public class GameManager : MonoBehaviour
         {
             resolvedorCombate =
                 gameObject.AddComponent<ResolvedorCombate>();
+        }
+
+        resolvedorAcoesTerrestres =
+            GetComponent<ResolvedorAcoesTerrestres>();
+
+        if (resolvedorAcoesTerrestres == null)
+        {
+            resolvedorAcoesTerrestres =
+                gameObject.AddComponent<ResolvedorAcoesTerrestres>();
         }
 
         gerenciadorRodada =
@@ -166,9 +184,8 @@ public class GameManager : MonoBehaviour
             gameObject.AddComponent<HUDPreparacao>();
         }
 
-        sistemaAtaque.Inicializar(
-            filaAcoes
-        );
+        sistemaAcoesTerrestres.Inicializar(filaAcoes);
+        resolvedorAcoesTerrestres.Inicializar(resolvedorCombate);
     }
 
     private void Start()
@@ -206,9 +223,9 @@ public class GameManager : MonoBehaviour
             duracaoPreparacao;
 
         modoAcao =
-            ModoAcao.Atacar;
+            ModoAcao.AcaoTerrestre;
 
-        quantidadeAtaqueSelecionada = 1;
+        quantidadeAcaoSelecionada = 1;
 
         CancelarSelecaoAtual();
 
@@ -303,13 +320,13 @@ public class GameManager : MonoBehaviour
     // 11. SELEÇÃO DE MODO
     // =====================================================
 
-    public void SelecionarModoAtacar()
+    public void SelecionarModoAcaoTerrestre()
     {
         if (!PodeEditarPreparacao)
             return;
 
         modoAcao =
-            ModoAcao.Atacar;
+            ModoAcao.AcaoTerrestre;
 
         CancelarSelecaoAtual();
     }
@@ -318,7 +335,7 @@ public class GameManager : MonoBehaviour
     // 12. QUANTIDADE DA AÇÃO
     // =====================================================
 
-    public void AumentarQuantidadeAtaque()
+    public void AumentarQuantidadeAcao()
     {
         if (!PodeEditarPreparacao)
             return;
@@ -329,22 +346,22 @@ public class GameManager : MonoBehaviour
         if (maximo <= 0)
             return;
 
-        quantidadeAtaqueSelecionada =
+        quantidadeAcaoSelecionada =
             Mathf.Min(
-                quantidadeAtaqueSelecionada + 1,
+                quantidadeAcaoSelecionada + 1,
                 maximo
             );
     }
 
-    public void DiminuirQuantidadeAtaque()
+    public void DiminuirQuantidadeAcao()
     {
         if (!PodeEditarPreparacao)
             return;
 
-        quantidadeAtaqueSelecionada =
+        quantidadeAcaoSelecionada =
             Mathf.Max(
                 1,
-                quantidadeAtaqueSelecionada - 1
+                quantidadeAcaoSelecionada - 1
             );
     }
 
@@ -358,7 +375,8 @@ public class GameManager : MonoBehaviour
 
         return filaAcoes
             .TropasDisponiveis(
-                territorioSelecionado
+                territorioSelecionado,
+                jogadorLocal
             );
     }
 
@@ -376,8 +394,14 @@ public class GameManager : MonoBehaviour
             return;
 
         if (modoAcao !=
-            ModoAcao.Atacar)
+            ModoAcao.AcaoTerrestre)
             return;
+
+        if (LimiteAcoesAtingido)
+        {
+            CancelarSelecaoAtual();
+            return;
+        }
 
         // =================================================
         // ESCOLHER ORIGEM
@@ -391,7 +415,8 @@ public class GameManager : MonoBehaviour
             int disponiveis =
                 filaAcoes
                     .TropasDisponiveis(
-                        territorio
+                        territorio,
+                        jogadorLocal
                     );
 
             if (disponiveis <= 0)
@@ -403,8 +428,10 @@ public class GameManager : MonoBehaviour
             territorioSelecionado
                 .DestacarSelecao();
 
-            quantidadeAtaqueSelecionada =
+            quantidadeAcaoSelecionada =
                 disponiveis;
+
+            AtualizarHighlightsPreparacao();
 
             return;
         }
@@ -421,11 +448,12 @@ public class GameManager : MonoBehaviour
         }
 
         // =================================================
-        // TROCAR ORIGEM
+        // TROCAR ORIGEM (antes de existir destino)
         // =================================================
 
-        if (territorio.dono ==
-            jogadorLocal)
+        if (territorio.dono == jogadorLocal &&
+            territorioDestinoSelecionado == null &&
+            !territorioSelecionado.EhVizinho(territorio))
         {
             territorioSelecionado
                 .RemoverDestaqueSelecao();
@@ -448,14 +476,23 @@ public class GameManager : MonoBehaviour
             int disponiveis =
                 filaAcoes
                     .TropasDisponiveis(
-                        territorio
+                        territorio,
+                        jogadorLocal
                     );
 
-            quantidadeAtaqueSelecionada =
+            if (disponiveis <= 0)
+            {
+                CancelarSelecaoAtual();
+                return;
+            }
+
+            quantidadeAcaoSelecionada =
                 Mathf.Max(
                     1,
                     disponiveis
                 );
+
+            AtualizarHighlightsPreparacao();
 
             return;
         }
@@ -464,7 +501,7 @@ public class GameManager : MonoBehaviour
         // ESCOLHER DESTINO
         // =================================================
 
-        if (!sistemaAtaque.PodeAtacar(
+        if (!sistemaAcoesTerrestres.PodePreparar(
                 territorioSelecionado,
                 territorio,
                 jogadorLocal))
@@ -487,23 +524,26 @@ public class GameManager : MonoBehaviour
         int disponiveisOrigem =
             filaAcoes
                 .TropasDisponiveis(
-                    territorioSelecionado
+                    territorioSelecionado,
+                    jogadorLocal
                 );
 
-        quantidadeAtaqueSelecionada =
+        quantidadeAcaoSelecionada =
             Mathf.Clamp(
-                quantidadeAtaqueSelecionada,
+                quantidadeAcaoSelecionada,
                 1,
                 disponiveisOrigem
             );
 
+        AtualizarHighlightsPreparacao();
+
     }
 
     // =====================================================
-    // 14. REGISTRO DE ATAQUE
+    // 14. REGISTRO DE AÇÃO TERRESTRE
     // =====================================================
 
-    public void ConfirmarAtaquePreparado()
+    public void ConfirmarAcaoPreparada()
     {
         if (!PodeEditarPreparacao)
             return;
@@ -513,11 +553,11 @@ public class GameManager : MonoBehaviour
             return;
 
         bool registrado =
-            sistemaAtaque
-                .RegistrarAtaque(
+            sistemaAcoesTerrestres
+                .Registrar(
                     territorioSelecionado,
                     territorioDestinoSelecionado,
-                    quantidadeAtaqueSelecionada,
+                    quantidadeAcaoSelecionada,
                     jogadorLocal
                 );
 
@@ -526,7 +566,7 @@ public class GameManager : MonoBehaviour
 
         CancelarSelecaoAtual();
 
-        quantidadeAtaqueSelecionada = 1;
+        quantidadeAcaoSelecionada = 1;
     }
 
     // =====================================================
@@ -535,20 +575,10 @@ public class GameManager : MonoBehaviour
 
     public void CancelarSelecaoAtual()
     {
-        if (territorioSelecionado != null)
-        {
-            territorioSelecionado
-                .RemoverDestaqueSelecao();
-        }
-
-        if (territorioDestinoSelecionado != null)
-        {
-            territorioDestinoSelecionado
-                .RemoverDestaqueSelecao();
-        }
-
         territorioSelecionado = null;
         territorioDestinoSelecionado = null;
+
+        AtualizarHighlightsPreparacao();
     }
 
     // =====================================================
@@ -561,7 +591,22 @@ public class GameManager : MonoBehaviour
             filaAcoes == null)
             return;
 
-        filaAcoes.RemoverUltimoAtaque();
+        if (filaAcoes.RemoverUltima(jogadorLocal))
+            AtualizarHighlightsPreparacao();
+    }
+
+    public bool CancelarOrdem(OrdemTerrestre ordem)
+    {
+        if (!PodeEditarPreparacao || filaAcoes == null ||
+            ordem == null || ordem.Jogador != jogadorLocal)
+            return false;
+
+        bool removida = filaAcoes.Remover(ordem);
+
+        if (removida)
+            AtualizarHighlightsPreparacao();
+
+        return removida;
     }
 
     // =====================================================
@@ -622,7 +667,7 @@ public class GameManager : MonoBehaviour
     public void ResolverRodadaAgora()
     {
         if (filaAcoes == null ||
-            resolvedorCombate == null ||
+            resolvedorAcoesTerrestres == null ||
             gerenciadorRodada == null)
         {
             return;
@@ -634,14 +679,76 @@ public class GameManager : MonoBehaviour
         estadoPreparacao =
             EstadoPreparacao.Resolvendo;
 
-        resolvedorCombate
-            .Resolver(
-                filaAcoes
-            );
+        resolvedorAcoesTerrestres.Resolver(
+            filaAcoes,
+            gerenciadorRodada.ObterPrioridadeJogadores());
 
         CancelarSelecaoAtual();
 
         gerenciadorRodada
             .IniciarProximaRodada();
+    }
+
+    private IReadOnlyList<OrdemTerrestre> ObterOrdensDoJogadorLocal()
+    {
+        List<OrdemTerrestre> locais = new List<OrdemTerrestre>();
+
+        foreach (OrdemTerrestre ordem in filaAcoes.Ordens)
+        {
+            if (ordem.Jogador == jogadorLocal)
+                locais.Add(ordem);
+        }
+
+        locais.Sort((a, b) =>
+            a.PosicaoNaFila.CompareTo(b.PosicaoNaFila));
+
+        return locais;
+    }
+
+    // =====================================================
+    // 20. HIGHLIGHTS DERIVADOS DA FILA
+    // =====================================================
+
+    private void AtualizarHighlightsPreparacao()
+    {
+        TerritorioClique[] territorios =
+            FindObjectsByType<TerritorioClique>();
+
+        foreach (TerritorioClique territorio in territorios)
+        {
+            if (DeveManterHighlight(territorio))
+                territorio.DestacarSelecao();
+            else
+                territorio.RemoverDestaqueSelecao();
+        }
+    }
+
+    private bool DeveManterHighlight(TerritorioClique territorio)
+    {
+        if (territorio == null)
+            return false;
+
+        bool preparacaoAtiva =
+            faseAtual == FaseTurno.Preparacao &&
+            estadoPreparacao != EstadoPreparacao.Resolvendo;
+
+        if (!preparacaoAtiva)
+            return false;
+
+        if (territorio == territorioSelecionado ||
+            territorio == territorioDestinoSelecionado)
+            return true;
+
+        if (filaAcoes == null)
+            return false;
+
+        foreach (OrdemTerrestre ordem in filaAcoes.Ordens)
+        {
+            if (ordem.Origem == territorio ||
+                ordem.Destino == territorio)
+                return true;
+        }
+
+        return false;
     }
 }

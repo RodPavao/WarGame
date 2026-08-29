@@ -141,7 +141,7 @@ return cor;
         if (instance == null)
         {
             instance =
-                FindFirstObjectByType<PaletaJogadores>();
+                FindAnyObjectByType<PaletaJogadores>();
         }
 
         if (instance == null)

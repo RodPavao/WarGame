@@ -600,7 +600,7 @@ public class HUDPreparacao : MonoBehaviour
         }
 
         // =================================================
-        // ATAQUE
+        // AÇÃO TERRESTRE
         // =================================================
 
         if (gm.PodeEditarPreparacao)
@@ -639,11 +639,11 @@ public class HUDPreparacao : MonoBehaviour
                         Altura(29)
                     )))
             {
-                gm.DiminuirQuantidadeAtaque();
+                gm.DiminuirQuantidadeAcao();
             }
 
             GUILayout.Label(
-                gm.quantidadeAtaqueSelecionada.ToString(),
+                gm.quantidadeAcaoSelecionada.ToString(),
                 numeroDourado,
                 GUILayout.Height(Altura(29))
             );
@@ -661,7 +661,7 @@ public class HUDPreparacao : MonoBehaviour
                         Altura(29)
                     )))
             {
-                gm.AumentarQuantidadeAtaque();
+                gm.AumentarQuantidadeAcao();
             }
 
             GUILayout.EndHorizontal();
@@ -702,6 +702,18 @@ public class HUDPreparacao : MonoBehaviour
                 GUILayout.Height(Altura(20))
             );
 
+            GUILayout.Label(
+                "TIPO ESPERADO",
+                tituloSecao,
+                GUILayout.Height(Altura(16))
+            );
+
+            GUILayout.Label(
+                gm.TipoAcaoSelecionadaEsperado,
+                textoCentral,
+                GUILayout.Height(Altura(20))
+            );
+
             GUILayout.Space(Espaco(5));
 
             if (GUILayout.Button(
@@ -710,7 +722,7 @@ public class HUDPreparacao : MonoBehaviour
                     GUILayout.Height(Altura(33))
                 ))
             {
-                gm.ConfirmarAtaquePreparado();
+                gm.ConfirmarAcaoPreparada();
             }
 
             GUILayout.Space(Espaco(4));
@@ -774,6 +786,15 @@ public class HUDPreparacao : MonoBehaviour
             GUILayout.Height(Altura(24))
         );
 
+        if (gm.LimiteAcoesAtingido)
+        {
+            GUILayout.Label(
+                "Limite de 3 ações atingido.",
+                textoCentral,
+                GUILayout.Height(Altura(28))
+            );
+        }
+
         GUILayout.Space(Espaco(5));
 
         DesenharSeparador(corVinho);
@@ -798,7 +819,7 @@ public class HUDPreparacao : MonoBehaviour
                  i < ordens.Count;
                  i++)
             {
-                OrdemAtaque ordem =
+                OrdemTerrestre ordem =
                     ordens[i];
 
                 GUILayout.Label(
@@ -808,11 +829,29 @@ public class HUDPreparacao : MonoBehaviour
                     "\n→ " +
                     ordem.Destino.name +
                     "\n" +
-                    ordem.Tropas +
-                    " tropa(s)",
+                    ordem.QuantidadePretendida +
+                    " tropa(s)\n" +
+                    SistemaAcoesTerrestres.ObterTipoEsperado(
+                        ordem.Jogador,
+                        ordem.Destino),
                     linhaAcao,
-                    GUILayout.Height(Altura(48))
+                    GUILayout.Height(Altura(61))
                 );
+
+                GUI.enabled = gm.PodeEditarPreparacao;
+
+                bool remover = GUILayout.Button(
+                    "REMOVER",
+                    botaoCancelar,
+                    GUILayout.Height(Altura(24)));
+
+                GUI.enabled = true;
+
+                if (remover)
+                {
+                    gm.CancelarOrdem(ordem);
+                    break;
+                }
 
                 GUILayout.Space(Espaco(5));
             }

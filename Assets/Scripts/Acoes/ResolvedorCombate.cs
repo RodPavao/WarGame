@@ -1,37 +1,20 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ResolvedorCombate : MonoBehaviour
 {
-    public void Resolver(FilaAcoes fila)
+    // =====================================================
+    // 1. RESOLUÇÃO DO COMBATE
+    // =====================================================
+
+    public ResultadoCombate ResolverAtaque(
+        OrdemTerrestre ordem,
+        int quantidadeEfetiva)
     {
-        if (fila == null)
-            return;
-
-        List<OrdemAtaque> ordens =
-            fila.CriarCopiaAtaques();
-
-        Debug.Log("=== INÍCIO DA RESOLUÇÃO ===");
-
-        foreach (OrdemAtaque ordem in ordens)
+        if (ordem == null ||
+            ordem.Origem == null ||
+            ordem.Destino == null ||
+            quantidadeEfetiva < 1)
         {
-            ResolverAtaque(ordem);
-        }
-
-        fila.Limpar();
-
-        Debug.Log("=== FIM DA RESOLUÇÃO ===");
-    }
-
-    private ResultadoCombate ResolverAtaque(
-        OrdemAtaque ordem)
-    {
-        if (!OrdemAindaValida(ordem))
-        {
-            Debug.Log(
-                "ORDEM CANCELADA: estado do mapa mudou."
-            );
-
             return new ResultadoCombate(
                 false,
                 false,
@@ -39,7 +22,7 @@ public class ResolvedorCombate : MonoBehaviour
                 0,
                 0,
                 0,
-                "Ordem inválida no momento da resolução."
+                "Dados de combate inválidos."
             );
         }
 
@@ -49,8 +32,7 @@ public class ResolvedorCombate : MonoBehaviour
         TerritorioClique destino =
             ordem.Destino;
 
-        int ataque =
-            ordem.Tropas;
+        int ataque = quantidadeEfetiva;
 
         int defesa =
             destino.Tropas;
@@ -167,43 +149,8 @@ public class ResolvedorCombate : MonoBehaviour
         );
     }
 
-    private bool OrdemAindaValida(
-        OrdemAtaque ordem)
-    {
-        if (ordem == null)
-            return false;
-
-        if (ordem.Origem == null ||
-            ordem.Destino == null)
-            return false;
-
-        if (ordem.Origem.dono !=
-            ordem.Jogador)
-            return false;
-
-        // Não pode atacar território que,
-        // durante a resolução, virou aliado.
-        if (EquipesJogadores.SaoAliados(
-                ordem.Jogador,
-                ordem.Destino.dono))
-            return false;
-
-        if (!ordem.Origem.EhVizinho(
-                ordem.Destino))
-            return false;
-
-        if (ordem.Tropas >
-            ordem.Origem.Tropas - 1)
-            return false;
-
-        if (ordem.Tropas < 1)
-            return false;
-
-        return true;
-    }
-
     // =====================================================
-    // REGRA DE FORÇA
+    // 2. REGRA DE FORÇA
     // =====================================================
 
     public int CalcularAtaqueMinimo(
