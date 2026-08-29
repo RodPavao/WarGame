@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1d12d050d77dda54791826e305ec62dc
+guid: f328fe402440c014b88800328223fa03
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8521658036506898029
-    second: classic3_0
+      213: 5559561540143506820
+    second: classic_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -88,7 +88,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -101,7 +101,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: classic3_0
+      name: classic_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 39157ac5a2dfcb980800000000000000
-      internalID: -8521658036506898029
+      spriteID: 4856d23d3c7872d40800000000000000
+      internalID: 5559561540143506820
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      classic3_0: -8521658036506898029
+      classic_0: 5559561540143506820
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

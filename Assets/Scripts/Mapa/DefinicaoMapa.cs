@@ -29,6 +29,9 @@ public sealed class DefinicaoTerritorioMapa
     public string regiaoId;
     public Vector2 posicaoContador;
     public bool possuiPosicaoContador = true;
+    public Vector2 posicaoNomeManual;
+    public bool possuiPosicaoNomeManual;
+    [Min(0)] public int tamanhoFonteNome;
     public List<MetadadoMapa> metadados = new List<MetadadoMapa>();
 }
 

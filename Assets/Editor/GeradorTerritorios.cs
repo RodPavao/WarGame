@@ -290,7 +290,7 @@ GUI.EndScrollView();
         {
             EditorUtility.DisplayDialog(
                 "WarGame",
-                "Selecione o classic3 no campo Mapa fonte.",
+                "Selecione o ClassicMap no campo Mapa fonte.",
                 "OK"
             );
 

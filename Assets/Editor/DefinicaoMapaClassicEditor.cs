@@ -28,6 +28,15 @@ public static class DefinicaoMapaClassicEditor
         Array.Sort(territoriosCena, (a, b) => string.CompareOrdinal(a.idTerritorio, b.idTerritorio));
 
         Dictionary<TerritorioClique.Continente, DefinicaoRegiaoMapa> regioesPorLegado = CriarRegioes();
+        DefinicaoMapa mapaExistente = AssetDatabase.LoadAssetAtPath<DefinicaoMapa>(CaminhoMapa);
+        Dictionary<string, DefinicaoTerritorioMapa> dadosExistentes = new Dictionary<string, DefinicaoTerritorioMapa>(StringComparer.Ordinal);
+        if (mapaExistente != null)
+        {
+            foreach (DefinicaoTerritorioMapa dados in mapaExistente.Territorios)
+                if (dados != null && !string.IsNullOrWhiteSpace(dados.id))
+                    dadosExistentes[dados.id] = dados;
+        }
+
         List<DefinicaoTerritorioMapa> territorios = new List<DefinicaoTerritorioMapa>();
         foreach (TerritorioClique territorio in territoriosCena)
         {
@@ -41,6 +50,12 @@ public static class DefinicaoMapaClassicEditor
                 regiaoId = regiao.id,
                 posicaoContador = contador != null ? (Vector2)contador.localPosition : Vector2.zero
             };
+            if (dadosExistentes.TryGetValue(dados.id, out DefinicaoTerritorioMapa anterior))
+            {
+                dados.posicaoNomeManual = anterior.posicaoNomeManual;
+                dados.possuiPosicaoNomeManual = anterior.possuiPosicaoNomeManual;
+                dados.tamanhoFonteNome = anterior.tamanhoFonteNome;
+            }
             territorios.Add(dados);
             regiao.territorioIds.Add(dados.id);
         }
@@ -50,7 +65,7 @@ public static class DefinicaoMapaClassicEditor
         SpriteRenderer sprite = visual != null ? visual.GetComponent<SpriteRenderer>() : null;
         Camera camera = Camera.main != null ? Camera.main : UnityEngine.Object.FindAnyObjectByType<Camera>();
 
-        DefinicaoMapa mapa = AssetDatabase.LoadAssetAtPath<DefinicaoMapa>(CaminhoMapa);
+        DefinicaoMapa mapa = mapaExistente;
         if (mapa == null)
         {
             mapa = ScriptableObject.CreateInstance<DefinicaoMapa>();
