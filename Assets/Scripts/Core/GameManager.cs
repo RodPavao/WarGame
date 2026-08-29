@@ -3,13 +3,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("DEBUG")]
-    public bool modoTesteCliquesTodosTerritorios = false;
-
     public static GameManager instance;
 
     // =====================================================
-    // SELEÇÃO ATUAL
+    // 1. SELEÇÃO E JOGADOR LOCAL
     // =====================================================
 
     public TerritorioClique territorioSelecionado;
@@ -19,23 +16,31 @@ public class GameManager : MonoBehaviour
         TerritorioClique.Dono.Jogador1;
 
     // =====================================================
-    // SISTEMAS
+    // 2. SISTEMAS
     // =====================================================
 
     private FilaAcoes filaAcoes;
     private SistemaAtaque sistemaAtaque;
     private ResolvedorCombate resolvedorCombate;
     private GerenciadorRodada gerenciadorRodada;
+    private readonly HistoricoReforcos historicoReforcos =
+        new HistoricoReforcos();
 
     // =====================================================
-    // FASES
+    // 3. PREPARAÇÃO E MODOS
     // =====================================================
 
     public enum FaseTurno
     {
-        Reforco,
-        Ataque,
+        Preparacao,
         Resolucao
+    }
+
+    public enum EstadoPreparacao
+    {
+        Preparando,
+        Enviado,
+        Resolvendo
     }
 
     public enum ModoAcao
@@ -47,59 +52,40 @@ public class GameManager : MonoBehaviour
     }
 
     public FaseTurno faseAtual =
-        FaseTurno.Reforco;
+        FaseTurno.Preparacao;
+
+    public EstadoPreparacao estadoPreparacao =
+        EstadoPreparacao.Preparando;
 
     public ModoAcao modoAcao =
         ModoAcao.Nenhum;
 
     // =====================================================
-    // REFORÇOS
+    // 4. REFORÇOS
     // =====================================================
 
     public int reforcosDisponiveis = 0;
 
-    // Guarda SOMENTE reforços adicionados na rodada atual.
-    private readonly Dictionary<TerritorioClique, int>
-        reforcosAplicadosNaRodada =
-            new Dictionary<TerritorioClique, int>();
+    public System.Collections.Generic.IReadOnlyList<DistribuicaoReforco>
+        DistribuicoesReforcos =>
+            historicoReforcos.Distribuicoes;
 
-    // Território escolhido para possível desfazer reforço.
-    private TerritorioClique territorioReforcadoSelecionado;
+    public bool PodeEditarPreparacao =>
+        faseAtual == FaseTurno.Preparacao &&
+        estadoPreparacao == EstadoPreparacao.Preparando;
 
-    public TerritorioClique TerritorioReforcadoSelecionado =>
-        territorioReforcadoSelecionado;
-
-    public int ReforcosNoTerritorioSelecionado
-    {
-        get
-        {
-            if (territorioReforcadoSelecionado == null)
-                return 0;
-
-            if (reforcosAplicadosNaRodada.TryGetValue(
-                    territorioReforcadoSelecionado,
-                    out int quantidade))
-            {
-                return quantidade;
-            }
-
-            return 0;
-        }
-    }
-
-    public bool PodeConfirmarReforcos =>
-        faseAtual == FaseTurno.Reforco &&
-        reforcosDisponiveis == 0;
+    public bool AcoesEnviadas =>
+        estadoPreparacao == EstadoPreparacao.Enviado;
 
     // =====================================================
-    // ATAQUE
+    // 5. AÇÕES TERRESTRES
     // =====================================================
 
     [Min(1)]
     public int quantidadeAtaqueSelecionada = 1;
 
     // =====================================================
-    // CRONÔMETRO
+    // 6. CRONÔMETRO
     // =====================================================
 
     [Header("Preparação")]
@@ -108,13 +94,11 @@ public class GameManager : MonoBehaviour
 
     private float tempoPreparacaoRestante;
 
-    private bool acoesEnviadas;
-
     public float TempoPreparacaoRestante =>
         tempoPreparacaoRestante;
 
     // =====================================================
-    // HUD
+    // 7. CONSULTAS PARA O HUD
     // =====================================================
 
     public int QuantidadeOrdensPreparadas =>
@@ -134,7 +118,7 @@ public class GameManager : MonoBehaviour
             : 1;
 
     // =====================================================
-    // INICIALIZAÇÃO
+    // 8. INICIALIZAÇÃO
     // =====================================================
 
     private void Awake()
@@ -194,16 +178,12 @@ public class GameManager : MonoBehaviour
     }
 
     // =====================================================
-    // CRONÔMETRO
+    // 9. CICLO DA PREPARAÇÃO
     // =====================================================
 
     private void Update()
     {
-        if (faseAtual ==
-            FaseTurno.Resolucao)
-            return;
-
-        if (acoesEnviadas)
+        if (faseAtual != FaseTurno.Preparacao)
             return;
 
         tempoPreparacaoRestante -=
@@ -213,29 +193,17 @@ public class GameManager : MonoBehaviour
         {
             tempoPreparacaoRestante = 0f;
 
-            // Se o tempo acabar durante reforços,
-            // confirma automaticamente apenas se todos
-            // os reforços já tiverem sido distribuídos.
-            if (faseAtual == FaseTurno.Reforco)
-            {
-                if (reforcosDisponiveis == 0)
-                {
-                    ConfirmarReforcos();
-                }
-
-                return;
-            }
-
-            EnviarAcoes();
+            FecharPreparacaoEIniciarResolucao();
         }
     }
 
-    public void IniciarCronometroRound()
+    public void IniciarPreparacaoRound()
     {
+        faseAtual = FaseTurno.Preparacao;
+        estadoPreparacao = EstadoPreparacao.Preparando;
+
         tempoPreparacaoRestante =
             duracaoPreparacao;
-
-        acoesEnviadas = false;
 
         modoAcao =
             ModoAcao.Atacar;
@@ -244,15 +212,10 @@ public class GameManager : MonoBehaviour
 
         CancelarSelecaoAtual();
 
-        Debug.Log(
-            "ROUND INICIADO | Cronômetro: " +
-            duracaoPreparacao +
-            " segundos."
-        );
     }
 
     // =====================================================
-    // REFORÇOS
+    // 10. DISTRIBUIÇÃO DE REFORÇOS
     // =====================================================
 
     public void DefinirReforcos(
@@ -264,226 +227,85 @@ public class GameManager : MonoBehaviour
                 quantidade
             );
 
-        // Nova fase de reforço = novo histórico.
-        reforcosAplicadosNaRodada.Clear();
+        historicoReforcos.Limpar();
+    }
 
-        territorioReforcadoSelecionado = null;
+    public bool PodeAdicionarReforcoEm(
+        TerritorioClique territorio)
+    {
+        return
+            PodeEditarPreparacao &&
+            territorio != null &&
+            territorio.dono == jogadorLocal &&
+            reforcosDisponiveis > 0;
     }
 
     public void TentarAdicionarReforco(
         TerritorioClique territorio)
     {
-        if (territorio == null)
-            return;
+        DistribuirReforcos(territorio, 1);
+    }
 
-        // =================================================
-        // DEBUG TEMPORÁRIO
-        // =================================================
+    public int DistribuirReforcos(
+        TerritorioClique territorio,
+        int quantidade)
+    {
+        if (!PodeAdicionarReforcoEm(territorio))
+            return 0;
 
-        if (modoTesteCliquesTodosTerritorios)
+        int quantidadeAplicada =
+            Mathf.Clamp(
+                quantidade,
+                0,
+                reforcosDisponiveis
+            );
+
+        if (quantidadeAplicada <= 0)
+            return 0;
+
+        for (int i = 0; i < quantidadeAplicada; i++)
         {
             territorio.AdicionarTropa();
-
-            Debug.Log(
-                "TESTE CLIQUE OK | " +
-                territorio.name +
-                " | Tropas: " +
-                territorio.Tropas
-            );
-
-            return;
         }
 
-        // =================================================
-        // REGRA NORMAL
-        // =================================================
-
-        if (faseAtual !=
-            FaseTurno.Reforco)
-            return;
-
-        if (territorio.dono != jogadorLocal)
-            return;
-
-        if (reforcosDisponiveis <= 0)
-        {
-            // Mesmo sem reforços disponíveis,
-            // tocar em um território já reforçado
-            // permite selecioná-lo para desfazer.
-            SelecionarTerritorioReforcado(
-                territorio
-            );
-
-            return;
-        }
-
-        territorio.AdicionarTropa();
-
-        reforcosDisponiveis--;
-
-        if (!reforcosAplicadosNaRodada.ContainsKey(
-                territorio))
-        {
-            reforcosAplicadosNaRodada.Add(
-                territorio,
-                0
-            );
-        }
-
-        reforcosAplicadosNaRodada[territorio]++;
-
-        territorioReforcadoSelecionado =
-            territorio;
-
-        Debug.Log(
-            "Tropa adicionada em " +
-            territorio.name +
-            " | Tropas: " +
-            territorio.Tropas +
-            " | Adicionadas nesta rodada: " +
-            reforcosAplicadosNaRodada[territorio] +
-            " | Reforços restantes: " +
-            reforcosDisponiveis
+        reforcosDisponiveis -= quantidadeAplicada;
+        historicoReforcos.Registrar(
+            territorio,
+            quantidadeAplicada
         );
 
-        // IMPORTANTE:
-        // NÃO libera ataque automaticamente quando chega a 0.
-        // O jogador confirma pelo HUD.
+        return quantidadeAplicada;
     }
 
-    public void SelecionarTerritorioReforcado(
-        TerritorioClique territorio)
+    public bool DesfazerDistribuicaoReforco(int id)
     {
-        if (faseAtual != FaseTurno.Reforco)
-            return;
+        if (!PodeEditarPreparacao)
+            return false;
 
-        if (territorio == null)
-            return;
+        if (!historicoReforcos.TentarObter(
+                id,
+                out DistribuicaoReforco distribuicao))
+            return false;
 
-        if (territorio.dono != jogadorLocal)
-            return;
-
-        if (!reforcosAplicadosNaRodada.ContainsKey(
-                territorio))
+        if (distribuicao.Territorio == null ||
+            !distribuicao.Territorio.RemoverTropas(
+                distribuicao.Quantidade))
         {
-            territorioReforcadoSelecionado = null;
-            return;
+            return false;
         }
 
-        territorioReforcadoSelecionado =
-            territorio;
-
-        Debug.Log(
-            "REFORÇO SELECIONADO | " +
-            territorio.name +
-            " | Reforços aplicados: " +
-            reforcosAplicadosNaRodada[territorio]
-        );
-    }
-
-    public void DesfazerReforcosTerritorioSelecionado()
-    {
-        if (faseAtual != FaseTurno.Reforco)
-            return;
-
-        if (territorioReforcadoSelecionado == null)
-            return;
-
-        if (!reforcosAplicadosNaRodada.TryGetValue(
-                territorioReforcadoSelecionado,
-                out int quantidade))
-        {
-            return;
-        }
-
-        if (quantidade <= 0)
-            return;
-
-        // TerritorioClique atual não possui, pelo que temos aqui,
-        // método público para remover várias tropas.
-        // Usamos RemoverTropa() repetidamente.
-        for (int i = 0; i < quantidade; i++)
-        {
-            territorioReforcadoSelecionado
-                .RemoverTropa();
-        }
-
-        reforcosDisponiveis +=
-            quantidade;
-
-        string nomeTerritorio =
-            territorioReforcadoSelecionado.name;
-
-        reforcosAplicadosNaRodada.Remove(
-            territorioReforcadoSelecionado
-        );
-
-        territorioReforcadoSelecionado = null;
-
-        Debug.Log(
-            "REFORÇO DESFEITO | " +
-            nomeTerritorio +
-            " | " +
-            quantidade +
-            " tropa(s) devolvida(s) | " +
-            "Reforços disponíveis: " +
-            reforcosDisponiveis
-        );
-    }
-
-    public void ConfirmarReforcos()
-    {
-        if (faseAtual != FaseTurno.Reforco)
-            return;
-
-        if (reforcosDisponiveis > 0)
-        {
-            Debug.Log(
-                "Ainda existem " +
-                reforcosDisponiveis +
-                " reforço(s) para distribuir."
-            );
-
-            return;
-        }
-
-        territorioReforcadoSelecionado = null;
-
-        reforcosAplicadosNaRodada.Clear();
-
-        LiberarAcoes();
-    }
-
-    private void LiberarAcoes()
-    {
-        faseAtual =
-            FaseTurno.Ataque;
-
-        modoAcao =
-            ModoAcao.Atacar;
-
-        quantidadeAtaqueSelecionada = 1;
-
-        CancelarSelecaoAtual();
-
-        Debug.Log(
-            "REFORÇOS CONFIRMADOS | " +
-            "Ações liberadas | Tempo restante: " +
-            Mathf.CeilToInt(
-                tempoPreparacaoRestante
-            ) +
-            " s."
-        );
+        historicoReforcos.Remover(id);
+        reforcosDisponiveis += distribuicao.Quantidade;
+        return true;
     }
 
     // =====================================================
-    // MODOS
+    // 11. SELEÇÃO DE MODO
     // =====================================================
 
     public void SelecionarModoAtacar()
     {
-        if (faseAtual !=
-            FaseTurno.Ataque)
+        if (!PodeEditarPreparacao)
             return;
 
         modoAcao =
@@ -493,11 +315,14 @@ public class GameManager : MonoBehaviour
     }
 
     // =====================================================
-    // QUANTIDADE
+    // 12. QUANTIDADE DA AÇÃO
     // =====================================================
 
     public void AumentarQuantidadeAtaque()
     {
+        if (!PodeEditarPreparacao)
+            return;
+
         int maximo =
             ObterMaximoDisponivelOrigem();
 
@@ -513,6 +338,9 @@ public class GameManager : MonoBehaviour
 
     public void DiminuirQuantidadeAtaque()
     {
+        if (!PodeEditarPreparacao)
+            return;
+
         quantidadeAtaqueSelecionada =
             Mathf.Max(
                 1,
@@ -535,7 +363,7 @@ public class GameManager : MonoBehaviour
     }
 
     // =====================================================
-    // CLIQUE NO MAPA
+    // 13. SELEÇÃO NO MAPA
     // =====================================================
 
     public void ClicarTerritorio(
@@ -544,19 +372,8 @@ public class GameManager : MonoBehaviour
         if (territorio == null)
             return;
 
-        if (faseAtual ==
-            FaseTurno.Resolucao)
+        if (!PodeEditarPreparacao)
             return;
-
-        if (faseAtual ==
-            FaseTurno.Reforco)
-        {
-            SelecionarTerritorioReforcado(
-                territorio
-            );
-
-            return;
-        }
 
         if (modoAcao !=
             ModoAcao.Atacar)
@@ -588,13 +405,6 @@ public class GameManager : MonoBehaviour
 
             quantidadeAtaqueSelecionada =
                 disponiveis;
-
-            Debug.Log(
-                "ORIGEM SELECIONADA: " +
-                territorio.name +
-                " | Tropas disponíveis: " +
-                disponiveis
-            );
 
             return;
         }
@@ -647,13 +457,6 @@ public class GameManager : MonoBehaviour
                     disponiveis
                 );
 
-            Debug.Log(
-                "NOVA ORIGEM: " +
-                territorio.name +
-                " | Tropas disponíveis: " +
-                disponiveis
-            );
-
             return;
         }
 
@@ -694,24 +497,15 @@ public class GameManager : MonoBehaviour
                 disponiveisOrigem
             );
 
-        Debug.Log(
-            "DESTINO SELECIONADO: " +
-            territorio.name +
-            " | Defesa: " +
-            territorio.Tropas +
-            " | Ataque selecionado: " +
-            quantidadeAtaqueSelecionada
-        );
     }
 
     // =====================================================
-    // CONFIRMAR ATAQUE
+    // 14. REGISTRO DE ATAQUE
     // =====================================================
 
     public void ConfirmarAtaquePreparado()
     {
-        if (faseAtual !=
-            FaseTurno.Ataque)
+        if (!PodeEditarPreparacao)
             return;
 
         if (territorioSelecionado == null ||
@@ -730,25 +524,13 @@ public class GameManager : MonoBehaviour
         if (!registrado)
             return;
 
-        Debug.Log(
-            "ATAQUE CONFIRMADO | " +
-            territorioSelecionado.name +
-            " -> " +
-            territorioDestinoSelecionado.name +
-            " | Tropas: " +
-            quantidadeAtaqueSelecionada +
-            " | Ordem " +
-            QuantidadeOrdensPreparadas +
-            "/3"
-        );
-
         CancelarSelecaoAtual();
 
         quantidadeAtaqueSelecionada = 1;
     }
 
     // =====================================================
-    // CANCELAR SELEÇÃO
+    // 15. CANCELAMENTO DE SELEÇÃO
     // =====================================================
 
     public void CancelarSelecaoAtual()
@@ -770,45 +552,71 @@ public class GameManager : MonoBehaviour
     }
 
     // =====================================================
-    // CANCELAR ÚLTIMA ORDEM
+    // 16. EDIÇÃO DE ORDENS
     // =====================================================
 
     public void CancelarUltimaOrdem()
     {
-        if (filaAcoes == null)
+        if (!PodeEditarPreparacao ||
+            filaAcoes == null)
             return;
 
         filaAcoes.RemoverUltimoAtaque();
     }
 
     // =====================================================
-    // ENVIAR AÇÕES
+    // 17. ENVIO LOCAL
     // =====================================================
 
     public void EnviarAcoes()
     {
-        if (faseAtual ==
-            FaseTurno.Resolucao)
+        if (!PodeEditarPreparacao)
             return;
 
-        if (acoesEnviadas)
-            return;
-
-        acoesEnviadas = true;
+        estadoPreparacao =
+            EstadoPreparacao.Enviado;
 
         CancelarSelecaoAtual();
+    }
 
-        Debug.Log(
-            "AÇÕES ENVIADAS | " +
-            QuantidadeOrdensPreparadas +
-            " ordem(ns)."
-        );
+    public void CancelarEnvio()
+    {
+        if (faseAtual != FaseTurno.Preparacao ||
+            estadoPreparacao != EstadoPreparacao.Enviado ||
+            tempoPreparacaoRestante <= 0f)
+        {
+            return;
+        }
+
+        estadoPreparacao =
+            EstadoPreparacao.Preparando;
+    }
+
+    // =====================================================
+    // 18. FECHAMENTO DA PREPARAÇÃO
+    // =====================================================
+
+    public void FecharPreparacaoEIniciarResolucao()
+    {
+        if (faseAtual != FaseTurno.Preparacao ||
+            estadoPreparacao == EstadoPreparacao.Resolvendo)
+        {
+            return;
+        }
+
+        estadoPreparacao =
+            EstadoPreparacao.Resolvendo;
+
+        reforcosDisponiveis = 0;
+        historicoReforcos.Limpar();
+
+        CancelarSelecaoAtual();
 
         ResolverRodadaAgora();
     }
 
     // =====================================================
-    // RESOLUÇÃO
+    // 19. RESOLUÇÃO
     // =====================================================
 
     public void ResolverRodadaAgora()
@@ -822,6 +630,9 @@ public class GameManager : MonoBehaviour
 
         faseAtual =
             FaseTurno.Resolucao;
+
+        estadoPreparacao =
+            EstadoPreparacao.Resolvendo;
 
         resolvedorCombate
             .Resolver(

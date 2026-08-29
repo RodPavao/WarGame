@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class GerenciadorRodada : MonoBehaviour
 {
+    // =====================================================
+    // 1. REFERÊNCIAS E ESTADO
+    // =====================================================
+
     private GameManager gameManager;
 
     [Header("Rodada")]
@@ -16,6 +20,10 @@ public class GerenciadorRodada : MonoBehaviour
         gameManager =
             GetComponent<GameManager>();
     }
+
+    // =====================================================
+    // 2. CICLO DE RODADAS
+    // =====================================================
 
     public void IniciarPartida()
     {
@@ -36,9 +44,9 @@ public class GerenciadorRodada : MonoBehaviour
         if (gameManager == null)
             return;
 
-        // PRIMEIRO começa o relógio.
+        // A preparação é uma única janela para reforços e ações.
         gameManager
-            .IniciarCronometroRound();
+            .IniciarPreparacaoRound();
 
         // Depois prepara os reforços.
         PrepararReforcos();
@@ -49,9 +57,6 @@ public class GerenciadorRodada : MonoBehaviour
         if (gameManager == null)
             return;
 
-        gameManager.faseAtual =
-            GameManager.FaseTurno.Reforco;
-
         int reforcos =
             CalcularReforcos(
                 gameManager.jogadorLocal
@@ -60,15 +65,11 @@ public class GerenciadorRodada : MonoBehaviour
         gameManager.DefinirReforcos(
             reforcos
         );
-
-        Debug.Log(
-            "RODADA " +
-            rodadaAtual +
-            " | Reforços disponíveis: " +
-            reforcos +
-            " | Cronômetro já iniciado."
-        );
     }
+
+    // =====================================================
+    // 3. CÁLCULO DE REFORÇOS
+    // =====================================================
 
     public int CalcularReforcos(
         TerritorioClique.Dono jogador)
@@ -77,9 +78,7 @@ public class GerenciadorRodada : MonoBehaviour
             return 8;
 
         TerritorioClique[] territorios =
-            FindObjectsByType<TerritorioClique>(
-                FindObjectsSortMode.None
-            );
+            FindObjectsByType<TerritorioClique>();
 
         int quantidadeTerritorios = 0;
 
@@ -102,6 +101,10 @@ public class GerenciadorRodada : MonoBehaviour
             reforcos
         );
     }
+
+    // =====================================================
+    // 4. CONTROLES DE TESTE NO INSPECTOR
+    // =====================================================
 
     [ContextMenu("Iniciar Partida Teste")]
     private void IniciarPartidaTeste()

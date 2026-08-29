@@ -93,11 +93,6 @@ public class InputPartida : MonoBehaviour
                 contadorPressionado
                     .IniciarPressaoInput();
 
-                Debug.Log(
-                    "INPUT CENTRAL | CONTADOR → " +
-                    contador.gameObject.name
-                );
-
                 return;
             }
         }
@@ -123,11 +118,6 @@ public class InputPartida : MonoBehaviour
 
             if (territorio != null)
             {
-                Debug.Log(
-                    "INPUT CENTRAL | TERRITÓRIO → " +
-                    territorio.name
-                );
-
                 territorio.Clicar();
 
                 return;

@@ -3,9 +3,11 @@ using UnityEngine;
 public class HUDPreparacao : MonoBehaviour
 {
     private GameManager gm;
+    private bool confirmarEnvioSemAcoes;
+    private int ultimoRoundExibido = -1;
 
     // =====================================================
-    // CORES
+    // 1. CORES
     // =====================================================
 
     private readonly Color corPainel =
@@ -27,7 +29,7 @@ public class HUDPreparacao : MonoBehaviour
         new Color(0.68f, 0.69f, 0.73f, 1f);
 
     // =====================================================
-    // ESTILOS
+    // 2. ESTILOS
     // =====================================================
 
     private GUIStyle painel;
@@ -49,7 +51,7 @@ public class HUDPreparacao : MonoBehaviour
     private GUIStyle linhaAcao;
 
     // =====================================================
-    // RESPONSIVIDADE
+    // 3. RESPONSIVIDADE
     // =====================================================
 
     private float escalaHUD = 1f;
@@ -58,7 +60,7 @@ public class HUDPreparacao : MonoBehaviour
     private float larguraPainelDireito;
 
     // =====================================================
-    // INICIALIZAÇÃO
+    // 4. INICIALIZAÇÃO
     // =====================================================
 
     private void Awake()
@@ -81,13 +83,19 @@ public class HUDPreparacao : MonoBehaviour
     }
 
     // =====================================================
-    // GUI
+    // 5. CICLO DA GUI
     // =====================================================
 
     private void OnGUI()
     {
         if (gm == null)
             return;
+
+        if (ultimoRoundExibido != gm.RodadaAtual)
+        {
+            ultimoRoundExibido = gm.RodadaAtual;
+            confirmarEnvioSemAcoes = false;
+        }
 
         AtualizarDimensoesResponsivas();
 
@@ -103,7 +111,7 @@ public class HUDPreparacao : MonoBehaviour
     }
 
     // =====================================================
-    // RESPONSIVIDADE
+    // 6. CÁLCULO RESPONSIVO
     // =====================================================
 
     private void AtualizarDimensoesResponsivas()
@@ -141,7 +149,7 @@ public class HUDPreparacao : MonoBehaviour
     }
 
     // =====================================================
-    // ESTILOS
+    // 6.1. CONSTRUÇÃO DOS ESTILOS
     // =====================================================
 
     private void GarantirEstilos()
@@ -393,7 +401,7 @@ public class HUDPreparacao : MonoBehaviour
     }
 
     // =====================================================
-    // PAINEL ESQUERDO
+    // 7. PAINEL ESQUERDO
     // =====================================================
 
     private void DesenharPainelEsquerdo()
@@ -488,7 +496,7 @@ public class HUDPreparacao : MonoBehaviour
         // =================================================
 
         if (gm.faseAtual ==
-            GameManager.FaseTurno.Reforco)
+            GameManager.FaseTurno.Preparacao)
         {
             GUILayout.Space(Espaco(5));
 
@@ -522,58 +530,71 @@ public class HUDPreparacao : MonoBehaviour
                 GUILayout.Height(Altura(34))
             );
 
-            // =============================================
-            // TERRITÓRIO REFORÇADO SELECIONADO
-            // =============================================
+            GUILayout.Space(Espaco(5));
 
-            if (gm.TerritorioReforcadoSelecionado != null &&
-                gm.ReforcosNoTerritorioSelecionado > 0)
+            GUILayout.Label(
+                "DISTRIBUIÇÕES",
+                tituloSecao,
+                GUILayout.Height(Altura(16))
+            );
+
+            var distribuicoes =
+                gm.DistribuicoesReforcos;
+
+            if (distribuicoes.Count == 0)
             {
-                GUILayout.Space(Espaco(7));
-
                 GUILayout.Label(
-                    gm.TerritorioReforcadoSelecionado.name,
-                    tituloSecao,
-                    GUILayout.Height(Altura(18))
-                );
-
-                GUILayout.Label(
-                    "+" +
-                    gm.ReforcosNoTerritorioSelecionado +
-                    " nesta rodada",
+                    "Nenhum reforço distribuído.",
                     textoCentral,
                     GUILayout.Height(Altura(20))
                 );
-
-                GUILayout.Space(Espaco(4));
-
-                if (GUILayout.Button(
-                        "DESFAZER REFORÇO",
-                        botaoCancelar,
-                        GUILayout.Height(
-                            Altura(31)
-                        )))
-                {
-                    gm.DesfazerReforcosTerritorioSelecionado();
-                }
             }
-
-            // =============================================
-            // CONFIRMAR DISTRIBUIÇÃO
-            // =============================================
-
-            if (gm.PodeConfirmarReforcos)
+            else
             {
-                GUILayout.Space(Espaco(8));
-
-                if (GUILayout.Button(
-                        "CONFIRMAR REFORÇOS",
-                        botaoPrincipal,
-                        GUILayout.Height(
-                            Altura(35)
-                        )))
+                for (int i = 0;
+                     i < distribuicoes.Count;
+                     i++)
                 {
-                    gm.ConfirmarReforcos();
+                    DistribuicaoReforco distribuicao =
+                        distribuicoes[i];
+
+                    GUILayout.BeginHorizontal();
+
+                    GUILayout.Label(
+                        distribuicao.Territorio.name +
+                        " +" +
+                        distribuicao.Quantidade,
+                        texto,
+                        GUILayout.Height(Altura(24))
+                    );
+
+                    GUI.enabled =
+                        gm.PodeEditarPreparacao;
+
+                    bool desfazer =
+                        GUILayout.Button(
+                            "X",
+                            botaoCancelar,
+                            GUILayout.Width(
+                                Mathf.Max(
+                                    24,
+                                    28 * escalaHUD
+                                )
+                            ),
+                            GUILayout.Height(Altura(24))
+                        );
+
+                    GUI.enabled = true;
+                    GUILayout.EndHorizontal();
+
+                    if (desfazer)
+                    {
+                        gm.DesfazerDistribuicaoReforco(
+                            distribuicao.Id
+                        );
+
+                        break;
+                    }
                 }
             }
         }
@@ -582,8 +603,7 @@ public class HUDPreparacao : MonoBehaviour
         // ATAQUE
         // =================================================
 
-        if (gm.faseAtual ==
-            GameManager.FaseTurno.Ataque)
+        if (gm.PodeEditarPreparacao)
         {
             GUILayout.Space(Espaco(5));
 
@@ -709,7 +729,7 @@ public class HUDPreparacao : MonoBehaviour
     }
 
     // =====================================================
-    // PAINEL DIREITO
+    // 8. PAINEL DIREITO
     // =====================================================
 
     private void DesenharPainelDireito()
@@ -801,38 +821,104 @@ public class HUDPreparacao : MonoBehaviour
         GUILayout.FlexibleSpace();
 
         if (gm.faseAtual ==
-            GameManager.FaseTurno.Ataque)
+            GameManager.FaseTurno.Preparacao)
         {
-            GUI.enabled = false;
-
-            GUILayout.Button(
-                "TRANSFERIR",
-                botao,
-                GUILayout.Height(Altura(28))
-            );
-
-            GUI.enabled = true;
-
-            GUILayout.Space(Espaco(4));
-
-            if (GUILayout.Button(
-                    "DESFAZER",
-                    botaoCancelar,
-                    GUILayout.Height(Altura(30))
-                ))
+            if (confirmarEnvioSemAcoes &&
+                gm.QuantidadeOrdensPreparadas > 0)
             {
-                gm.CancelarUltimaOrdem();
+                confirmarEnvioSemAcoes = false;
             }
 
-            GUILayout.Space(Espaco(4));
-
-            if (GUILayout.Button(
-                    "ENVIAR",
-                    botaoPrincipal,
-                    GUILayout.Height(Altura(36))
-                ))
+            if (gm.AcoesEnviadas)
             {
-                gm.EnviarAcoes();
+                confirmarEnvioSemAcoes = false;
+
+                GUILayout.Label(
+                    "AÇÕES ENVIADAS ✓",
+                    textoCentral,
+                    GUILayout.Height(Altura(28))
+                );
+
+                if (GUILayout.Button(
+                        "CANCELAR ENVIO",
+                        botaoCancelar,
+                        GUILayout.Height(Altura(34))
+                    ))
+                {
+                    gm.CancelarEnvio();
+                }
+            }
+            else if (confirmarEnvioSemAcoes)
+            {
+                GUILayout.Label(
+                    "Nenhuma ação preparada.",
+                    textoCentral,
+                    GUILayout.Height(Altura(26))
+                );
+
+                GUILayout.BeginHorizontal();
+
+                if (GUILayout.Button(
+                        "VOLTAR",
+                        botaoCancelar,
+                        GUILayout.Height(Altura(34))
+                    ))
+                {
+                    confirmarEnvioSemAcoes = false;
+                }
+
+                if (GUILayout.Button(
+                        "ENVIAR",
+                        botaoPrincipal,
+                        GUILayout.Height(Altura(34))
+                    ))
+                {
+                    confirmarEnvioSemAcoes = false;
+                    gm.EnviarAcoes();
+                }
+
+                GUILayout.EndHorizontal();
+            }
+            else if (gm.PodeEditarPreparacao)
+            {
+                GUI.enabled = false;
+
+                GUILayout.Button(
+                    "TRANSFERIR",
+                    botao,
+                    GUILayout.Height(Altura(28))
+                );
+
+                GUI.enabled = true;
+
+                GUILayout.Space(Espaco(4));
+
+                if (GUILayout.Button(
+                        "DESFAZER",
+                        botaoCancelar,
+                        GUILayout.Height(Altura(30))
+                    ))
+                {
+                    gm.CancelarUltimaOrdem();
+                }
+
+                GUILayout.Space(Espaco(4));
+
+                if (GUILayout.Button(
+                        "ENVIAR AÇÕES",
+                        botaoPrincipal,
+                        GUILayout.Height(Altura(36))
+                    ))
+                {
+                    if (gm.QuantidadeOrdensPreparadas == 0)
+                    {
+                        confirmarEnvioSemAcoes = true;
+                    }
+                    else
+                    {
+                        gm.EnviarAcoes();
+                    }
+                }
             }
         }
 
@@ -840,7 +926,7 @@ public class HUDPreparacao : MonoBehaviour
     }
 
     // =====================================================
-    // UTILIDADES
+    // 9. UTILIDADES
     // =====================================================
 
     private void DesenharSeparador(
@@ -872,11 +958,10 @@ public class HUDPreparacao : MonoBehaviour
     {
         switch (gm.faseAtual)
         {
-            case GameManager.FaseTurno.Reforco:
-                return "REFORÇOS";
-
-            case GameManager.FaseTurno.Ataque:
-                return "PREPARAÇÃO";
+            case GameManager.FaseTurno.Preparacao:
+                return gm.AcoesEnviadas
+                    ? "ENVIADO"
+                    : "PREPARAÇÃO";
 
             case GameManager.FaseTurno.Resolucao:
                 return "RESOLUÇÃO";

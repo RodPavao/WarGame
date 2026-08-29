@@ -17,7 +17,7 @@ public class ContadorTropas : MonoBehaviour
     private Coroutine animacaoAtual;
 
     // =====================================================
-    // TAMANHO VISUAL GLOBAL
+    // 1. TAMANHO VISUAL E ÁREA CLICÁVEL
     // =====================================================
 
     // 0.80 = todos os contadores ficam 20% menores.
@@ -28,7 +28,7 @@ public class ContadorTropas : MonoBehaviour
     private const float tamanhoCollider = 0.82f;
 
     // =====================================================
-    // CLIQUE LONGO
+    // 2. ESTADO DO CLIQUE LONGO
     // =====================================================
 
     private bool pressionando = false;
@@ -39,7 +39,7 @@ public class ContadorTropas : MonoBehaviour
     private const float tempoCliqueLongo = 1f;
 
     // =====================================================
-    // EDITOR
+    // 3. VALIDAÇÃO NO EDITOR
     // =====================================================
 
     private void OnValidate()
@@ -86,7 +86,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // CONFIGURAÇÃO
+    // 4. CONFIGURAÇÃO
     // =====================================================
 
     public void Configurar(
@@ -105,7 +105,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // UPDATE — HOLD 1 SEGUNDO
+    // 5. DETECÇÃO DO HOLD
     // =====================================================
 
     private void Update()
@@ -119,8 +119,7 @@ public class ContadorTropas : MonoBehaviour
         if (GameManager.instance == null)
             return;
 
-        if (GameManager.instance.faseAtual !=
-            GameManager.FaseTurno.Reforco)
+        if (!GameManager.instance.PodeEditarPreparacao)
             return;
 
         if (Time.unscaledTime - inicioPressao >=
@@ -133,7 +132,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // VISUAL
+    // 6. CONSTRUÇÃO VISUAL
     // =====================================================
 
     private void CriarVisual()
@@ -306,7 +305,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // ESCALA VISUAL GLOBAL
+    // 7. ESCALA VISUAL GLOBAL
     // =====================================================
 
     private void AplicarEscalaVisual()
@@ -359,7 +358,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // BORDA EXTERNA
+    // 8. BORDA EXTERNA
     // =====================================================
 
     private void GarantirBordaExterna(
@@ -432,7 +431,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // COLLIDER
+    // 9. COLLIDER
     // =====================================================
 
     private void GarantirCollider()
@@ -457,7 +456,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // ATUALIZAÇÃO
+    // 10. ATUALIZAÇÃO
     // =====================================================
 
     public void Atualizar()
@@ -497,7 +496,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // INPUT CENTRALIZADO
+    // 11. INPUT CENTRALIZADO
     // =====================================================
     //
     // IMPORTANTE:
@@ -551,7 +550,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // CLIQUE NORMAL
+    // 12. CLIQUE NORMAL
     // =====================================================
 
     private void ExecutarCliqueNormal()
@@ -563,12 +562,7 @@ public class ContadorTropas : MonoBehaviour
             territorio == null)
             return;
 
-        // =================================================
-        // REFORÇO
-        // =================================================
-
-        if (gm.faseAtual ==
-            GameManager.FaseTurno.Reforco)
+        if (gm.PodeAdicionarReforcoEm(territorio))
         {
             int tropasAntes =
                 territorio.Tropas;
@@ -586,12 +580,7 @@ public class ContadorTropas : MonoBehaviour
             return;
         }
 
-        // =================================================
-        // PREPARAÇÃO / ATAQUE
-        // =================================================
-
-        if (gm.faseAtual ==
-            GameManager.FaseTurno.Ataque)
+        if (gm.PodeEditarPreparacao)
         {
             gm.ClicarTerritorio(
                 territorio
@@ -607,7 +596,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // HOLD 1 SEGUNDO
+    // 13. DISTRIBUIÇÃO POR HOLD
     // =====================================================
 
     private void DespejarTodosReforcos()
@@ -619,20 +608,8 @@ public class ContadorTropas : MonoBehaviour
             territorio == null)
             return;
 
-        if (gm.faseAtual !=
-            GameManager.FaseTurno.Reforco)
+        if (!gm.PodeAdicionarReforcoEm(territorio))
             return;
-
-        // Durante o modo de diagnóstico do GameManager,
-        // a própria regra de TentarAdicionarReforco()
-        // decide se qualquer território pode receber tropas.
-        //
-        // Fora do diagnóstico, mantém a regra normal.
-        if (!gm.modoTesteCliquesTodosTerritorios &&
-            territorio.dono != gm.jogadorLocal)
-        {
-            return;
-        }
 
         int quantidade =
             gm.reforcosDisponiveis;
@@ -640,30 +617,22 @@ public class ContadorTropas : MonoBehaviour
         if (quantidade <= 0)
             return;
 
-        for (int i = 0;
-             i < quantidade;
-             i++)
-        {
-            gm.TentarAdicionarReforco(
-                territorio
+        int quantidadeAplicada =
+            gm.DistribuirReforcos(
+                territorio,
+                quantidade
             );
-        }
+
+        if (quantidadeAplicada <= 0)
+            return;
 
         Atualizar();
 
         AnimarAdicao();
-
-        Debug.Log(
-            "REFORÇO RÁPIDO | " +
-            territorio.name +
-            " recebeu " +
-            quantidade +
-            " tropa(s)."
-        );
     }
 
     // =====================================================
-    // ANIMAÇÃO
+    // 14. ANIMAÇÃO
     // =====================================================
 
     private void AnimarAdicao()
@@ -718,7 +687,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // CENTRALIZAÇÃO DO NÚMERO
+    // 15. CENTRALIZAÇÃO DO NÚMERO
     // =====================================================
 
     private void CentralizarMalhaNumero()
@@ -838,7 +807,7 @@ public class ContadorTropas : MonoBehaviour
     }
 
     // =====================================================
-    // SPRITE DO CONTADOR
+    // 16. SPRITE DO CONTADOR
     // =====================================================
 
     private Sprite CriarSpriteArredondado()
