@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public sealed class MapaAtivo : MonoBehaviour
 {
@@ -72,6 +73,22 @@ public sealed class MapaAtivo : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded -= AoCarregarCena;
+        SceneManager.sceneLoaded += AoCarregarCena;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= AoCarregarCena;
+    }
+
+    private void AoCarregarCena(Scene cena, LoadSceneMode modo)
+    {
+        AtualizarReferenciasDaCena();
+    }
+
     private void Start()
     {
         AtualizarReferenciasDaCena();
@@ -79,6 +96,7 @@ public sealed class MapaAtivo : MonoBehaviour
 
     public void AtualizarReferenciasDaCena()
     {
+        SincronizarDefinicaoComCena();
         territoriosRuntime.Clear();
         territorioPorId.Clear();
         regiaoPorId.Clear();
@@ -121,6 +139,29 @@ public sealed class MapaAtivo : MonoBehaviour
             Debug.LogError($"Mapa {definicao.MapaId}: esperados {definicao.Territorios.Count} territórios, encontrados {territoriosRuntime.Count} na cena.");
     }
 
+    private void SincronizarDefinicaoComCena()
+    {
+        CatalogoMapas catalogo = Resources.Load<CatalogoMapas>(CaminhoCatalogo);
+        if (catalogo == null)
+            return;
+
+        SpriteRenderer[] visuais = FindObjectsByType<SpriteRenderer>();
+        foreach (DefinicaoMapa mapa in catalogo.Mapas)
+        {
+            if (mapa == null || mapa.ArteBase == null)
+                continue;
+            if (!Array.Exists(visuais, renderer => renderer != null && renderer.sprite == mapa.ArteBase))
+                continue;
+
+            if (definicao != mapa)
+            {
+                definicao = mapa;
+                Debug.Log($"[MapaAtivo] Definição sincronizada com a cena: {mapa.MapaId} | {mapa.Territorios.Count} territórios | {mapa.Conexoes.Count} conexões.");
+            }
+            return;
+        }
+    }
+
     // ============================================================
     // 2. CONSULTAS UNIVERSAIS DE TERRITÓRIOS E CONEXÕES
     // ============================================================
@@ -161,9 +202,14 @@ public sealed class MapaAtivo : MonoBehaviour
 
     public bool SaoConectados(string origemId, string destinoId, TipoConexaoMapa tipo)
     {
-        if (definicao == null)
+        return SaoConectados(definicao, origemId, destinoId, tipo);
+    }
+
+    public static bool SaoConectados(DefinicaoMapa mapa, string origemId, string destinoId, TipoConexaoMapa tipo)
+    {
+        if (mapa == null)
             return false;
-        foreach (DefinicaoConexaoMapa conexao in definicao.Conexoes)
+        foreach (DefinicaoConexaoMapa conexao in mapa.Conexoes)
         {
             if (conexao == null || conexao.tipo != tipo)
                 continue;

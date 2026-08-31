@@ -1,0 +1,928 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f9d6f2c1094f7a9877e75fb47c2901, type: 3}
+  m_Name: PearlHarbor
+  m_EditorClassIdentifier: Assembly-CSharp::DefinicaoMapa
+  mapaId: pearl_harbor
+  nomeInterno: PearlHarbor
+  nomeExibido: Pearl Harbor
+  descricao: "Mapa real Pearl Harbor com 45 territ\xF3rios e cinco setores."
+  temaId: pearl_harbor
+  versao: 1
+  arteBase: {fileID: 21300000, guid: 302937e338d81f04fbd3277e54f4a27f, type: 3}
+  centroCamera: {x: 0, y: 0}
+  tamanhoOrtografico: 4.5
+  territorios:
+  - id: ReaganIsland
+    nomeExibido: Reagan Island
+    chaveTraducao: territory_reaganisland
+    regiaoId: north_sector
+    posicaoContador: {x: -0.4, y: 0.145}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.03715086, y: 0.4335556}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Portland
+    nomeExibido: Portland
+    chaveTraducao: territory_portland
+    regiaoId: north_sector
+    posicaoContador: {x: 0.23, y: 0.005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.16130781, y: -0.025389194}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Tucson
+    nomeExibido: Tucson
+    chaveTraducao: territory_tucson
+    regiaoId: north_sector
+    posicaoContador: {x: -0.08, y: 0.21}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.25293708, y: -0.09126699}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Albuquerque
+    nomeExibido: Albuquerque
+    chaveTraducao: territory_albuquerque
+    regiaoId: north_sector
+    posicaoContador: {x: 0.005, y: 0.075}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.46208167, y: 0.19054866}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Kadena
+    nomeExibido: Kadena
+    chaveTraducao: territory_kadena
+    regiaoId: north_sector
+    posicaoContador: {x: 0.06, y: 0.105}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.051458776, y: -0.21788907}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: AndersonBase
+    nomeExibido: Anderson Base
+    chaveTraducao: territory_andersonbase
+    regiaoId: left_sector
+    posicaoContador: {x: 0.08, y: 0.06}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.12677455, y: -0.19935954}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Charlotte
+    nomeExibido: Charlotte
+    chaveTraducao: territory_charlotte
+    regiaoId: left_sector
+    posicaoContador: {x: 0.235, y: 0.15}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.15719771, y: -0.017392993}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Hoover
+    nomeExibido: Hoover
+    chaveTraducao: territory_hoover
+    regiaoId: left_sector
+    posicaoContador: {x: 0.09, y: -0.215}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.19322062, y: 0.0064415634}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Yokota
+    nomeExibido: Yokota
+    chaveTraducao: territory_yokota
+    regiaoId: left_sector
+    posicaoContador: {x: -0.115, y: 0.03}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.09429073, y: 0.32376155}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Harrison
+    nomeExibido: Harrison
+    chaveTraducao: territory_harrison
+    regiaoId: center_base
+    posicaoContador: {x: -0.205, y: -0.08}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.2377767, y: -0.06985319}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Incirlik
+    nomeExibido: Incirlik
+    chaveTraducao: territory_incirlik
+    regiaoId: center_base
+    posicaoContador: {x: 0.17, y: 0.03}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.23840612, y: -0.12399924}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Austin
+    nomeExibido: Austin
+    chaveTraducao: territory_austin
+    regiaoId: center_base
+    posicaoContador: {x: 0.095, y: 0.115}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.21529317, y: -0.1904183}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Fairchild
+    nomeExibido: Fairchild
+    chaveTraducao: territory_fairchild
+    regiaoId: center_base
+    posicaoContador: {x: 0.01, y: 0.04}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.2446891, y: -0.20038176}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Hayes
+    nomeExibido: Hayes
+    chaveTraducao: territory_hayes
+    regiaoId: center_base
+    posicaoContador: {x: -0.04, y: 0}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.25246677, y: -0.21115208}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Mather
+    nomeExibido: Mather
+    chaveTraducao: territory_mather
+    regiaoId: north_sector
+    posicaoContador: {x: 0.035, y: 0.09}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.09601429, y: -0.2116561}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Roosevelt
+    nomeExibido: Roosevelt
+    chaveTraducao: territory_roosevelt
+    regiaoId: north_sector
+    posicaoContador: {x: 0.185, y: 0}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.073703885, y: 0.25575995}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Coolidge
+    nomeExibido: Coolidge
+    chaveTraducao: territory_coolidge
+    regiaoId: north_sector
+    posicaoContador: {x: -0.1, y: -0.005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.27362692, y: -0.19491482}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Phoenix
+    nomeExibido: Phoenix
+    chaveTraducao: territory_phoenix
+    regiaoId: right_sector
+    posicaoContador: {x: 0.02, y: 0.015}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.1744771, y: 0.2935853}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: NGay
+    nomeExibido: N. Gay
+    chaveTraducao: territory_ngay
+    regiaoId: north_sector
+    posicaoContador: {x: 0.015, y: -0.055}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.32601833, y: -0.09181452}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Maxwell
+    nomeExibido: Maxwell
+    chaveTraducao: territory_maxwell
+    regiaoId: right_sector
+    posicaoContador: {x: -0.015, y: 0.045}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.32011807, y: -0.17717409}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Otix
+    nomeExibido: Otix
+    chaveTraducao: territory_otix
+    regiaoId: right_sector
+    posicaoContador: {x: -0.05, y: 0.31}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.14793408, y: 0.024636984}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: AbrahamLincolnCoast
+    nomeExibido: Abraham Lincoln Coast
+    chaveTraducao: territory_abrahamlincolncoast
+    regiaoId: right_sector
+    posicaoContador: {x: -0.09, y: 0.065}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.2596047, y: -0.20165586}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: ElAguacate
+    nomeExibido: El Aguacate
+    chaveTraducao: territory_elaguacate
+    regiaoId: right_sector
+    posicaoContador: {x: -0.305, y: -0.03}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.022655487, y: -0.24027872}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Andrews
+    nomeExibido: Andrews
+    chaveTraducao: territory_andrews
+    regiaoId: center_base
+    posicaoContador: {x: -0.04, y: -0.03}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.013988316, y: 0.2407634}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Grant
+    nomeExibido: Grant
+    chaveTraducao: territory_grant
+    regiaoId: center_base
+    posicaoContador: {x: -0.225, y: 0.015}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.10759941, y: -0.10186556}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Eglin
+    nomeExibido: Eglin
+    chaveTraducao: territory_eglin
+    regiaoId: right_sector
+    posicaoContador: {x: -0.1, y: 0.19}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.20508254, y: -0.09410136}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Edwards
+    nomeExibido: Edwards
+    chaveTraducao: territory_edwards
+    regiaoId: right_sector
+    posicaoContador: {x: -0.055, y: 0.04}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.31228697, y: 0.07598394}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: DavisMonthan
+    nomeExibido: Davis-Monthan
+    chaveTraducao: territory_davismonthan
+    regiaoId: right_sector
+    posicaoContador: {x: 0.04, y: -0.075}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.36425495, y: 0.08238268}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: HearborPort
+    nomeExibido: Hearbor Port
+    chaveTraducao: territory_hearborport
+    regiaoId: right_sector
+    posicaoContador: {x: -0.01, y: 0.025}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.23325491, y: 0.2704916}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: RheinMain
+    nomeExibido: Rhein-Main
+    chaveTraducao: territory_rheinmain
+    regiaoId: right_sector
+    posicaoContador: {x: -0.11, y: 0.09}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.10015774, y: -0.18730438}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Columbus
+    nomeExibido: Columbus
+    chaveTraducao: territory_columbus
+    regiaoId: right_sector
+    posicaoContador: {x: -0.01, y: 0.215}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.18335366, y: -0.09328169}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Taft
+    nomeExibido: Taft
+    chaveTraducao: territory_taft
+    regiaoId: left_sector
+    posicaoContador: {x: 0.165, y: 0.065}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.16093254, y: -0.03700316}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Thule
+    nomeExibido: Thule
+    chaveTraducao: territory_thule
+    regiaoId: left_sector
+    posicaoContador: {x: -0.005, y: 0.175}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.080527544, y: -0.1525808}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Atlanta
+    nomeExibido: Atlanta
+    chaveTraducao: territory_atlanta
+    regiaoId: left_sector
+    posicaoContador: {x: -0.125, y: 0.19}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.2090199, y: -0.05938995}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: LongBeach
+    nomeExibido: Long Beach
+    chaveTraducao: territory_longbeach
+    regiaoId: left_sector
+    posicaoContador: {x: -0.255, y: 0.005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.17715275, y: -0.07200825}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Garfield
+    nomeExibido: Garfield
+    chaveTraducao: territory_garfield
+    regiaoId: center_base
+    posicaoContador: {x: 0.335, y: 0.055}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.090432316, y: -0.21280527}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Malmstrom
+    nomeExibido: Malmstrom
+    chaveTraducao: territory_malmstrom
+    regiaoId: center_base
+    posicaoContador: {x: -0.065, y: -0.005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.33345407, y: 0.0042625666}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Robins
+    nomeExibido: Robins
+    chaveTraducao: territory_robins
+    regiaoId: left_sector
+    posicaoContador: {x: -0.28, y: 0.03}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.06987691, y: -0.14453351}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Bush
+    nomeExibido: Bush
+    chaveTraducao: territory_bush
+    regiaoId: south_sector
+    posicaoContador: {x: -0.16, y: 0.005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.15071285, y: -0.13852537}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Sacramento
+    nomeExibido: Sacramento
+    chaveTraducao: territory_sacramento
+    regiaoId: south_sector
+    posicaoContador: {x: 0.07, y: -0.06}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.22213334, y: 0.20864546}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Eisenhower
+    nomeExibido: Eisenhower
+    chaveTraducao: territory_eisenhower
+    regiaoId: south_sector
+    posicaoContador: {x: 0.335, y: 0.07}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.096214056, y: 0.01694107}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Ramstein
+    nomeExibido: Ramstein
+    chaveTraducao: territory_ramstein
+    regiaoId: south_sector
+    posicaoContador: {x: 0.035, y: 0.06}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.2746192, y: -0.18688583}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Nixon
+    nomeExibido: Nixon
+    chaveTraducao: territory_nixon
+    regiaoId: south_sector
+    posicaoContador: {x: -0.115, y: 0.045}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.23997617, y: 0.04669404}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: VirginiaBeach
+    nomeExibido: Virginia Beach
+    chaveTraducao: territory_virginiabeach
+    regiaoId: south_sector
+    posicaoContador: {x: -0.13, y: 0.005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0.22800767, y: 0.20938993}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: TrumpIsland
+    nomeExibido: Trump Island
+    chaveTraducao: territory_trumpisland
+    regiaoId: south_sector
+    posicaoContador: {x: 0.1, y: -0.025}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: -0.3487997, y: -0.15777779}
+    possuiPosicaoNomeManual: 1
+    tamanhoFonteNome: 0
+    metadados: []
+  regioes:
+  - id: north_sector
+    nomeExibido: North Sector
+    descricao: North Sector
+    chaveTraducao: region_north_sector
+    bonus: 6
+    ordemExibicao: 0
+    corDestaque: {r: 0.25, g: 0.65, b: 1, a: 1}
+    territorioIds:
+    - ReaganIsland
+    - Portland
+    - Tucson
+    - Albuquerque
+    - Kadena
+    - Mather
+    - Roosevelt
+    - Coolidge
+    - NGay
+    metadados: []
+  - id: left_sector
+    nomeExibido: Left Sector
+    descricao: Left Sector
+    chaveTraducao: region_left_sector
+    bonus: 5
+    ordemExibicao: 1
+    corDestaque: {r: 0.35, g: 0.85, b: 0.45, a: 1}
+    territorioIds:
+    - AndersonBase
+    - Charlotte
+    - Hoover
+    - Yokota
+    - Taft
+    - Thule
+    - Atlanta
+    - LongBeach
+    - Robins
+    metadados: []
+  - id: center_base
+    nomeExibido: Center Base
+    descricao: Center Base
+    chaveTraducao: region_center_base
+    bonus: 7
+    ordemExibicao: 2
+    corDestaque: {r: 1, g: 0.72, b: 0.25, a: 1}
+    territorioIds:
+    - Harrison
+    - Incirlik
+    - Austin
+    - Fairchild
+    - Hayes
+    - Andrews
+    - Grant
+    - Garfield
+    - Malmstrom
+    metadados: []
+  - id: right_sector
+    nomeExibido: Right Sector
+    descricao: Right Sector
+    chaveTraducao: region_right_sector
+    bonus: 6
+    ordemExibicao: 3
+    corDestaque: {r: 0.85, g: 0.42, b: 0.9, a: 1}
+    territorioIds:
+    - Phoenix
+    - Maxwell
+    - Otix
+    - AbrahamLincolnCoast
+    - ElAguacate
+    - Eglin
+    - Edwards
+    - DavisMonthan
+    - HearborPort
+    - RheinMain
+    - Columbus
+    metadados: []
+  - id: south_sector
+    nomeExibido: South Sector
+    descricao: South Sector
+    chaveTraducao: region_south_sector
+    bonus: 4
+    ordemExibicao: 4
+    corDestaque: {r: 1, g: 0.38, b: 0.32, a: 1}
+    territorioIds:
+    - Bush
+    - Sacramento
+    - Eisenhower
+    - Ramstein
+    - Nixon
+    - VirginiaBeach
+    - TrumpIsland
+    metadados: []
+  conexoes:
+  - origemId: Coolidge
+    destinoId: Roosevelt
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mather
+    destinoId: Roosevelt
+    tipo: 0
+    bidirecional: 1
+  - origemId: Maxwell
+    destinoId: Roosevelt
+    tipo: 0
+    bidirecional: 1
+  - origemId: Coolidge
+    destinoId: Phoenix
+    tipo: 0
+    bidirecional: 1
+  - origemId: Coolidge
+    destinoId: Maxwell
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kadena
+    destinoId: Mather
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mather
+    destinoId: Maxwell
+    tipo: 0
+    bidirecional: 1
+  - origemId: Hayes
+    destinoId: Mather
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kadena
+    destinoId: Portland
+    tipo: 0
+    bidirecional: 1
+  - origemId: Portland
+    destinoId: Tucson
+    tipo: 0
+    bidirecional: 1
+  - origemId: Albuquerque
+    destinoId: Portland
+    tipo: 0
+    bidirecional: 1
+  - origemId: Albuquerque
+    destinoId: Kadena
+    tipo: 0
+    bidirecional: 1
+  - origemId: Hayes
+    destinoId: Kadena
+    tipo: 0
+    bidirecional: 1
+  - origemId: Harrison
+    destinoId: Kadena
+    tipo: 0
+    bidirecional: 1
+  - origemId: NGay
+    destinoId: Phoenix
+    tipo: 0
+    bidirecional: 1
+  - origemId: Maxwell
+    destinoId: Phoenix
+    tipo: 0
+    bidirecional: 1
+  - origemId: Otix
+    destinoId: Phoenix
+    tipo: 0
+    bidirecional: 1
+  - origemId: Maxwell
+    destinoId: Otix
+    tipo: 0
+    bidirecional: 1
+  - origemId: Albuquerque
+    destinoId: Tucson
+    tipo: 0
+    bidirecional: 1
+  - origemId: AndersonBase
+    destinoId: Tucson
+    tipo: 0
+    bidirecional: 1
+  - origemId: Albuquerque
+    destinoId: Harrison
+    tipo: 0
+    bidirecional: 1
+  - origemId: Albuquerque
+    destinoId: AndersonBase
+    tipo: 0
+    bidirecional: 1
+  - origemId: Albuquerque
+    destinoId: Charlotte
+    tipo: 0
+    bidirecional: 1
+  - origemId: Harrison
+    destinoId: Hayes
+    tipo: 0
+    bidirecional: 1
+  - origemId: Fairchild
+    destinoId: Hayes
+    tipo: 0
+    bidirecional: 1
+  - origemId: Hayes
+    destinoId: Incirlik
+    tipo: 0
+    bidirecional: 1
+  - origemId: DavisMonthan
+    destinoId: ElAguacate
+    tipo: 0
+    bidirecional: 1
+  - origemId: Harrison
+    destinoId: Incirlik
+    tipo: 0
+    bidirecional: 1
+  - origemId: Charlotte
+    destinoId: Harrison
+    tipo: 0
+    bidirecional: 1
+  - origemId: AbrahamLincolnCoast
+    destinoId: Otix
+    tipo: 0
+    bidirecional: 1
+  - origemId: AbrahamLincolnCoast
+    destinoId: RheinMain
+    tipo: 0
+    bidirecional: 1
+  - origemId: AbrahamLincolnCoast
+    destinoId: Columbus
+    tipo: 0
+    bidirecional: 1
+  - origemId: AndersonBase
+    destinoId: Charlotte
+    tipo: 0
+    bidirecional: 1
+  - origemId: AndersonBase
+    destinoId: Hoover
+    tipo: 0
+    bidirecional: 1
+  - origemId: Columbus
+    destinoId: Otix
+    tipo: 0
+    bidirecional: 1
+  - origemId: Fairchild
+    destinoId: Incirlik
+    tipo: 0
+    bidirecional: 1
+  - origemId: Andrews
+    destinoId: Fairchild
+    tipo: 0
+    bidirecional: 1
+  - origemId: Austin
+    destinoId: Incirlik
+    tipo: 0
+    bidirecional: 1
+  - origemId: DavisMonthan
+    destinoId: HearborPort
+    tipo: 0
+    bidirecional: 1
+  - origemId: Charlotte
+    destinoId: Hoover
+    tipo: 0
+    bidirecional: 1
+  - origemId: Charlotte
+    destinoId: Yokota
+    tipo: 0
+    bidirecional: 1
+  - origemId: Columbus
+    destinoId: RheinMain
+    tipo: 0
+    bidirecional: 1
+  - origemId: HearborPort
+    destinoId: RheinMain
+    tipo: 0
+    bidirecional: 1
+  - origemId: Columbus
+    destinoId: Eglin
+    tipo: 0
+    bidirecional: 1
+  - origemId: Columbus
+    destinoId: Edwards
+    tipo: 0
+    bidirecional: 1
+  - origemId: Andrews
+    destinoId: Austin
+    tipo: 0
+    bidirecional: 1
+  - origemId: Andrews
+    destinoId: Grant
+    tipo: 0
+    bidirecional: 1
+  - origemId: Austin
+    destinoId: Grant
+    tipo: 0
+    bidirecional: 1
+  - origemId: Hoover
+    destinoId: Yokota
+    tipo: 0
+    bidirecional: 1
+  - origemId: Hoover
+    destinoId: Thule
+    tipo: 0
+    bidirecional: 1
+  - origemId: Atlanta
+    destinoId: Hoover
+    tipo: 0
+    bidirecional: 1
+  - origemId: Taft
+    destinoId: Yokota
+    tipo: 0
+    bidirecional: 1
+  - origemId: Thule
+    destinoId: Yokota
+    tipo: 0
+    bidirecional: 1
+  - origemId: Edwards
+    destinoId: Eglin
+    tipo: 0
+    bidirecional: 1
+  - origemId: Grant
+    destinoId: Malmstrom
+    tipo: 0
+    bidirecional: 1
+  - origemId: Garfield
+    destinoId: Grant
+    tipo: 0
+    bidirecional: 1
+  - origemId: Taft
+    destinoId: Thule
+    tipo: 0
+    bidirecional: 1
+  - origemId: Atlanta
+    destinoId: Thule
+    tipo: 0
+    bidirecional: 1
+  - origemId: Robins
+    destinoId: Thule
+    tipo: 0
+    bidirecional: 1
+  - origemId: LongBeach
+    destinoId: Thule
+    tipo: 0
+    bidirecional: 1
+  - origemId: Garfield
+    destinoId: Malmstrom
+    tipo: 0
+    bidirecional: 1
+  - origemId: Atlanta
+    destinoId: LongBeach
+    tipo: 0
+    bidirecional: 1
+  - origemId: LongBeach
+    destinoId: Robins
+    tipo: 0
+    bidirecional: 1
+  - origemId: Eisenhower
+    destinoId: Garfield
+    tipo: 0
+    bidirecional: 1
+  - origemId: Bush
+    destinoId: Sacramento
+    tipo: 0
+    bidirecional: 1
+  - origemId: Bush
+    destinoId: Nixon
+    tipo: 0
+    bidirecional: 1
+  - origemId: Bush
+    destinoId: VirginiaBeach
+    tipo: 0
+    bidirecional: 1
+  - origemId: Eisenhower
+    destinoId: Sacramento
+    tipo: 0
+    bidirecional: 1
+  - origemId: Sacramento
+    destinoId: VirginiaBeach
+    tipo: 0
+    bidirecional: 1
+  - origemId: Ramstein
+    destinoId: Sacramento
+    tipo: 0
+    bidirecional: 1
+  - origemId: Eisenhower
+    destinoId: Ramstein
+    tipo: 0
+    bidirecional: 1
+  - origemId: Nixon
+    destinoId: VirginiaBeach
+    tipo: 0
+    bidirecional: 1
+  - origemId: Portland
+    destinoId: ReaganIsland
+    tipo: 0
+    bidirecional: 1
+  - origemId: ReaganIsland
+    destinoId: Tucson
+    tipo: 0
+    bidirecional: 1
+  - origemId: Hayes
+    destinoId: Maxwell
+    tipo: 0
+    bidirecional: 1
+  - origemId: AbrahamLincolnCoast
+    destinoId: Phoenix
+    tipo: 0
+    bidirecional: 1
+  - origemId: AbrahamLincolnCoast
+    destinoId: NGay
+    tipo: 0
+    bidirecional: 1
+  - origemId: AbrahamLincolnCoast
+    destinoId: ElAguacate
+    tipo: 0
+    bidirecional: 1
+  - origemId: DavisMonthan
+    destinoId: RheinMain
+    tipo: 0
+    bidirecional: 1
+  - origemId: Hayes
+    destinoId: Otix
+    tipo: 0
+    bidirecional: 1
+  - origemId: Charlotte
+    destinoId: Incirlik
+    tipo: 0
+    bidirecional: 1
+  - origemId: Andrews
+    destinoId: Otix
+    tipo: 0
+    bidirecional: 1
+  - origemId: Eglin
+    destinoId: Grant
+    tipo: 0
+    bidirecional: 1
+  - origemId: Edwards
+    destinoId: Malmstrom
+    tipo: 0
+    bidirecional: 1
+  - origemId: Grant
+    destinoId: Taft
+    tipo: 0
+    bidirecional: 1
+  - origemId: Garfield
+    destinoId: Taft
+    tipo: 0
+    bidirecional: 1
+  - origemId: Garfield
+    destinoId: Robins
+    tipo: 0
+    bidirecional: 1
+  - origemId: Bush
+    destinoId: Malmstrom
+    tipo: 0
+    bidirecional: 1
+  - origemId: Garfield
+    destinoId: Sacramento
+    tipo: 0
+    bidirecional: 1
+  - origemId: Nixon
+    destinoId: TrumpIsland
+    tipo: 0
+    bidirecional: 1
+  condicoesEstrategicas: []
+  metadados: []

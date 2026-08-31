@@ -56,6 +56,11 @@ public class InputPartida : MonoBehaviour
         if (!Pointer.current.press.wasPressedThisFrame)
             return;
 
+        // O input persiste entre cenas; durante reloads o GameManager da cena
+        // pode ficar temporariamente indisponível por um frame.
+        if (GameManager.instance == null)
+            return;
+
         Vector2 posicaoTela =
             Pointer.current.position.ReadValue();
 
