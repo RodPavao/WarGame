@@ -43,33 +43,6 @@ public static class MapaTeste12Editor
             EditorApplication.delayCall += ExecutarGeracaoAgendada;
     }
 
-    [MenuItem("WarGame/Teste de Mapas/Classic")]
-    private static void SelecionarClassic()
-    {
-        SelecionarMapa("classic", CenaClassic);
-    }
-
-    [MenuItem("WarGame/Teste de Mapas/Classic", true)]
-    private static bool ValidarSelecaoClassic()
-    {
-        Menu.SetChecked("WarGame/Teste de Mapas/Classic", ObterMapaSelecionado() == "classic");
-        return !EditorApplication.isPlayingOrWillChangePlaymode;
-    }
-
-    [MenuItem("WarGame/Teste de Mapas/MapaTeste12")]
-    private static void SelecionarMapaTeste12()
-    {
-        SelecionarMapa(IdMapa, CenaTeste);
-    }
-
-    [MenuItem("WarGame/Teste de Mapas/MapaTeste12", true)]
-    private static bool ValidarSelecaoMapaTeste12()
-    {
-        Menu.SetChecked("WarGame/Teste de Mapas/MapaTeste12", ObterMapaSelecionado() == IdMapa);
-        return !EditorApplication.isPlayingOrWillChangePlaymode && File.Exists(Absoluto(CenaTeste));
-    }
-
-    [MenuItem("WarGame/Teste de Mapas/Gerar ou Atualizar MapaTeste12")]
     public static void GerarOuAtualizarMapaTeste12()
     {
         GarantirPastas();
@@ -82,7 +55,6 @@ public static class MapaTeste12Editor
         Debug.Log("MAPA_TESTE_12 | Gerado com 12 territórios, 3 regiões e 12 conexões.");
     }
 
-    [MenuItem("WarGame/Teste de Mapas/Validar MapaTeste12")]
     private static void ValidarMapaTeste12()
     {
         ValidarMapa(
@@ -93,7 +65,6 @@ public static class MapaTeste12Editor
             12);
     }
 
-    [MenuItem("WarGame/Teste de Mapas/Validar Classic e MapaTeste12")]
     private static void ValidarAmbos()
     {
         ValidarMapa("Classic", AssetDatabase.LoadAssetAtPath<DefinicaoMapa>(ClassicPath), 42, 6, 83);
@@ -135,29 +106,6 @@ public static class MapaTeste12Editor
         {
             Debug.LogError("MAPA_TESTE_12_TRIGGER_ERRO | " + excecao);
         }
-    }
-
-    private static void SelecionarMapa(string mapaId, string cenaPath)
-    {
-        if (!File.Exists(Absoluto(cenaPath)))
-        {
-            Debug.LogError("Cena de teste ausente: " + cenaPath);
-            return;
-        }
-
-        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            return;
-
-        PlayerPrefs.SetString(MapaAtivo.ChaveMapaTesteEditor, mapaId);
-        PlayerPrefs.Save();
-        EditorSceneManager.OpenScene(cenaPath, OpenSceneMode.Single);
-        SceneView.RepaintAll();
-        Debug.Log($"TESTE DE MAPAS | {mapaId} selecionado. O próximo Play Mode usará esta definição.");
-    }
-
-    private static string ObterMapaSelecionado()
-    {
-        return PlayerPrefs.GetString(MapaAtivo.ChaveMapaTesteEditor, "classic");
     }
 
     private static void GarantirPastas()

@@ -16,8 +16,58 @@ public static class DefinicaoMapaClassicEditor
     private const string PastaMapas = "Assets/Resources/Mapas";
     private const string CaminhoMapa = PastaMapas + "/Classic.asset";
     private const string CaminhoCatalogo = PastaMapas + "/CatalogoMapas.asset";
+    private const string CenaPearlHarbor = "Assets/Mapas/Pearl Harbor/PearlHarbor.unity";
+    private const string MenuSelecionarClassic = "WarGame/Mapas/Clássico";
+    private const string MenuSelecionarPearlHarbor = "WarGame/Mapas/Pearl Harbor";
 
-    [MenuItem("WarGame/Mapas/Gerar ou Atualizar Classic da Cena %#g")]
+    [MenuItem(MenuSelecionarClassic)]
+    private static void SelecionarClassic()
+    {
+        AbrirMapa("classic", Cena, "Clássico");
+    }
+
+    [MenuItem(MenuSelecionarClassic, true)]
+    private static bool ValidarSelecaoClassic()
+    {
+        Menu.SetChecked(
+            MenuSelecionarClassic,
+            PlayerPrefs.GetString(MapaAtivo.ChaveMapaTesteEditor, "classic") == "classic");
+        return !EditorApplication.isPlayingOrWillChangePlaymode;
+    }
+
+    [MenuItem(MenuSelecionarPearlHarbor)]
+    private static void SelecionarPearlHarbor()
+    {
+        AbrirMapa("pearl_harbor", CenaPearlHarbor, "Pearl Harbor");
+    }
+
+    [MenuItem(MenuSelecionarPearlHarbor, true)]
+    private static bool ValidarSelecaoPearlHarbor()
+    {
+        Menu.SetChecked(
+            MenuSelecionarPearlHarbor,
+            PlayerPrefs.GetString(MapaAtivo.ChaveMapaTesteEditor, "classic") == "pearl_harbor");
+        return !EditorApplication.isPlayingOrWillChangePlaymode;
+    }
+
+    private static void AbrirMapa(string mapaId, string cena, string nomeExibido)
+    {
+        if (AssetDatabase.LoadAssetAtPath<SceneAsset>(cena) == null)
+        {
+            Debug.LogError($"Cena do mapa {nomeExibido} ausente: {cena}");
+            return;
+        }
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            return;
+
+        PlayerPrefs.SetString(MapaAtivo.ChaveMapaTesteEditor, mapaId);
+        PlayerPrefs.Save();
+        EditorSceneManager.OpenScene(cena, OpenSceneMode.Single);
+        SceneView.RepaintAll();
+        Debug.Log($"MAPAS | {nomeExibido} selecionado. O próximo Play Mode usará {mapaId}.");
+    }
+
+    [MenuItem("WarGame/Configuração de Mapas/Gerar ou Atualizar/Clássico %#g")]
     public static void GerarOuAtualizarClassic()
     {
         if (SceneManager.GetActiveScene().path != Cena)
@@ -105,13 +155,13 @@ public static class DefinicaoMapaClassicEditor
         Debug.Log($"MAPA CLASSIC | Gerado com {territorios.Count} territórios, {regioesPorLegado.Count} regiões e {conexoes.Count} conexões.");
     }
 
-    [MenuItem("WarGame/Mapas/Validar Classic")]
+    [MenuItem("WarGame/Configuração de Mapas/Validar/Clássico")]
     public static void ValidarClassic()
     {
         Validar(AssetDatabase.LoadAssetAtPath<DefinicaoMapa>(CaminhoMapa));
     }
 
-    [MenuItem("WarGame/Mapas/Teste Editor/Preparar Controle de Regiao")]
+    [MenuItem("WarGame/Configuração de Mapas/Diagnóstico e Relatórios/Clássico/Preparar Controle de Região")]
     public static void PrepararControleDeRegiao()
     {
         if (!EditorApplication.isPlaying || MapaAtivo.Instance == null || GameManager.instance == null)

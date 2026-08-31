@@ -24,7 +24,6 @@ public static class PearlHarborEditor
     private const string CenaPath = PastaMapa + "/PearlHarbor.unity";
     private const string DefinicaoPath = "Assets/Resources/Mapas/PearlHarbor.asset";
     private const string CatalogoPath = "Assets/Resources/Mapas/CatalogoMapas.asset";
-    private const string MenuSelecionar = "WarGame/Teste de Mapas/Pearl Harbor";
     private const string TriggerPath = "Temp/GerarPearlHarbor.trigger";
     private const float PixelsPorUnidade = 100f;
     private const float TamanhoCamera = 4.5f;
@@ -168,17 +167,7 @@ public static class PearlHarborEditor
     // 5. MENUS DE SELEÇÃO, GERAÇÃO E VALIDAÇÃO
     // ============================================================
 
-    [MenuItem(MenuSelecionar)]
-    private static void SelecionarPearlHarbor() => SelecionarMapa();
-
-    [MenuItem(MenuSelecionar, true)]
-    private static bool ValidarSelecaoPearlHarbor()
-    {
-        Menu.SetChecked(MenuSelecionar, PlayerPrefs.GetString(MapaAtivo.ChaveMapaTesteEditor, "classic") == MapaId);
-        return !EditorApplication.isPlayingOrWillChangePlaymode && File.Exists(Absoluto(CenaPath));
-    }
-
-    [MenuItem("WarGame/Mapas/Gerar ou Atualizar Pearl Harbor")]
+    [MenuItem("WarGame/Configuração de Mapas/Gerar ou Atualizar/Pearl Harbor")]
     public static void GerarOuAtualizar()
     {
         ValidarArquivosFonte();
@@ -193,7 +182,7 @@ public static class PearlHarborEditor
         Debug.Log("[Mapa] Carregado: Pearl Harbor | Territorios: 45 | Regioes: 5 | Definicao validada com sucesso.");
     }
 
-    [MenuItem("WarGame/Mapas/Validar Pearl Harbor")]
+    [MenuItem("WarGame/Configuração de Mapas/Validar/Pearl Harbor")]
     public static void ValidarCompleto()
     {
         DefinicaoMapa mapa = AssetDatabase.LoadAssetAtPath<DefinicaoMapa>(DefinicaoPath);
@@ -489,22 +478,6 @@ public static class PearlHarborEditor
         AssetDatabase.SaveAssetIfDirty(catalogo);
     }
 
-    private static void SelecionarMapa()
-    {
-        if (!File.Exists(Absoluto(CenaPath)))
-        {
-            Debug.LogError("Cena Pearl Harbor ausente. Execute WarGame/Mapas/Gerar ou Atualizar Pearl Harbor.");
-            return;
-        }
-        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            return;
-        PlayerPrefs.SetString(MapaAtivo.ChaveMapaTesteEditor, MapaId);
-        PlayerPrefs.Save();
-        EditorSceneManager.OpenScene(CenaPath, OpenSceneMode.Single);
-        SceneView.RepaintAll();
-        Debug.Log("TESTE DE MAPAS | Pearl Harbor selecionado. O próximo Play Mode usará esta definição.");
-    }
-
     // ============================================================
     // 10. VALIDAÇÕES E DIAGNÓSTICO
     // ============================================================
@@ -713,8 +686,8 @@ public static class DiagnosticoMascarasPearlHarbor
 
     private const string CenaPearlHarbor = "Assets/Mapas/Pearl Harbor/PearlHarbor.unity";
     private const string DefinicaoPearlHarbor = "Assets/Resources/Mapas/PearlHarbor.asset";
-    private const string MenuDiagnostico = "WarGame/Mapas/Pearl Harbor/Mostrar Diagnóstico de Máscaras";
-    private const string MenuRelatorio = "WarGame/Mapas/Pearl Harbor/Relatório de Vizinhanças";
+    private const string MenuDiagnostico = "WarGame/Configuração de Mapas/Diagnóstico e Relatórios/Pearl Harbor/Mostrar Diagnóstico de Máscaras";
+    private const string MenuRelatorio = "WarGame/Configuração de Mapas/Diagnóstico e Relatórios/Pearl Harbor/Relatório de Vizinhanças";
     private const string ChaveSession = "WarGame.PearlHarbor.MostrarDiagnosticoMascaras";
 
     static DiagnosticoMascarasPearlHarbor()
