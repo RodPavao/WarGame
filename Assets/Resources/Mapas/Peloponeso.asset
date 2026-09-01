@@ -1,0 +1,1570 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f9d6f2c1094f7a9877e75fb47c2901, type: 3}
+  m_Name: Peloponeso
+  m_EditorClassIdentifier: Assembly-CSharp::DefinicaoMapa
+  mapaId: peloponeso
+  nomeInterno: Peloponeso
+  nomeExibido: Peloponeso
+  descricao: "Mapa completo da Guerra do Peloponeso com 82 territ\xF3rios."
+  temaId: peloponeso
+  versao: 1
+  arteBase: {fileID: 21300000, guid: 0306bcfaf8cad64468a7e54b6eb38f14, type: 3}
+  centroCamera: {x: 0, y: 0}
+  tamanhoOrtografico: 5.25
+  territorios:
+  - id: Amyclae
+    nomeExibido: Amyclae
+    chaveTraducao: territory_amyclae
+    regiaoId: laconia
+    posicaoContador: {x: -3.8249998, y: 2.755}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Sparta
+    nomeExibido: Sparta
+    chaveTraducao: territory_sparta
+    regiaoId: laconia
+    posicaoContador: {x: -4.845, y: 2.6149998}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Sellasia
+    nomeExibido: Sellasia
+    chaveTraducao: territory_sellasia
+    regiaoId: laconia
+    posicaoContador: {x: -4.8999996, y: 2.1499999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Gythium
+    nomeExibido: Gythium
+    chaveTraducao: territory_gythium
+    regiaoId: laconia
+    posicaoContador: {x: -3.815, y: 2.03}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Helos
+    nomeExibido: Helos
+    chaveTraducao: territory_helos
+    regiaoId: laconia
+    posicaoContador: {x: -4.3199997, y: 1.56}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Therapne
+    nomeExibido: Therapne
+    chaveTraducao: territory_therapne
+    regiaoId: laconia
+    posicaoContador: {x: -4.9300003, y: 1.5350001}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Zarax
+    nomeExibido: Zarax
+    chaveTraducao: territory_zarax
+    regiaoId: laconia
+    posicaoContador: {x: -5.7249994, y: 1.04}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Bryseae
+    nomeExibido: Bryseae
+    chaveTraducao: territory_bryseae
+    regiaoId: laconia
+    posicaoContador: {x: -4.495, y: 0.82000005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: EpidaurosLimera
+    nomeExibido: Epidauros Limera
+    chaveTraducao: territory_epidauroslimera
+    regiaoId: laconia
+    posicaoContador: {x: -6.23, y: 0.77}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Boeae
+    nomeExibido: Boeae
+    chaveTraducao: territory_boeae
+    regiaoId: laconia
+    posicaoContador: {x: -5.33, y: 0.36000004}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Kardamyle
+    nomeExibido: Kardamyle
+    chaveTraducao: territory_kardamyle
+    regiaoId: laconia
+    posicaoContador: {x: -4.3599997, y: 0.24}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Oetylus
+    nomeExibido: Oetylus
+    chaveTraducao: territory_oetylus
+    regiaoId: laconia
+    posicaoContador: {x: -6.355, y: -0.060000002}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Tegea
+    nomeExibido: Tegea
+    chaveTraducao: territory_tegea
+    regiaoId: laconia
+    posicaoContador: {x: -5.0299997, y: -0.21499997}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Mantinea
+    nomeExibido: Mantinea
+    chaveTraducao: territory_mantinea
+    regiaoId: laconia
+    posicaoContador: {x: -5.8599997, y: -0.75000006}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Aegiae
+    nomeExibido: Aegiae
+    chaveTraducao: territory_aegiae
+    regiaoId: laconia
+    posicaoContador: {x: -4.575, y: -0.885}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Caryae
+    nomeExibido: Caryae
+    chaveTraducao: territory_caryae
+    regiaoId: laconia
+    posicaoContador: {x: -5.5299997, y: -1.48}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Asine
+    nomeExibido: Asine
+    chaveTraducao: territory_asine
+    regiaoId: laconia
+    posicaoContador: {x: -4.095, y: -1.4699999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Las
+    nomeExibido: Las
+    chaveTraducao: territory_las
+    regiaoId: laconia
+    posicaoContador: {x: -3.79, y: -2.235}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Pitane
+    nomeExibido: Pitane
+    chaveTraducao: territory_pitane
+    regiaoId: laconia
+    posicaoContador: {x: -4.92, y: -2.225}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Thalamae
+    nomeExibido: Thalamae
+    chaveTraducao: territory_thalamae
+    regiaoId: laconia
+    posicaoContador: {x: -4.3450003, y: -2.405}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Alagonia
+    nomeExibido: Alagonia
+    chaveTraducao: territory_alagonia
+    regiaoId: laconia
+    posicaoContador: {x: -4.265, y: -2.915}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Kea
+    nomeExibido: Kea
+    chaveTraducao: territory_kea
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 0.53, y: 2.6799998}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Ios
+    nomeExibido: Ios
+    chaveTraducao: territory_ios
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -0.36, y: 2.55}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Gavrio
+    nomeExibido: Gavrio
+    chaveTraducao: territory_gavrio
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -1.17, y: 2.335}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Chora
+    nomeExibido: Chora
+    chaveTraducao: territory_chora
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 1.4849999, y: 2.1950002}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Serifos
+    nomeExibido: Serifos
+    chaveTraducao: territory_serifos
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -1.9100001, y: 2.225}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Amorgos
+    nomeExibido: Amorgos
+    chaveTraducao: territory_amorgos
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 0.53999996, y: 2.1}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Batsi
+    nomeExibido: Batsi
+    chaveTraducao: territory_batsi
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -0.42999998, y: 1.875}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Kythnos
+    nomeExibido: Kythnos
+    chaveTraducao: territory_kythnos
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -2.205, y: 1.6099999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Folegandros
+    nomeExibido: Folegandros
+    chaveTraducao: territory_folegandros
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -1.175, y: 1.5299999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Sikinos
+    nomeExibido: Sikinos
+    chaveTraducao: territory_sikinos
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 1.25, y: 1.3299999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Anafi
+    nomeExibido: Anafi
+    chaveTraducao: territory_anafi
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -1.7199999, y: 1.305}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Ormos
+    nomeExibido: Ormos
+    chaveTraducao: territory_ormos
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -0.655, y: 0.90999997}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: AndrosCity
+    nomeExibido: Andros City
+    chaveTraducao: territory_androscity
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 0.505, y: 0.93500006}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Naousa
+    nomeExibido: Naousa
+    chaveTraducao: territory_naousa
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 2.555, y: 0.43499994}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Paros
+    nomeExibido: Paros
+    chaveTraducao: territory_paros
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -3.115, y: 0.19500002}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Lefkes
+    nomeExibido: Lefkes
+    chaveTraducao: territory_lefkes
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -2.215, y: 0}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Marpissa
+    nomeExibido: Marpissa
+    chaveTraducao: territory_marpissa
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -0.545, y: -0.105000004}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Portara
+    nomeExibido: Portara
+    chaveTraducao: territory_portara
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 0.5750001, y: -0.155}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: NaxosCity
+    nomeExibido: Naxos City
+    chaveTraducao: territory_naxoscity
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -0.110000014, y: -0.445}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Melanes
+    nomeExibido: Melanes
+    chaveTraducao: territory_melanes
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 0.95, y: -0.45999998}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Aperanthos
+    nomeExibido: Aperanthos
+    chaveTraducao: territory_aperanthos
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -2.745, y: -0.48}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Sangri
+    nomeExibido: Sangri
+    chaveTraducao: territory_sangri
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -0.69499993, y: -0.595}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Filoti
+    nomeExibido: Filoti
+    chaveTraducao: territory_filoti
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -2.0349998, y: -0.64}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Tinos
+    nomeExibido: Tinos
+    chaveTraducao: territory_tinos
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 0.32000002, y: -0.83}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Milos
+    nomeExibido: Milos
+    chaveTraducao: territory_milos
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 1.275, y: -0.905}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Syros
+    nomeExibido: Syros
+    chaveTraducao: territory_syros
+    regiaoId: cyclades_islands
+    posicaoContador: {x: -0.41999996, y: -1.2099999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Delos
+    nomeExibido: Delos
+    chaveTraducao: territory_delos
+    regiaoId: cyclades_islands
+    posicaoContador: {x: 0.77500004, y: -1.3299999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Marathon
+    nomeExibido: Marathon
+    chaveTraducao: territory_marathon
+    regiaoId: atica
+    posicaoContador: {x: 4.045, y: 2.885}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Piraeus
+    nomeExibido: Piraeus
+    chaveTraducao: territory_piraeus
+    regiaoId: atica
+    posicaoContador: {x: 3.115, y: 2.4899998}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Eleusis
+    nomeExibido: Eleusis
+    chaveTraducao: territory_eleusis
+    regiaoId: atica
+    posicaoContador: {x: 4.56, y: 2.2699997}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Acharnae
+    nomeExibido: Acharnae
+    chaveTraducao: territory_acharnae
+    regiaoId: atica
+    posicaoContador: {x: 3.6499999, y: 2.23}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Brauron
+    nomeExibido: Brauron
+    chaveTraducao: territory_brauron
+    regiaoId: atica
+    posicaoContador: {x: 5.035, y: 2.255}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Thorikos
+    nomeExibido: Thorikos
+    chaveTraducao: territory_thorikos
+    regiaoId: atica
+    posicaoContador: {x: 3.38, y: 1.6949999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Rhamnous
+    nomeExibido: Rhamnous
+    chaveTraducao: territory_rhamnous
+    regiaoId: atica
+    posicaoContador: {x: 4.1800003, y: 1.605}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Sounion
+    nomeExibido: Sounion
+    chaveTraducao: territory_sounion
+    regiaoId: atica
+    posicaoContador: {x: 5.1549997, y: 1.25}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Athens
+    nomeExibido: Athens
+    chaveTraducao: territory_athens
+    regiaoId: atica
+    posicaoContador: {x: 6.2200003, y: 1.165}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Kolonos
+    nomeExibido: Kolonos
+    chaveTraducao: territory_kolonos
+    regiaoId: atica
+    posicaoContador: {x: 6.38, y: 0.5850001}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Laurion
+    nomeExibido: Laurion
+    chaveTraducao: territory_laurion
+    regiaoId: atica
+    posicaoContador: {x: 5.105, y: 0.53}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Phyle
+    nomeExibido: Phyle
+    chaveTraducao: territory_phyle
+    regiaoId: atica
+    posicaoContador: {x: 4.2949996, y: 0.53499997}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Sphettos
+    nomeExibido: Sphettos
+    chaveTraducao: territory_sphettos
+    regiaoId: atica
+    posicaoContador: {x: 5.5299997, y: -0.20999998}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Kifisia
+    nomeExibido: Kifisia
+    chaveTraducao: territory_kifisia
+    regiaoId: atica
+    posicaoContador: {x: 3.4450002, y: -0.25}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Salamis
+    nomeExibido: Salamis
+    chaveTraducao: territory_salamis
+    regiaoId: atica
+    posicaoContador: {x: 4.42, y: -0.29000002}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Anaphlystos
+    nomeExibido: Anaphlystos
+    chaveTraducao: territory_anaphlystos
+    regiaoId: atica
+    posicaoContador: {x: 3.27, y: -0.86499995}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Icaria
+    nomeExibido: Icaria
+    chaveTraducao: territory_icaria
+    regiaoId: atica
+    posicaoContador: {x: 5.785, y: -1.0699999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Oropus
+    nomeExibido: Oropus
+    chaveTraducao: territory_oropus
+    regiaoId: atica
+    posicaoContador: {x: 4.7200003, y: -1.125}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Deceleia
+    nomeExibido: Deceleia
+    chaveTraducao: territory_deceleia
+    regiaoId: atica
+    posicaoContador: {x: 3.81, y: -1.4749999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Aphidnae
+    nomeExibido: Aphidnae
+    chaveTraducao: territory_aphidnae
+    regiaoId: atica
+    posicaoContador: {x: 2.7399998, y: -1.595}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Paiania
+    nomeExibido: Paiania
+    chaveTraducao: territory_paiania
+    regiaoId: atica
+    posicaoContador: {x: 5.7799997, y: -1.745}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Myrrhinous
+    nomeExibido: Myrrhinous
+    chaveTraducao: territory_myrrhinous
+    regiaoId: atica
+    posicaoContador: {x: 4.3950005, y: -1.9899999}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Lamptrai
+    nomeExibido: Lamptrai
+    chaveTraducao: territory_lamptrai
+    regiaoId: atica
+    posicaoContador: {x: 2.7099998, y: -2.235}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Euonymon
+    nomeExibido: Euonymon
+    chaveTraducao: territory_euonymon
+    regiaoId: atica
+    posicaoContador: {x: 4.86, y: -2.32}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: HalaiAixonides
+    nomeExibido: Halai Aixonides
+    chaveTraducao: territory_halaiaixonides
+    regiaoId: atica
+    posicaoContador: {x: 3.36, y: -2.285}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Heraklion
+    nomeExibido: Heraklion
+    chaveTraducao: territory_heraklion
+    regiaoId: creta
+    posicaoContador: {x: -1.725, y: -2.93}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Knossos
+    nomeExibido: Knossos
+    chaveTraducao: territory_knossos
+    regiaoId: creta
+    posicaoContador: {x: -2.225, y: -3.135}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Chania
+    nomeExibido: Chania
+    chaveTraducao: territory_chania
+    regiaoId: creta
+    posicaoContador: {x: 1.315, y: -3.425}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Rethymno
+    nomeExibido: Rethymno
+    chaveTraducao: territory_rethymno
+    regiaoId: creta
+    posicaoContador: {x: 0.41500002, y: -3.6049998}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Kissamos
+    nomeExibido: Kissamos
+    chaveTraducao: territory_kissamos
+    regiaoId: creta
+    posicaoContador: {x: -0.89000005, y: -3.75}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Ierapetra
+    nomeExibido: Ierapetra
+    chaveTraducao: territory_ierapetra
+    regiaoId: creta
+    posicaoContador: {x: -1.9399998, y: -3.8549998}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Phaistos
+    nomeExibido: Phaistos
+    chaveTraducao: territory_phaistos
+    regiaoId: creta
+    posicaoContador: {x: 1.2349999, y: -4}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Malia
+    nomeExibido: Malia
+    chaveTraducao: territory_malia
+    regiaoId: creta
+    posicaoContador: {x: 0.25, y: -4.05}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Gortyna
+    nomeExibido: Gortyna
+    chaveTraducao: territory_gortyna
+    regiaoId: creta
+    posicaoContador: {x: -0.62, y: -4.23}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  regioes:
+  - id: laconia
+    nomeExibido: Laconia
+    descricao: Laconia
+    chaveTraducao: region_laconia
+    bonus: 10
+    ordemExibicao: 0
+    corDestaque: {r: 0.85, g: 0.35, b: 0.25, a: 1}
+    territorioIds:
+    - Amyclae
+    - Sparta
+    - Sellasia
+    - Gythium
+    - Helos
+    - Therapne
+    - Zarax
+    - Bryseae
+    - EpidaurosLimera
+    - Boeae
+    - Kardamyle
+    - Oetylus
+    - Tegea
+    - Mantinea
+    - Aegiae
+    - Caryae
+    - Asine
+    - Las
+    - Pitane
+    - Thalamae
+    - Alagonia
+    metadados: []
+  - id: cyclades_islands
+    nomeExibido: Cyclades Islands
+    descricao: Cyclades Islands
+    chaveTraducao: region_cyclades_islands
+    bonus: 12
+    ordemExibicao: 1
+    corDestaque: {r: 0.3, g: 0.7, b: 1, a: 1}
+    territorioIds:
+    - Kea
+    - Ios
+    - Gavrio
+    - Chora
+    - Serifos
+    - Amorgos
+    - Batsi
+    - Kythnos
+    - Folegandros
+    - Sikinos
+    - Anafi
+    - Ormos
+    - AndrosCity
+    - Naousa
+    - Paros
+    - Lefkes
+    - Marpissa
+    - Portara
+    - NaxosCity
+    - Melanes
+    - Aperanthos
+    - Sangri
+    - Filoti
+    - Tinos
+    - Milos
+    - Syros
+    - Delos
+    metadados: []
+  - id: atica
+    nomeExibido: Atica
+    descricao: Atica
+    chaveTraducao: region_atica
+    bonus: 12
+    ordemExibicao: 2
+    corDestaque: {r: 0.35, g: 0.8, b: 0.35, a: 1}
+    territorioIds:
+    - Marathon
+    - Piraeus
+    - Eleusis
+    - Acharnae
+    - Brauron
+    - Thorikos
+    - Rhamnous
+    - Sounion
+    - Athens
+    - Kolonos
+    - Laurion
+    - Phyle
+    - Sphettos
+    - Kifisia
+    - Salamis
+    - Anaphlystos
+    - Icaria
+    - Oropus
+    - Deceleia
+    - Aphidnae
+    - Paiania
+    - Myrrhinous
+    - Lamptrai
+    - Euonymon
+    - HalaiAixonides
+    metadados: []
+  - id: creta
+    nomeExibido: Creta
+    descricao: Creta
+    chaveTraducao: region_creta
+    bonus: 4
+    ordemExibicao: 3
+    corDestaque: {r: 0.8, g: 0.7, b: 0.25, a: 1}
+    territorioIds:
+    - Heraklion
+    - Knossos
+    - Chania
+    - Rethymno
+    - Kissamos
+    - Ierapetra
+    - Phaistos
+    - Malia
+    - Gortyna
+    metadados: []
+  conexoes:
+  - origemId: Acharnae
+    destinoId: Marathon
+    tipo: 0
+    bidirecional: 1
+  - origemId: Marathon
+    destinoId: Piraeus
+    tipo: 0
+    bidirecional: 1
+  - origemId: Eleusis
+    destinoId: Marathon
+    tipo: 0
+    bidirecional: 1
+  - origemId: Brauron
+    destinoId: Marathon
+    tipo: 0
+    bidirecional: 1
+  - origemId: Amyclae
+    destinoId: Gythium
+    tipo: 0
+    bidirecional: 1
+  - origemId: Amyclae
+    destinoId: Sparta
+    tipo: 0
+    bidirecional: 1
+  - origemId: Ios
+    destinoId: Kea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Amorgos
+    destinoId: Kea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Chora
+    destinoId: Kea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Sellasia
+    destinoId: Sparta
+    tipo: 0
+    bidirecional: 1
+  - origemId: Batsi
+    destinoId: Ios
+    tipo: 0
+    bidirecional: 1
+  - origemId: Amorgos
+    destinoId: Ios
+    tipo: 0
+    bidirecional: 1
+  - origemId: Gavrio
+    destinoId: Ios
+    tipo: 0
+    bidirecional: 1
+  - origemId: Acharnae
+    destinoId: Piraeus
+    tipo: 0
+    bidirecional: 1
+  - origemId: Gavrio
+    destinoId: Serifos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Folegandros
+    destinoId: Gavrio
+    tipo: 0
+    bidirecional: 1
+  - origemId: Batsi
+    destinoId: Gavrio
+    tipo: 0
+    bidirecional: 1
+  - origemId: Brauron
+    destinoId: Eleusis
+    tipo: 0
+    bidirecional: 1
+  - origemId: Acharnae
+    destinoId: Thorikos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Brauron
+    destinoId: Sounion
+    tipo: 0
+    bidirecional: 1
+  - origemId: Brauron
+    destinoId: Rhamnous
+    tipo: 0
+    bidirecional: 1
+  - origemId: Amorgos
+    destinoId: Chora
+    tipo: 0
+    bidirecional: 1
+  - origemId: Chora
+    destinoId: Sikinos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kythnos
+    destinoId: Serifos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Folegandros
+    destinoId: Serifos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Sellasia
+    destinoId: Therapne
+    tipo: 0
+    bidirecional: 1
+  - origemId: Helos
+    destinoId: Sellasia
+    tipo: 0
+    bidirecional: 1
+  - origemId: Gythium
+    destinoId: Sellasia
+    tipo: 0
+    bidirecional: 1
+  - origemId: Amorgos
+    destinoId: Batsi
+    tipo: 0
+    bidirecional: 1
+  - origemId: Amorgos
+    destinoId: Sikinos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Gythium
+    destinoId: Helos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Batsi
+    destinoId: Folegandros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Folegandros
+    destinoId: Kythnos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Anafi
+    destinoId: Kythnos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Rhamnous
+    destinoId: Sounion
+    tipo: 0
+    bidirecional: 1
+  - origemId: Anafi
+    destinoId: Folegandros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Folegandros
+    destinoId: Ormos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Helos
+    destinoId: Therapne
+    tipo: 0
+    bidirecional: 1
+  - origemId: Bryseae
+    destinoId: Helos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Bryseae
+    destinoId: Therapne
+    tipo: 0
+    bidirecional: 1
+  - origemId: Therapne
+    destinoId: Zarax
+    tipo: 0
+    bidirecional: 1
+  - origemId: AndrosCity
+    destinoId: Sikinos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Phyle
+    destinoId: Sounion
+    tipo: 0
+    bidirecional: 1
+  - origemId: Athens
+    destinoId: Sounion
+    tipo: 0
+    bidirecional: 1
+  - origemId: Laurion
+    destinoId: Sounion
+    tipo: 0
+    bidirecional: 1
+  - origemId: Athens
+    destinoId: Kolonos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Athens
+    destinoId: Laurion
+    tipo: 0
+    bidirecional: 1
+  - origemId: EpidaurosLimera
+    destinoId: Zarax
+    tipo: 0
+    bidirecional: 1
+  - origemId: Boeae
+    destinoId: Zarax
+    tipo: 0
+    bidirecional: 1
+  - origemId: Bryseae
+    destinoId: Zarax
+    tipo: 0
+    bidirecional: 1
+  - origemId: AndrosCity
+    destinoId: Ormos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Boeae
+    destinoId: Bryseae
+    tipo: 0
+    bidirecional: 1
+  - origemId: Bryseae
+    destinoId: Kardamyle
+    tipo: 0
+    bidirecional: 1
+  - origemId: EpidaurosLimera
+    destinoId: Oetylus
+    tipo: 0
+    bidirecional: 1
+  - origemId: Boeae
+    destinoId: EpidaurosLimera
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kolonos
+    destinoId: Laurion
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kolonos
+    destinoId: Sphettos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Laurion
+    destinoId: Sphettos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Laurion
+    destinoId: Phyle
+    tipo: 0
+    bidirecional: 1
+  - origemId: Laurion
+    destinoId: Salamis
+    tipo: 0
+    bidirecional: 1
+  - origemId: Phyle
+    destinoId: Salamis
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kifisia
+    destinoId: Phyle
+    tipo: 0
+    bidirecional: 1
+  - origemId: Boeae
+    destinoId: Tegea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Boeae
+    destinoId: Kardamyle
+    tipo: 0
+    bidirecional: 1
+  - origemId: Boeae
+    destinoId: Oetylus
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kardamyle
+    destinoId: Tegea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Lefkes
+    destinoId: Paros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aperanthos
+    destinoId: Paros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aperanthos
+    destinoId: Lefkes
+    tipo: 0
+    bidirecional: 1
+  - origemId: Filoti
+    destinoId: Lefkes
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mantinea
+    destinoId: Oetylus
+    tipo: 0
+    bidirecional: 1
+  - origemId: Oetylus
+    destinoId: Tegea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Marpissa
+    destinoId: NaxosCity
+    tipo: 0
+    bidirecional: 1
+  - origemId: Marpissa
+    destinoId: Portara
+    tipo: 0
+    bidirecional: 1
+  - origemId: Marpissa
+    destinoId: Sangri
+    tipo: 0
+    bidirecional: 1
+  - origemId: NaxosCity
+    destinoId: Portara
+    tipo: 0
+    bidirecional: 1
+  - origemId: Melanes
+    destinoId: Portara
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aegiae
+    destinoId: Tegea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mantinea
+    destinoId: Tegea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Salamis
+    destinoId: Sphettos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Icaria
+    destinoId: Sphettos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Oropus
+    destinoId: Sphettos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kifisia
+    destinoId: Salamis
+    tipo: 0
+    bidirecional: 1
+  - origemId: Anaphlystos
+    destinoId: Kifisia
+    tipo: 0
+    bidirecional: 1
+  - origemId: Oropus
+    destinoId: Salamis
+    tipo: 0
+    bidirecional: 1
+  - origemId: Anaphlystos
+    destinoId: Salamis
+    tipo: 0
+    bidirecional: 1
+  - origemId: NaxosCity
+    destinoId: Sangri
+    tipo: 0
+    bidirecional: 1
+  - origemId: NaxosCity
+    destinoId: Tinos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Melanes
+    destinoId: Milos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Melanes
+    destinoId: Tinos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aperanthos
+    destinoId: Filoti
+    tipo: 0
+    bidirecional: 1
+  - origemId: Sangri
+    destinoId: Syros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Caryae
+    destinoId: Mantinea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aegiae
+    destinoId: Mantinea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Anaphlystos
+    destinoId: Deceleia
+    tipo: 0
+    bidirecional: 1
+  - origemId: Anaphlystos
+    destinoId: Aphidnae
+    tipo: 0
+    bidirecional: 1
+  - origemId: Milos
+    destinoId: Tinos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Delos
+    destinoId: Tinos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Syros
+    destinoId: Tinos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aegiae
+    destinoId: Caryae
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aegiae
+    destinoId: Asine
+    tipo: 0
+    bidirecional: 1
+  - origemId: Delos
+    destinoId: Milos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Icaria
+    destinoId: Oropus
+    tipo: 0
+    bidirecional: 1
+  - origemId: Icaria
+    destinoId: Paiania
+    tipo: 0
+    bidirecional: 1
+  - origemId: Myrrhinous
+    destinoId: Oropus
+    tipo: 0
+    bidirecional: 1
+  - origemId: Oropus
+    destinoId: Paiania
+    tipo: 0
+    bidirecional: 1
+  - origemId: Deceleia
+    destinoId: Oropus
+    tipo: 0
+    bidirecional: 1
+  - origemId: Delos
+    destinoId: Syros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Asine
+    destinoId: Caryae
+    tipo: 0
+    bidirecional: 1
+  - origemId: Caryae
+    destinoId: Pitane
+    tipo: 0
+    bidirecional: 1
+  - origemId: Deceleia
+    destinoId: Myrrhinous
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aphidnae
+    destinoId: Deceleia
+    tipo: 0
+    bidirecional: 1
+  - origemId: Deceleia
+    destinoId: HalaiAixonides
+    tipo: 0
+    bidirecional: 1
+  - origemId: Asine
+    destinoId: Las
+    tipo: 0
+    bidirecional: 1
+  - origemId: Asine
+    destinoId: Thalamae
+    tipo: 0
+    bidirecional: 1
+  - origemId: Asine
+    destinoId: Pitane
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aphidnae
+    destinoId: Lamptrai
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aphidnae
+    destinoId: HalaiAixonides
+    tipo: 0
+    bidirecional: 1
+  - origemId: Euonymon
+    destinoId: Paiania
+    tipo: 0
+    bidirecional: 1
+  - origemId: Myrrhinous
+    destinoId: Paiania
+    tipo: 0
+    bidirecional: 1
+  - origemId: Euonymon
+    destinoId: Myrrhinous
+    tipo: 0
+    bidirecional: 1
+  - origemId: HalaiAixonides
+    destinoId: Myrrhinous
+    tipo: 0
+    bidirecional: 1
+  - origemId: Las
+    destinoId: Thalamae
+    tipo: 0
+    bidirecional: 1
+  - origemId: Pitane
+    destinoId: Thalamae
+    tipo: 0
+    bidirecional: 1
+  - origemId: Alagonia
+    destinoId: Pitane
+    tipo: 0
+    bidirecional: 1
+  - origemId: HalaiAixonides
+    destinoId: Lamptrai
+    tipo: 0
+    bidirecional: 1
+  - origemId: Euonymon
+    destinoId: HalaiAixonides
+    tipo: 0
+    bidirecional: 1
+  - origemId: Alagonia
+    destinoId: Thalamae
+    tipo: 0
+    bidirecional: 1
+  - origemId: Heraklion
+    destinoId: Knossos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Heraklion
+    destinoId: Kissamos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Ierapetra
+    destinoId: Knossos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kissamos
+    destinoId: Knossos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Chania
+    destinoId: Phaistos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Chania
+    destinoId: Rethymno
+    tipo: 0
+    bidirecional: 1
+  - origemId: Malia
+    destinoId: Rethymno
+    tipo: 0
+    bidirecional: 1
+  - origemId: Phaistos
+    destinoId: Rethymno
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kissamos
+    destinoId: Rethymno
+    tipo: 0
+    bidirecional: 1
+  - origemId: Ierapetra
+    destinoId: Kissamos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Gortyna
+    destinoId: Kissamos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Kissamos
+    destinoId: Malia
+    tipo: 0
+    bidirecional: 1
+  - origemId: Malia
+    destinoId: Phaistos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Gortyna
+    destinoId: Malia
+    tipo: 0
+    bidirecional: 1
+  - origemId: Gavrio
+    destinoId: Gythium
+    tipo: 0
+    bidirecional: 1
+  - origemId: Bryseae
+    destinoId: Paros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Aperanthos
+    destinoId: Tegea
+    tipo: 0
+    bidirecional: 1
+  - origemId: Heraklion
+    destinoId: Thalamae
+    tipo: 0
+    bidirecional: 1
+  - origemId: Sikinos
+    destinoId: Thorikos
+    tipo: 0
+    bidirecional: 1
+  - origemId: AndrosCity
+    destinoId: Kifisia
+    tipo: 0
+    bidirecional: 1
+  - origemId: Naousa
+    destinoId: Phyle
+    tipo: 0
+    bidirecional: 1
+  - origemId: Anaphlystos
+    destinoId: Delos
+    tipo: 0
+    bidirecional: 1
+  - origemId: Ierapetra
+    destinoId: Lamptrai
+    tipo: 0
+    bidirecional: 1
+  condicoesEstrategicas: []
+  metadados: []

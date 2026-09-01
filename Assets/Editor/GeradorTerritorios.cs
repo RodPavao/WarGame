@@ -42,7 +42,7 @@ private Stack<bool[]> historico = new Stack<bool[]>();
     // ABRIR EXTRATOR
     // =========================================================
 
-    [MenuItem("WarGame/Extrator Visual de Territorios")]
+    [MenuItem("War Dominion/Extrator Visual de Territorios")]
     public static void Abrir()
     {
         GetWindow<GeradorTerritorios>(
@@ -57,7 +57,7 @@ private Stack<bool[]> historico = new Stack<bool[]>();
     private void OnGUI()
     {
         GUILayout.Label(
-            "WarGame - Extrator de Territorios",
+            "War Dominion - Extrator de Territorios",
             EditorStyles.boldLabel
         );
 
@@ -289,7 +289,7 @@ GUI.EndScrollView();
         if (fonte == null)
         {
             EditorUtility.DisplayDialog(
-                "WarGame",
+                "War Dominion",
                 "Selecione o ClassicMap no campo Mapa fonte.",
                 "OK"
             );
@@ -353,7 +353,7 @@ GUI.EndScrollView();
         if (!File.Exists(caminho))
         {
             EditorUtility.DisplayDialog(
-                "WarGame",
+                "War Dominion",
                 "Não encontrei:\n" + caminho,
                 "OK"
             );
@@ -382,7 +382,7 @@ GUI.EndScrollView();
             DestroyImmediate(mascara);
 
             EditorUtility.DisplayDialog(
-                "WarGame",
+                "War Dominion",
                 "O território não tem o mesmo tamanho do mapa.",
                 "OK"
             );
@@ -854,7 +854,7 @@ GUI.EndScrollView();
             nomeTerritorio))
         {
             EditorUtility.DisplayDialog(
-                "WarGame",
+                "War Dominion",
                 "Digite o nome técnico do território.",
                 "OK"
             );
@@ -901,7 +901,7 @@ GUI.EndScrollView();
         if (!existeSelecao)
         {
             EditorUtility.DisplayDialog(
-                "WarGame",
+                "War Dominion",
                 "Nenhuma região selecionada.",
                 "OK"
             );

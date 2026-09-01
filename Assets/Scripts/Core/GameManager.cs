@@ -186,6 +186,9 @@ public class GameManager : MonoBehaviour
         autoenviarJogadoresSimuladosEditor = false;
         Debug.Log("TESTE LOCAL | Autoenvio dos jogadores simulados DESATIVADO.");
     }
+
+    public void TesteEditorAtivarAutoenvio() => AtivarAutoenvioJogadoresSimuladosEditor();
+    public void TesteEditorDesativarAutoenvio() => DesativarAutoenvioJogadoresSimuladosEditor();
 #endif
 
     // =====================================================

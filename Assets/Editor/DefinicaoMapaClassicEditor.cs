@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[InitializeOnLoad]
 public static class DefinicaoMapaClassicEditor
 {
     // ============================================================
@@ -17,8 +19,33 @@ public static class DefinicaoMapaClassicEditor
     private const string CaminhoMapa = PastaMapas + "/Classic.asset";
     private const string CaminhoCatalogo = PastaMapas + "/CatalogoMapas.asset";
     private const string CenaPearlHarbor = "Assets/Mapas/Pearl Harbor/PearlHarbor.unity";
-    private const string MenuSelecionarClassic = "WarGame/Mapas/Clássico";
-    private const string MenuSelecionarPearlHarbor = "WarGame/Mapas/Pearl Harbor";
+    private const string CenaRiachuelo = "Assets/Mapas/Batalha do Riachuelo/Riachuelo.unity";
+    private const string CenaDarkWorld = "Assets/Mapas/Dark World/DarkWorld.unity";
+    private const string CenaPeloponeso = "Assets/Mapas/Peloponeso/Peloponeso.unity";
+    private const string MenuSelecionarClassic = "War Dominion/Mapas/Clássico";
+    private const string MenuSelecionarPearlHarbor = "War Dominion/Mapas/Pearl Harbor";
+    private const string MenuSelecionarRiachuelo = "War Dominion/Mapas/Batalha do Riachuelo";
+    private const string MenuSelecionarDarkWorld = "War Dominion/Mapas/Dark World";
+    private const string MenuSelecionarPeloponeso = "War Dominion/Mapas/Peloponeso";
+    private static readonly (string MapaId, string MenuPath)[] MenusDeMapas =
+    {
+        ("classic", MenuSelecionarClassic),
+        ("pearl_harbor", MenuSelecionarPearlHarbor),
+        ("riachuelo", MenuSelecionarRiachuelo),
+        ("dark_world", MenuSelecionarDarkWorld)
+        ,("peloponeso", MenuSelecionarPeloponeso)
+    };
+
+    static DefinicaoMapaClassicEditor()
+    {
+        EditorSceneManager.activeSceneChangedInEditMode -= AoAlterarCenaAtiva;
+        EditorSceneManager.activeSceneChangedInEditMode += AoAlterarCenaAtiva;
+        EditorSceneManager.sceneOpened -= AoAbrirCena;
+        EditorSceneManager.sceneOpened += AoAbrirCena;
+        EditorApplication.playModeStateChanged -= AoAlterarPlayMode;
+        EditorApplication.playModeStateChanged += AoAlterarPlayMode;
+        EditorApplication.delayCall += SincronizarSelecaoComCenaAtiva;
+    }
 
     [MenuItem(MenuSelecionarClassic)]
     private static void SelecionarClassic()
@@ -29,9 +56,7 @@ public static class DefinicaoMapaClassicEditor
     [MenuItem(MenuSelecionarClassic, true)]
     private static bool ValidarSelecaoClassic()
     {
-        Menu.SetChecked(
-            MenuSelecionarClassic,
-            PlayerPrefs.GetString(MapaAtivo.ChaveMapaTesteEditor, "classic") == "classic");
+        Menu.SetChecked(MenuSelecionarClassic, CenaAtivaCorrespondeAoMapa("classic"));
         return !EditorApplication.isPlayingOrWillChangePlaymode;
     }
 
@@ -44,9 +69,46 @@ public static class DefinicaoMapaClassicEditor
     [MenuItem(MenuSelecionarPearlHarbor, true)]
     private static bool ValidarSelecaoPearlHarbor()
     {
-        Menu.SetChecked(
-            MenuSelecionarPearlHarbor,
-            PlayerPrefs.GetString(MapaAtivo.ChaveMapaTesteEditor, "classic") == "pearl_harbor");
+        Menu.SetChecked(MenuSelecionarPearlHarbor, CenaAtivaCorrespondeAoMapa("pearl_harbor"));
+        return !EditorApplication.isPlayingOrWillChangePlaymode;
+    }
+
+    [MenuItem(MenuSelecionarRiachuelo)]
+    private static void SelecionarRiachuelo()
+    {
+        AbrirMapa("riachuelo", CenaRiachuelo, "Batalha do Riachuelo");
+    }
+
+    [MenuItem(MenuSelecionarRiachuelo, true)]
+    private static bool ValidarSelecaoRiachuelo()
+    {
+        Menu.SetChecked(MenuSelecionarRiachuelo, CenaAtivaCorrespondeAoMapa("riachuelo"));
+        return !EditorApplication.isPlayingOrWillChangePlaymode;
+    }
+
+    [MenuItem(MenuSelecionarDarkWorld)]
+    private static void SelecionarDarkWorld()
+    {
+        AbrirMapa("dark_world", CenaDarkWorld, "Dark World");
+    }
+
+    [MenuItem(MenuSelecionarDarkWorld, true)]
+    private static bool ValidarSelecaoDarkWorld()
+    {
+        Menu.SetChecked(MenuSelecionarDarkWorld, CenaAtivaCorrespondeAoMapa("dark_world"));
+        return !EditorApplication.isPlayingOrWillChangePlaymode;
+    }
+
+    [MenuItem(MenuSelecionarPeloponeso)]
+    private static void SelecionarPeloponeso()
+    {
+        AbrirMapa("peloponeso", CenaPeloponeso, "Peloponeso");
+    }
+
+    [MenuItem(MenuSelecionarPeloponeso, true)]
+    private static bool ValidarSelecaoPeloponeso()
+    {
+        Menu.SetChecked(MenuSelecionarPeloponeso, CenaAtivaCorrespondeAoMapa("peloponeso"));
         return !EditorApplication.isPlayingOrWillChangePlaymode;
     }
 
@@ -67,7 +129,68 @@ public static class DefinicaoMapaClassicEditor
         Debug.Log($"MAPAS | {nomeExibido} selecionado. O próximo Play Mode usará {mapaId}.");
     }
 
-    [MenuItem("WarGame/Configuração de Mapas/Gerar ou Atualizar/Clássico %#g")]
+    private static void AoAlterarCenaAtiva(Scene anterior, Scene atual)
+    {
+        EditorApplication.delayCall += SincronizarSelecaoComCenaAtiva;
+    }
+
+    private static void AoAbrirCena(Scene cena, OpenSceneMode modo)
+    {
+        EditorApplication.delayCall += SincronizarSelecaoComCenaAtiva;
+    }
+
+    private static void AoAlterarPlayMode(PlayModeStateChange estado)
+    {
+        if (estado == PlayModeStateChange.EnteredEditMode || estado == PlayModeStateChange.ExitingEditMode)
+            EditorApplication.delayCall += SincronizarSelecaoComCenaAtiva;
+    }
+
+    private static bool CenaAtivaCorrespondeAoMapa(string mapaId)
+    {
+        DefinicaoMapa mapa = ObterMapaDaCenaAtiva();
+        return mapa != null && mapa.MapaId == mapaId;
+    }
+
+    private static void SincronizarSelecaoComCenaAtiva()
+    {
+        DefinicaoMapa mapa = ObterMapaDaCenaAtiva();
+        if (mapa == null)
+            return;
+
+        if (PlayerPrefs.GetString(MapaAtivo.ChaveMapaTesteEditor, string.Empty) != mapa.MapaId)
+        {
+            PlayerPrefs.SetString(MapaAtivo.ChaveMapaTesteEditor, mapa.MapaId);
+            PlayerPrefs.Save();
+        }
+
+        foreach ((string mapaId, string menuPath) in MenusDeMapas)
+            Menu.SetChecked(menuPath, mapa.MapaId == mapaId);
+    }
+
+    private static DefinicaoMapa ObterMapaDaCenaAtiva()
+    {
+        Scene cena = SceneManager.GetActiveScene();
+        if (!cena.IsValid() || !cena.isLoaded)
+            return null;
+
+        CatalogoMapas catalogo = AssetDatabase.LoadAssetAtPath<CatalogoMapas>(CaminhoCatalogo);
+        if (catalogo == null)
+            return null;
+
+        HashSet<Sprite> spritesDaCena = new HashSet<Sprite>(
+            cena.GetRootGameObjects()
+                .SelectMany(raiz => raiz.GetComponentsInChildren<SpriteRenderer>(true))
+                .Where(renderer => renderer != null && renderer.sprite != null)
+                .Select(renderer => renderer.sprite));
+
+        foreach (DefinicaoMapa mapa in catalogo.Mapas)
+            if (mapa != null && mapa.ArteBase != null && spritesDaCena.Contains(mapa.ArteBase))
+                return mapa;
+
+        return null;
+    }
+
+    [MenuItem("War Dominion/Configuração de Mapas/Gerar ou Atualizar/Clássico %#g")]
     public static void GerarOuAtualizarClassic()
     {
         if (SceneManager.GetActiveScene().path != Cena)
@@ -155,13 +278,13 @@ public static class DefinicaoMapaClassicEditor
         Debug.Log($"MAPA CLASSIC | Gerado com {territorios.Count} territórios, {regioesPorLegado.Count} regiões e {conexoes.Count} conexões.");
     }
 
-    [MenuItem("WarGame/Configuração de Mapas/Validar/Clássico")]
+    [MenuItem("War Dominion/Configuração de Mapas/Validar/Clássico")]
     public static void ValidarClassic()
     {
         Validar(AssetDatabase.LoadAssetAtPath<DefinicaoMapa>(CaminhoMapa));
     }
 
-    [MenuItem("WarGame/Configuração de Mapas/Diagnóstico e Relatórios/Clássico/Preparar Controle de Região")]
+    [MenuItem("War Dominion/Configuração de Mapas/Diagnóstico e Relatórios/Clássico/Preparar Controle de Região")]
     public static void PrepararControleDeRegiao()
     {
         if (!EditorApplication.isPlaying || MapaAtivo.Instance == null || GameManager.instance == null)

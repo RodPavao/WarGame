@@ -1,0 +1,821 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f9d6f2c1094f7a9877e75fb47c2901, type: 3}
+  m_Name: Riachuelo
+  m_EditorClassIdentifier: Assembly-CSharp::DefinicaoMapa
+  mapaId: riachuelo
+  nomeInterno: Riachuelo
+  nomeExibido: Batalha do Riachuelo
+  descricao: "Mapa da Batalha do Riachuelo com 37 territ\xF3rios e seis regi\xF5es."
+  temaId: riachuelo
+  versao: 1
+  arteBase: {fileID: 21300000, guid: 6e22641b0342a464eb3cc732e765bb9a, type: 3}
+  centroCamera: {x: 0, y: 0}
+  tamanhoOrtografico: 11.75
+  territorios:
+  - id: Pilcomayo
+    nomeExibido: Pilcomayo
+    chaveTraducao: territory_pilcomayo
+    regiaoId: formosa
+    posicaoContador: {x: 0.08800049, y: 0.022000123}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Pilagas
+    nomeExibido: "Pilag\xE1s"
+    chaveTraducao: territory_pilagas
+    regiaoId: formosa
+    posicaoContador: {x: 0.016999511, y: -0.08}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Feliciano
+    nomeExibido: Feliciano
+    chaveTraducao: territory_feliciano
+    regiaoId: entre_rios
+    posicaoContador: {x: -0.54299986, y: 0.195}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: PalomeraIsland
+    nomeExibido: Palomera Island
+    chaveTraducao: territory_palomeraisland
+    regiaoId: chaco
+    posicaoContador: {x: 0.18099976, y: -0.17200013}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Federal
+    nomeExibido: Federal
+    chaveTraducao: territory_federal
+    regiaoId: entre_rios
+    posicaoContador: {x: 0.12599975, y: -0.015999757}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: GeneralSanMartin
+    nomeExibido: "General San Mart\xEDn"
+    chaveTraducao: territory_generalsanmartin
+    regiaoId: chaco
+    posicaoContador: {x: 0.165, y: -0.04700012}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: LaPaz
+    nomeExibido: La Paz
+    chaveTraducao: territory_lapaz
+    regiaoId: entre_rios
+    posicaoContador: {x: 0.14700012, y: -0.005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Formosa
+    nomeExibido: Formosa
+    chaveTraducao: territory_formosa
+    regiaoId: formosa
+    posicaoContador: {x: 0.0010009765, y: -0.044000246}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Laishi
+    nomeExibido: "Laish\xED"
+    chaveTraducao: territory_laishi
+    regiaoId: formosa
+    posicaoContador: {x: -0.021999512, y: -0.024000244}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Federacion
+    nomeExibido: "Federaci\xF3n"
+    chaveTraducao: territory_federacion
+    regiaoId: entre_rios
+    posicaoContador: {x: -0.012000122, y: -0.3}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: OHiggins
+    nomeExibido: O'Higgins
+    chaveTraducao: territory_ohiggins
+    regiaoId: chaco
+    posicaoContador: {x: 0.38900024, y: -0.325}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: PrimeroDeMayo
+    nomeExibido: Primero de Mayo
+    chaveTraducao: territory_primerodemayo
+    regiaoId: chaco
+    posicaoContador: {x: 0.09600098, y: -0.015999757}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Parana
+    nomeExibido: "Paran\xE1"
+    chaveTraducao: territory_parana
+    regiaoId: entre_rios
+    posicaoContador: {x: -0.38100007, y: -0.43099976}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Villaguay
+    nomeExibido: Villaguay
+    chaveTraducao: territory_villaguay
+    regiaoId: entre_rios
+    posicaoContador: {x: -0.037000123, y: -0.08199951}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: MayorMartinez
+    nomeExibido: "Mayor Mart\xEDnez"
+    chaveTraducao: territory_mayormartinez
+    regiaoId: neembucu
+    posicaoContador: {x: -0.145, y: 0.025999757}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Concordia
+    nomeExibido: Concordia
+    chaveTraducao: territory_concordia
+    regiaoId: entre_rios
+    posicaoContador: {x: 0.056999512, y: -0.2830005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: SanLorenzo
+    nomeExibido: San Lorenzo
+    chaveTraducao: territory_sanlorenzo
+    regiaoId: chaco
+    posicaoContador: {x: 0.20400025, y: 0.023000488}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: SanFernando
+    nomeExibido: San Fernando
+    chaveTraducao: territory_sanfernando
+    regiaoId: chaco
+    posicaoContador: {x: -0.18699951, y: 0.01800049}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Desmochados
+    nomeExibido: Desmochados
+    chaveTraducao: territory_desmochados
+    regiaoId: neembucu
+    posicaoContador: {x: 0.145, y: 0.033000488}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Mercedes
+    nomeExibido: Mercedes
+    chaveTraducao: territory_mercedes
+    regiaoId: corrientes
+    posicaoContador: {x: 0.10599975, y: 0.08699951}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Goya
+    nomeExibido: Goya
+    chaveTraducao: territory_goya
+    regiaoId: corrientes
+    posicaoContador: {x: -0.20799989, y: 0.20800048}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: PasoDeLaPatria
+    nomeExibido: Paso de la Patria
+    chaveTraducao: territory_pasodelapatria
+    regiaoId: neembucu
+    posicaoContador: {x: 0.15, y: 0.08599976}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Lavalle
+    nomeExibido: Lavalle
+    chaveTraducao: territory_lavalle
+    regiaoId: corrientes
+    posicaoContador: {x: -0.14400025, y: 0.1}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: PasoDeLosLibres
+    nomeExibido: Paso de los Libres
+    chaveTraducao: territory_pasodeloslibres
+    regiaoId: corrientes
+    posicaoContador: {x: -0.049000245, y: 0.055999756}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: NueveDeJulio
+    nomeExibido: Nueve de Julio
+    chaveTraducao: territory_nuevedejulio
+    regiaoId: santa_fe
+    posicaoContador: {x: 0.051999513, y: 0.18699951}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Vera
+    nomeExibido: Vera
+    chaveTraducao: territory_vera
+    regiaoId: santa_fe
+    posicaoContador: {x: 0.009000245, y: -0.12199951}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Sauce
+    nomeExibido: Sauce
+    chaveTraducao: territory_sauce
+    regiaoId: corrientes
+    posicaoContador: {x: -0.022000123, y: 0.24}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: GeneralDiaz
+    nomeExibido: "General D\xEDaz"
+    chaveTraducao: territory_generaldiaz
+    regiaoId: neembucu
+    posicaoContador: {x: 0.045, y: 0.33900025}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: SanJavier
+    nomeExibido: San Javier
+    chaveTraducao: territory_sanjavier
+    regiaoId: santa_fe
+    posicaoContador: {x: 0.016999511, y: 0.22900024}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: CuruzuCuatia
+    nomeExibido: "Curuz\xFA Cuati\xE1"
+    chaveTraducao: territory_curuzucuatia
+    regiaoId: corrientes
+    posicaoContador: {x: -0.2419995, y: -0.118000485}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: SanCristobal
+    nomeExibido: "San Crist\xF3bal"
+    chaveTraducao: territory_sancristobal
+    regiaoId: santa_fe
+    posicaoContador: {x: 0.05800049, y: -0.080999754}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Humaita
+    nomeExibido: "Humait\xE1"
+    chaveTraducao: territory_humaita
+    regiaoId: neembucu
+    posicaoContador: {x: -0.17699951, y: 0.07300049}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: SantaFe
+    nomeExibido: Santa Fe
+    chaveTraducao: territory_santafe
+    regiaoId: santa_fe
+    posicaoContador: {x: -0.06800049, y: 0.14099975}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Esquina
+    nomeExibido: Esquina
+    chaveTraducao: territory_esquina
+    regiaoId: corrientes
+    posicaoContador: {x: -0.18099976, y: -0.2580005}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: MonteCaseros
+    nomeExibido: Monte Caseros
+    chaveTraducao: territory_montecaseros
+    regiaoId: corrientes
+    posicaoContador: {x: -0.016999511, y: 0.020999756}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Villalbin
+    nomeExibido: "Villalb\xEDn"
+    chaveTraducao: territory_villalbin
+    regiaoId: neembucu
+    posicaoContador: {x: -0.10300049, y: 0.02}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Pirane
+    nomeExibido: "Piran\xE9"
+    chaveTraducao: territory_pirane
+    regiaoId: santa_fe
+    posicaoContador: {x: 0.14600098, y: -0.155}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  regioes:
+  - id: entre_rios
+    nomeExibido: "Entre R\xEDos"
+    descricao: "Entre R\xEDos"
+    chaveTraducao: region_entre_rios
+    bonus: 3
+    ordemExibicao: 0
+    corDestaque: {r: 0.92, g: 0.66, b: 0.25, a: 1}
+    territorioIds:
+    - Feliciano
+    - Federal
+    - LaPaz
+    - Federacion
+    - Parana
+    - Villaguay
+    - Concordia
+    metadados: []
+  - id: corrientes
+    nomeExibido: Corrientes
+    descricao: Corrientes
+    chaveTraducao: region_corrientes
+    bonus: 4
+    ordemExibicao: 1
+    corDestaque: {r: 0.28, g: 0.72, b: 0.92, a: 1}
+    territorioIds:
+    - Mercedes
+    - Goya
+    - Lavalle
+    - PasoDeLosLibres
+    - Sauce
+    - CuruzuCuatia
+    - Esquina
+    - MonteCaseros
+    metadados: []
+  - id: chaco
+    nomeExibido: Chaco
+    descricao: Chaco
+    chaveTraducao: region_chaco
+    bonus: 3
+    ordemExibicao: 2
+    corDestaque: {r: 0.52, g: 0.78, b: 0.34, a: 1}
+    territorioIds:
+    - PalomeraIsland
+    - GeneralSanMartin
+    - OHiggins
+    - PrimeroDeMayo
+    - SanLorenzo
+    - SanFernando
+    metadados: []
+  - id: santa_fe
+    nomeExibido: Santa Fe
+    descricao: Santa Fe
+    chaveTraducao: region_santa_fe
+    bonus: 3
+    ordemExibicao: 3
+    corDestaque: {r: 0.86, g: 0.4, b: 0.42, a: 1}
+    territorioIds:
+    - NueveDeJulio
+    - Vera
+    - SanJavier
+    - SanCristobal
+    - SantaFe
+    - Pirane
+    metadados: []
+  - id: neembucu
+    nomeExibido: "\xD1eembuc\xFA"
+    descricao: "\xD1eembuc\xFA"
+    chaveTraducao: region_neembucu
+    bonus: 3
+    ordemExibicao: 4
+    corDestaque: {r: 0.67, g: 0.48, b: 0.85, a: 1}
+    territorioIds:
+    - MayorMartinez
+    - Desmochados
+    - PasoDeLaPatria
+    - GeneralDiaz
+    - Humaita
+    - Villalbin
+    metadados: []
+  - id: formosa
+    nomeExibido: Formosa
+    descricao: Formosa
+    chaveTraducao: region_formosa
+    bonus: 3
+    ordemExibicao: 5
+    corDestaque: {r: 0.35, g: 0.79, b: 0.68, a: 1}
+    territorioIds:
+    - Pilcomayo
+    - Pilagas
+    - Formosa
+    - Laishi
+    metadados: []
+  conexoes:
+  - origemId: Lavalle
+    destinoId: Sauce
+    tipo: 0
+    bidirecional: 1
+  - origemId: LaPaz
+    destinoId: Parana
+    tipo: 0
+    bidirecional: 1
+  - origemId: Feliciano
+    destinoId: LaPaz
+    tipo: 0
+    bidirecional: 1
+  - origemId: Federacion
+    destinoId: Villaguay
+    tipo: 0
+    bidirecional: 1
+  - origemId: Concordia
+    destinoId: Federacion
+    tipo: 0
+    bidirecional: 1
+  - origemId: OHiggins
+    destinoId: PrimeroDeMayo
+    tipo: 0
+    bidirecional: 1
+  - origemId: OHiggins
+    destinoId: SanLorenzo
+    tipo: 0
+    bidirecional: 1
+  - origemId: OHiggins
+    destinoId: SanFernando
+    tipo: 0
+    bidirecional: 1
+  - origemId: PrimeroDeMayo
+    destinoId: SanFernando
+    tipo: 0
+    bidirecional: 1
+  - origemId: Parana
+    destinoId: Villaguay
+    tipo: 0
+    bidirecional: 1
+  - origemId: Concordia
+    destinoId: Villaguay
+    tipo: 0
+    bidirecional: 1
+  - origemId: SanFernando
+    destinoId: SanLorenzo
+    tipo: 0
+    bidirecional: 1
+  - origemId: Goya
+    destinoId: Mercedes
+    tipo: 0
+    bidirecional: 1
+  - origemId: Lavalle
+    destinoId: Mercedes
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mercedes
+    destinoId: PasoDeLosLibres
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mercedes
+    destinoId: Sauce
+    tipo: 0
+    bidirecional: 1
+  - origemId: Goya
+    destinoId: Lavalle
+    tipo: 0
+    bidirecional: 1
+  - origemId: PasoDeLosLibres
+    destinoId: Sauce
+    tipo: 0
+    bidirecional: 1
+  - origemId: CuruzuCuatia
+    destinoId: PasoDeLosLibres
+    tipo: 0
+    bidirecional: 1
+  - origemId: CuruzuCuatia
+    destinoId: Sauce
+    tipo: 0
+    bidirecional: 1
+  - origemId: Esquina
+    destinoId: Sauce
+    tipo: 0
+    bidirecional: 1
+  - origemId: Federal
+    destinoId: Feliciano
+    tipo: 0
+    bidirecional: 1
+  - origemId: CuruzuCuatia
+    destinoId: Esquina
+    tipo: 0
+    bidirecional: 1
+  - origemId: CuruzuCuatia
+    destinoId: MonteCaseros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Esquina
+    destinoId: MonteCaseros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Federacion
+    destinoId: Federal
+    tipo: 0
+    bidirecional: 1
+  - origemId: Federal
+    destinoId: Villaguay
+    tipo: 0
+    bidirecional: 1
+  - origemId: Federal
+    destinoId: LaPaz
+    tipo: 0
+    bidirecional: 1
+  - origemId: GeneralSanMartin
+    destinoId: OHiggins
+    tipo: 0
+    bidirecional: 1
+  - origemId: GeneralSanMartin
+    destinoId: PrimeroDeMayo
+    tipo: 0
+    bidirecional: 1
+  - origemId: LaPaz
+    destinoId: Villaguay
+    tipo: 0
+    bidirecional: 1
+  - origemId: Pirane
+    destinoId: SanJavier
+    tipo: 0
+    bidirecional: 1
+  - origemId: Pilagas
+    destinoId: Pilcomayo
+    tipo: 0
+    bidirecional: 1
+  - origemId: Humaita
+    destinoId: PasoDeLaPatria
+    tipo: 0
+    bidirecional: 1
+  - origemId: Formosa
+    destinoId: Pilcomayo
+    tipo: 0
+    bidirecional: 1
+  - origemId: Desmochados
+    destinoId: PasoDeLaPatria
+    tipo: 0
+    bidirecional: 1
+  - origemId: Desmochados
+    destinoId: GeneralDiaz
+    tipo: 0
+    bidirecional: 1
+  - origemId: Formosa
+    destinoId: Pilagas
+    tipo: 0
+    bidirecional: 1
+  - origemId: Laishi
+    destinoId: Pilagas
+    tipo: 0
+    bidirecional: 1
+  - origemId: GeneralDiaz
+    destinoId: PasoDeLaPatria
+    tipo: 0
+    bidirecional: 1
+  - origemId: NueveDeJulio
+    destinoId: Vera
+    tipo: 0
+    bidirecional: 1
+  - origemId: NueveDeJulio
+    destinoId: SanCristobal
+    tipo: 0
+    bidirecional: 1
+  - origemId: SanJavier
+    destinoId: Vera
+    tipo: 0
+    bidirecional: 1
+  - origemId: SanCristobal
+    destinoId: Vera
+    tipo: 0
+    bidirecional: 1
+  - origemId: SantaFe
+    destinoId: Vera
+    tipo: 0
+    bidirecional: 1
+  - origemId: GeneralDiaz
+    destinoId: Humaita
+    tipo: 0
+    bidirecional: 1
+  - origemId: GeneralDiaz
+    destinoId: Villalbin
+    tipo: 0
+    bidirecional: 1
+  - origemId: SanJavier
+    destinoId: SantaFe
+    tipo: 0
+    bidirecional: 1
+  - origemId: SanCristobal
+    destinoId: SantaFe
+    tipo: 0
+    bidirecional: 1
+  - origemId: Humaita
+    destinoId: Villalbin
+    tipo: 0
+    bidirecional: 1
+  - origemId: Pirane
+    destinoId: SantaFe
+    tipo: 0
+    bidirecional: 1
+  - origemId: Formosa
+    destinoId: MayorMartinez
+    tipo: 0
+    bidirecional: 1
+  - origemId: Formosa
+    destinoId: Laishi
+    tipo: 0
+    bidirecional: 1
+  - origemId: Laishi
+    destinoId: MayorMartinez
+    tipo: 0
+    bidirecional: 1
+  - origemId: Humaita
+    destinoId: SanJavier
+    tipo: 0
+    bidirecional: 1
+  - origemId: Desmochados
+    destinoId: MayorMartinez
+    tipo: 0
+    bidirecional: 1
+  - origemId: MayorMartinez
+    destinoId: PasoDeLaPatria
+    tipo: 0
+    bidirecional: 1
+  - origemId: SanFernando
+    destinoId: SanJavier
+    tipo: 0
+    bidirecional: 1
+  - origemId: PasoDeLaPatria
+    destinoId: SanJavier
+    tipo: 0
+    bidirecional: 1
+  - origemId: Pirane
+    destinoId: Villalbin
+    tipo: 0
+    bidirecional: 1
+  - origemId: GeneralSanMartin
+    destinoId: Laishi
+    tipo: 0
+    bidirecional: 1
+  - origemId: Desmochados
+    destinoId: Formosa
+    tipo: 0
+    bidirecional: 1
+  - origemId: MayorMartinez
+    destinoId: SanFernando
+    tipo: 0
+    bidirecional: 1
+  - origemId: PasoDeLaPatria
+    destinoId: SanFernando
+    tipo: 0
+    bidirecional: 1
+  - origemId: GeneralSanMartin
+    destinoId: Pilagas
+    tipo: 0
+    bidirecional: 1
+  - origemId: Laishi
+    destinoId: PrimeroDeMayo
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mercedes
+    destinoId: Villaguay
+    tipo: 0
+    bidirecional: 1
+  - origemId: NueveDeJulio
+    destinoId: SanLorenzo
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mercedes
+    destinoId: Parana
+    tipo: 0
+    bidirecional: 1
+  - origemId: Goya
+    destinoId: Parana
+    tipo: 0
+    bidirecional: 1
+  - origemId: Concordia
+    destinoId: Mercedes
+    tipo: 0
+    bidirecional: 1
+  - origemId: Concordia
+    destinoId: PasoDeLosLibres
+    tipo: 0
+    bidirecional: 1
+  - origemId: SanLorenzo
+    destinoId: Vera
+    tipo: 0
+    bidirecional: 1
+  - origemId: SanFernando
+    destinoId: Vera
+    tipo: 0
+    bidirecional: 1
+  - origemId: MayorMartinez
+    destinoId: PrimeroDeMayo
+    tipo: 0
+    bidirecional: 1
+  - origemId: Humaita
+    destinoId: Pirane
+    tipo: 0
+    bidirecional: 1
+  - origemId: Federacion
+    destinoId: PalomeraIsland
+    tipo: 0
+    bidirecional: 1
+  - origemId: GeneralSanMartin
+    destinoId: PalomeraIsland
+    tipo: 0
+    bidirecional: 1
+  - origemId: Concordia
+    destinoId: SanLorenzo
+    tipo: 0
+    bidirecional: 1
+  - origemId: NueveDeJulio
+    destinoId: PasoDeLosLibres
+    tipo: 0
+    bidirecional: 1
+  - origemId: CuruzuCuatia
+    destinoId: SanCristobal
+    tipo: 0
+    bidirecional: 1
+  - origemId: MonteCaseros
+    destinoId: SantaFe
+    tipo: 0
+    bidirecional: 1
+  - origemId: MonteCaseros
+    destinoId: Pirane
+    tipo: 0
+    bidirecional: 1
+  condicoesEstrategicas: []
+  metadados: []

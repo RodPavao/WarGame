@@ -66,7 +66,7 @@ public sealed class ReferenciaCondicaoEstrategicaMapa
     public List<string> territorioIds = new List<string>();
 }
 
-[CreateAssetMenu(fileName = "Mapa", menuName = "WarGame/Definicao de Mapa")]
+[CreateAssetMenu(fileName = "Mapa", menuName = "War Dominion/Definicao de Mapa")]
 public sealed class DefinicaoMapa : ScriptableObject
 {
     // ============================================================

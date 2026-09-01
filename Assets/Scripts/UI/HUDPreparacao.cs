@@ -431,7 +431,7 @@ public class HUDPreparacao : MonoBehaviour
         );
 
         GUILayout.Label(
-            "WarGame",
+            "War Dominion",
             tituloJogo,
             GUILayout.Height(Altura(28))
         );

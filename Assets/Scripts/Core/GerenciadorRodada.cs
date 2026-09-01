@@ -424,6 +424,13 @@ public class GerenciadorRodada : MonoBehaviour
             gameManager.FecharPreparacaoEIniciarResolucao();
     }
 
+    public void TesteEditorIniciarPartida() => IniciarPartidaTeste();
+    public void TesteEditorIniciarProximaRodada() => ProximaRodadaTeste();
+    public void TesteEditorPrepararRound10() => PrepararRound10Teste();
+    public void TesteEditorPrepararRound10Empatado() => PrepararRound10EmpatadoTeste();
+    public void TesteEditorForcarDesempate() => ForcarDesempateTeste();
+    public void TesteEditorResolverRoundAtual() => ResolverRoundAtualTeste();
+
     private static List<TerritorioClique> ObterTerritoriosOrdenadosTeste()
     {
         List<TerritorioClique> territorios =

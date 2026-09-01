@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CatalogoMapas", menuName = "WarGame/Catalogo de Mapas")]
+[CreateAssetMenu(fileName = "CatalogoMapas", menuName = "War Dominion/Catalogo de Mapas")]
 public sealed class CatalogoMapas : ScriptableObject
 {
     // ============================================================

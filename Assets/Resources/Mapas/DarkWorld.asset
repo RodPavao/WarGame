@@ -1,0 +1,796 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f9d6f2c1094f7a9877e75fb47c2901, type: 3}
+  m_Name: DarkWorld
+  m_EditorClassIdentifier: Assembly-CSharp::DefinicaoMapa
+  mapaId: dark_world
+  nomeInterno: DarkWorld
+  nomeExibido: Dark World
+  descricao: "Dark World com 43 territ\xF3rios e sete regi\xF5es."
+  temaId: dark_world
+  versao: 1
+  arteBase: {fileID: 21300000, guid: 55ad73920f1d63e4bb5498440f3398f3, type: 3}
+  centroCamera: {x: 0, y: 0}
+  tamanhoOrtografico: 5.2
+  territorios:
+  - id: Lai
+    nomeExibido: Lai
+    chaveTraducao: territory_lai
+    regiaoId: agla
+    posicaoContador: {x: -0.016999511, y: 0.003999939}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Hevll
+    nomeExibido: Hevll
+    chaveTraducao: territory_hevll
+    regiaoId: agla
+    posicaoContador: {x: -0.012999878, y: 0.051000062}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: SodherNoor
+    nomeExibido: Sodher Noor
+    chaveTraducao: territory_sodhernoor
+    regiaoId: flathia
+    posicaoContador: {x: 0.12100006, y: 0.076000065}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: ValeriaHeart
+    nomeExibido: Valeria Heart
+    chaveTraducao: territory_valeriaheart
+    regiaoId: agla
+    posicaoContador: {x: -0.0030004883, y: 0.03}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: SpearOfTheGods
+    nomeExibido: Spear of the gods
+    chaveTraducao: territory_spearofthegods
+    regiaoId: flathia
+    posicaoContador: {x: -0.14899994, y: 0.08100006}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Talisporto
+    nomeExibido: Talisporto
+    chaveTraducao: territory_talisporto
+    regiaoId: agla
+    posicaoContador: {x: 0.022000123, y: -0.015}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: WhiteWall
+    nomeExibido: White Wall
+    chaveTraducao: territory_whitewall
+    regiaoId: vorlia
+    posicaoContador: {x: 0.27099976, y: 0.022000123}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Marcias
+    nomeExibido: Marcias
+    chaveTraducao: territory_marcias
+    regiaoId: akani
+    posicaoContador: {x: 0.116999514, y: -0.05}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: FlathiaIsland
+    nomeExibido: Flathia Island
+    chaveTraducao: territory_flathiaisland
+    regiaoId: flathia
+    posicaoContador: {x: -0.0030000305, y: -0.006000061}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Cube
+    nomeExibido: Cube
+    chaveTraducao: territory_cube
+    regiaoId: flathia
+    posicaoContador: {x: -0.057000123, y: -0.04299988}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: CrowsHome
+    nomeExibido: Crows Home
+    chaveTraducao: territory_crowshome
+    regiaoId: flathia
+    posicaoContador: {x: -0.03399994, y: 0.07200012}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Babushka
+    nomeExibido: Babushka
+    chaveTraducao: territory_babushka
+    regiaoId: vorlia
+    posicaoContador: {x: 0, y: -0.017000122}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: FantasyRoom
+    nomeExibido: Fantasy Room
+    chaveTraducao: territory_fantasyroom
+    regiaoId: vorlia
+    posicaoContador: {x: -0.057000123, y: -0.06700012}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Nai
+    nomeExibido: Nai
+    chaveTraducao: territory_nai
+    regiaoId: akani
+    posicaoContador: {x: 0.069000244, y: 0.02899994}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: PeachLand
+    nomeExibido: Peach Land
+    chaveTraducao: territory_peachland
+    regiaoId: akani
+    posicaoContador: {x: -0.015, y: 0.076000065}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Tigershitman
+    nomeExibido: Tigershitman
+    chaveTraducao: territory_tigershitman
+    regiaoId: vorlia
+    posicaoContador: {x: 0.030999755, y: -0.11399994}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: PalmTowner
+    nomeExibido: Palm Towner
+    chaveTraducao: territory_palmtowner
+    regiaoId: flathia
+    posicaoContador: {x: -0.035, y: 0.02899994}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: NewSahara
+    nomeExibido: New Sahara
+    chaveTraducao: territory_newsahara
+    regiaoId: flathia
+    posicaoContador: {x: -0.017000122, y: -0.017999878}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: PutfireDistrict
+    nomeExibido: Putfire District
+    chaveTraducao: territory_putfiredistrict
+    regiaoId: akani
+    posicaoContador: {x: 0.07, y: 0.045}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Widows
+    nomeExibido: Widows
+    chaveTraducao: territory_widows
+    regiaoId: birfani
+    posicaoContador: {x: 0.025, y: 0.059000243}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Sheppard
+    nomeExibido: Sheppard
+    chaveTraducao: territory_sheppard
+    regiaoId: akani
+    posicaoContador: {x: -0.059000243, y: 0.15}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: RebeccaIsland
+    nomeExibido: Rebecca Island
+    chaveTraducao: territory_rebeccaisland
+    regiaoId: akani
+    posicaoContador: {x: -0.005, y: -0.009000245}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Mariliand
+    nomeExibido: Mariliand
+    chaveTraducao: territory_mariliand
+    regiaoId: birfani
+    posicaoContador: {x: -0.055999756, y: -0.055999756}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: BadenBaden
+    nomeExibido: Baden Baden
+    chaveTraducao: territory_badenbaden
+    regiaoId: birfani
+    posicaoContador: {x: -0.107999876, y: 0.014000244}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: ValBay
+    nomeExibido: Val Bay
+    chaveTraducao: territory_valbay
+    regiaoId: flathia
+    posicaoContador: {x: -0.027000122, y: 0.05}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Potros
+    nomeExibido: Potros
+    chaveTraducao: territory_potros
+    regiaoId: makatanga_islands
+    posicaoContador: {x: -0.04300049, y: 0.040999755}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Braveland
+    nomeExibido: Braveland
+    chaveTraducao: territory_braveland
+    regiaoId: flathia
+    posicaoContador: {x: 0.001000061, y: -0.019000243}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: TALand
+    nomeExibido: T A Land
+    chaveTraducao: territory_taland
+    regiaoId: birfani
+    posicaoContador: {x: 0.14400025, y: 0.10599975}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Maki
+    nomeExibido: Maki
+    chaveTraducao: territory_maki
+    regiaoId: makatanga_islands
+    posicaoContador: {x: -0.114000246, y: 0.09700012}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: MillaSunderland
+    nomeExibido: Milla Sunderland
+    chaveTraducao: territory_millasunderland
+    regiaoId: birfani
+    posicaoContador: {x: 0.025999757, y: 0.047999877}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Putfire
+    nomeExibido: Putfire
+    chaveTraducao: territory_putfire
+    regiaoId: flathia
+    posicaoContador: {x: -0.06, y: -0.050999757}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: CentralBase
+    nomeExibido: Central Base
+    chaveTraducao: territory_centralbase
+    regiaoId: makatanga_islands
+    posicaoContador: {x: 0.01, y: 0.004000244}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Montreux
+    nomeExibido: Montreux
+    chaveTraducao: territory_montreux
+    regiaoId: flathia
+    posicaoContador: {x: 0.065, y: 0.0009997558}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: DarknessRoom
+    nomeExibido: Darkness Room
+    chaveTraducao: territory_darknessroom
+    regiaoId: south_pole
+    posicaoContador: {x: -0.04700012, y: -0.007000122}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Haeox
+    nomeExibido: Haeox
+    chaveTraducao: territory_haeox
+    regiaoId: makatanga_islands
+    posicaoContador: {x: 0.01, y: -0.05200012}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Lineker
+    nomeExibido: Lineker
+    chaveTraducao: territory_lineker
+    regiaoId: makatanga_islands
+    posicaoContador: {x: -0.021999512, y: 0.024000244}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: ColdCoast
+    nomeExibido: Cold Coast
+    chaveTraducao: territory_coldcoast
+    regiaoId: south_pole
+    posicaoContador: {x: 0.07200012, y: -0.034000244}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Trinit
+    nomeExibido: Trinit
+    chaveTraducao: territory_trinit
+    regiaoId: south_pole
+    posicaoContador: {x: 0.017000122, y: -0.027999878}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Garin
+    nomeExibido: Garin
+    chaveTraducao: territory_garin
+    regiaoId: south_pole
+    posicaoContador: {x: 0.04899994, y: -0.045}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Tarantula
+    nomeExibido: Tarantula
+    chaveTraducao: territory_tarantula
+    regiaoId: south_pole
+    posicaoContador: {x: -0.015, y: -0.06}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: Demetrius
+    nomeExibido: Demetrius
+    chaveTraducao: territory_demetrius
+    regiaoId: south_pole
+    posicaoContador: {x: 0.050999757, y: -0.07599976}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: OffRoad
+    nomeExibido: Off Road
+    chaveTraducao: territory_offroad
+    regiaoId: south_pole
+    posicaoContador: {x: -0.035999756, y: -0.057000123}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  - id: KsIsland
+    nomeExibido: Ks Island
+    chaveTraducao: territory_ksisland
+    regiaoId: south_pole
+    posicaoContador: {x: 0.07300049, y: -0.03799988}
+    possuiPosicaoContador: 1
+    posicaoNomeManual: {x: 0, y: 0}
+    possuiPosicaoNomeManual: 0
+    tamanhoFonteNome: 0
+    metadados: []
+  regioes:
+  - id: flathia
+    nomeExibido: Flathia
+    descricao: Flathia
+    chaveTraducao: region_flathia
+    bonus: 5
+    ordemExibicao: 0
+    corDestaque: {r: 0.4, g: 0.8, b: 0.3, a: 1}
+    territorioIds:
+    - SodherNoor
+    - SpearOfTheGods
+    - FlathiaIsland
+    - Cube
+    - CrowsHome
+    - PalmTowner
+    - NewSahara
+    - ValBay
+    - Braveland
+    - Putfire
+    - Montreux
+    metadados: []
+  - id: agla
+    nomeExibido: Agla
+    descricao: Agla
+    chaveTraducao: region_agla
+    bonus: 3
+    ordemExibicao: 1
+    corDestaque: {r: 0.3, g: 0.7, b: 1, a: 1}
+    territorioIds:
+    - Lai
+    - Hevll
+    - ValeriaHeart
+    - Talisporto
+    metadados: []
+  - id: vorlia
+    nomeExibido: Vorlia
+    descricao: Vorlia
+    chaveTraducao: region_vorlia
+    bonus: 2
+    ordemExibicao: 2
+    corDestaque: {r: 0.8, g: 0.35, b: 0.35, a: 1}
+    territorioIds:
+    - WhiteWall
+    - Babushka
+    - FantasyRoom
+    - Tigershitman
+    metadados: []
+  - id: akani
+    nomeExibido: Akani
+    descricao: Akani
+    chaveTraducao: region_akani
+    bonus: 3
+    ordemExibicao: 3
+    corDestaque: {r: 0.75, g: 0.55, b: 0.25, a: 1}
+    territorioIds:
+    - Marcias
+    - Nai
+    - PeachLand
+    - PutfireDistrict
+    - Sheppard
+    - RebeccaIsland
+    metadados: []
+  - id: birfani
+    nomeExibido: Birfani
+    descricao: Birfani
+    chaveTraducao: region_birfani
+    bonus: 3
+    ordemExibicao: 4
+    corDestaque: {r: 0.65, g: 0.4, b: 0.85, a: 1}
+    territorioIds:
+    - Widows
+    - Mariliand
+    - BadenBaden
+    - TALand
+    - MillaSunderland
+    metadados: []
+  - id: makatanga_islands
+    nomeExibido: Makatanga Islands
+    descricao: Makatanga Islands
+    chaveTraducao: region_makatanga_islands
+    bonus: 2
+    ordemExibicao: 5
+    corDestaque: {r: 0.25, g: 0.8, b: 0.7, a: 1}
+    territorioIds:
+    - Potros
+    - Maki
+    - CentralBase
+    - Haeox
+    - Lineker
+    metadados: []
+  - id: south_pole
+    nomeExibido: South Pole
+    descricao: South Pole
+    chaveTraducao: region_south_pole
+    bonus: 4
+    ordemExibicao: 6
+    corDestaque: {r: 1, g: 1, b: 1, a: 1}
+    territorioIds:
+    - DarknessRoom
+    - ColdCoast
+    - Trinit
+    - Garin
+    - Tarantula
+    - Demetrius
+    - OffRoad
+    - KsIsland
+    metadados: []
+  conexoes:
+  - origemId: Hevll
+    destinoId: Lai
+    tipo: 0
+    bidirecional: 1
+  - origemId: Lai
+    destinoId: Talisporto
+    tipo: 0
+    bidirecional: 1
+  - origemId: Lai
+    destinoId: ValeriaHeart
+    tipo: 0
+    bidirecional: 1
+  - origemId: Hevll
+    destinoId: Talisporto
+    tipo: 0
+    bidirecional: 1
+  - origemId: SodherNoor
+    destinoId: SpearOfTheGods
+    tipo: 0
+    bidirecional: 1
+  - origemId: Cube
+    destinoId: SodherNoor
+    tipo: 0
+    bidirecional: 1
+  - origemId: Talisporto
+    destinoId: ValeriaHeart
+    tipo: 0
+    bidirecional: 1
+  - origemId: CrowsHome
+    destinoId: SpearOfTheGods
+    tipo: 0
+    bidirecional: 1
+  - origemId: Cube
+    destinoId: SpearOfTheGods
+    tipo: 0
+    bidirecional: 1
+  - origemId: Babushka
+    destinoId: WhiteWall
+    tipo: 0
+    bidirecional: 1
+  - origemId: FantasyRoom
+    destinoId: WhiteWall
+    tipo: 0
+    bidirecional: 1
+  - origemId: Marcias
+    destinoId: PeachLand
+    tipo: 0
+    bidirecional: 1
+  - origemId: Marcias
+    destinoId: Nai
+    tipo: 0
+    bidirecional: 1
+  - origemId: CrowsHome
+    destinoId: Cube
+    tipo: 0
+    bidirecional: 1
+  - origemId: Cube
+    destinoId: PalmTowner
+    tipo: 0
+    bidirecional: 1
+  - origemId: Cube
+    destinoId: NewSahara
+    tipo: 0
+    bidirecional: 1
+  - origemId: CrowsHome
+    destinoId: NewSahara
+    tipo: 0
+    bidirecional: 1
+  - origemId: Babushka
+    destinoId: Tigershitman
+    tipo: 0
+    bidirecional: 1
+  - origemId: Babushka
+    destinoId: FantasyRoom
+    tipo: 0
+    bidirecional: 1
+  - origemId: Nai
+    destinoId: PeachLand
+    tipo: 0
+    bidirecional: 1
+  - origemId: Nai
+    destinoId: PutfireDistrict
+    tipo: 0
+    bidirecional: 1
+  - origemId: PeachLand
+    destinoId: PutfireDistrict
+    tipo: 0
+    bidirecional: 1
+  - origemId: PeachLand
+    destinoId: Sheppard
+    tipo: 0
+    bidirecional: 1
+  - origemId: NewSahara
+    destinoId: PalmTowner
+    tipo: 0
+    bidirecional: 1
+  - origemId: PalmTowner
+    destinoId: ValBay
+    tipo: 0
+    bidirecional: 1
+  - origemId: NewSahara
+    destinoId: ValBay
+    tipo: 0
+    bidirecional: 1
+  - origemId: PutfireDistrict
+    destinoId: Sheppard
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mariliand
+    destinoId: Widows
+    tipo: 0
+    bidirecional: 1
+  - origemId: TALand
+    destinoId: Widows
+    tipo: 0
+    bidirecional: 1
+  - origemId: Mariliand
+    destinoId: TALand
+    tipo: 0
+    bidirecional: 1
+  - origemId: BadenBaden
+    destinoId: Mariliand
+    tipo: 0
+    bidirecional: 1
+  - origemId: BadenBaden
+    destinoId: MillaSunderland
+    tipo: 0
+    bidirecional: 1
+  - origemId: BadenBaden
+    destinoId: TALand
+    tipo: 0
+    bidirecional: 1
+  - origemId: Braveland
+    destinoId: ValBay
+    tipo: 0
+    bidirecional: 1
+  - origemId: Montreux
+    destinoId: ValBay
+    tipo: 0
+    bidirecional: 1
+  - origemId: Braveland
+    destinoId: Montreux
+    tipo: 0
+    bidirecional: 1
+  - origemId: Braveland
+    destinoId: Putfire
+    tipo: 0
+    bidirecional: 1
+  - origemId: MillaSunderland
+    destinoId: TALand
+    tipo: 0
+    bidirecional: 1
+  - origemId: Montreux
+    destinoId: Putfire
+    tipo: 0
+    bidirecional: 1
+  - origemId: ColdCoast
+    destinoId: Trinit
+    tipo: 0
+    bidirecional: 1
+  - origemId: ColdCoast
+    destinoId: Tarantula
+    tipo: 0
+    bidirecional: 1
+  - origemId: OffRoad
+    destinoId: Trinit
+    tipo: 0
+    bidirecional: 1
+  - origemId: Demetrius
+    destinoId: Garin
+    tipo: 0
+    bidirecional: 1
+  - origemId: Demetrius
+    destinoId: Tarantula
+    tipo: 0
+    bidirecional: 1
+  - origemId: KsIsland
+    destinoId: OffRoad
+    tipo: 0
+    bidirecional: 1
+  - origemId: FlathiaIsland
+    destinoId: SodherNoor
+    tipo: 0
+    bidirecional: 1
+  - origemId: PutfireDistrict
+    destinoId: RebeccaIsland
+    tipo: 0
+    bidirecional: 1
+  - origemId: MillaSunderland
+    destinoId: Potros
+    tipo: 0
+    bidirecional: 1
+  - origemId: Maki
+    destinoId: Sheppard
+    tipo: 0
+    bidirecional: 1
+  - origemId: CentralBase
+    destinoId: Potros
+    tipo: 0
+    bidirecional: 1
+  - origemId: CentralBase
+    destinoId: Haeox
+    tipo: 0
+    bidirecional: 1
+  - origemId: Lineker
+    destinoId: Maki
+    tipo: 0
+    bidirecional: 1
+  - origemId: DarknessRoom
+    destinoId: Tarantula
+    tipo: 0
+    bidirecional: 1
+  - origemId: SpearOfTheGods
+    destinoId: WhiteWall
+    tipo: 0
+    bidirecional: 1
+  - origemId: Nai
+    destinoId: Tigershitman
+    tipo: 0
+    bidirecional: 1
+  - origemId: NewSahara
+    destinoId: Widows
+    tipo: 0
+    bidirecional: 1
+  - origemId: BadenBaden
+    destinoId: RebeccaIsland
+    tipo: 0
+    bidirecional: 1
+  - origemId: DarknessRoom
+    destinoId: TALand
+    tipo: 0
+    bidirecional: 1
+  condicoesEstrategicas: []
+  metadados: []
