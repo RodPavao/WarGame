@@ -207,17 +207,26 @@ public class LayoutPartida : MonoBehaviour
 
 
         // =================================================
-        // CENTRALIZA EXATAMENTE NO FUNDO
+        // 04. CENTRALIZAÇÃO E OFFSET DATA-DRIVEN
+        //
+        // O centro da arte permanece como comportamento padrão.
+        // Cada definição pode ajustar somente a composição visual,
+        // sem mover mapa, territórios, colliders ou contadores.
         // =================================================
 
         Vector3 centroMapa =
             limitesMapa.center;
 
+        Vector2 deslocamentoEnquadramento =
+            MapaAtivo.Instance.Definicao != null
+                ? MapaAtivo.Instance.Definicao.DeslocamentoEnquadramento
+                : Vector2.zero;
+
 
         cameraPrincipal.transform.position =
             new Vector3(
-                centroMapa.x,
-                centroMapa.y,
+                centroMapa.x + deslocamentoEnquadramento.x,
+                centroMapa.y + deslocamentoEnquadramento.y,
                 posicaoOriginal.z
             );
 
@@ -226,6 +235,8 @@ public class LayoutPartida : MonoBehaviour
             "LAYOUT | Mapa preenchendo altura | " +
             "Orthographic Size: " +
             tamanhoCamera.ToString("0.00") +
+            " | Offset: " +
+            deslocamentoEnquadramento.ToString("F2") +
             " | Painéis: " +
             Mathf.RoundToInt(
                 larguraPainelEsquerdo * 100f

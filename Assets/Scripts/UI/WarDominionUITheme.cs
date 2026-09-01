@@ -45,6 +45,64 @@ public sealed class WarDominionUITheme : ScriptableObject
     [SerializeField, Min(0f)] private float margemSuperior = 16f;
     [SerializeField, Min(0f)] private float margemLateral = 24f;
 
+    // ============================================================
+    // 04. ANÚNCIO TEMPORÁRIO DE ROUND
+    // ============================================================
+
+    [Header("Anúncio de Round")]
+    [SerializeField, Min(0.01f)] private float duracaoEntradaAnuncio = 0.30f;
+    [SerializeField, Min(0f)] private float duracaoVisivelAnuncio = 1.90f;
+    [SerializeField, Min(0.01f)] private float duracaoSaidaAnuncio = 0.35f;
+    [SerializeField, Min(320f)] private float larguraAnuncioRound = 680f;
+    [SerializeField, Min(80f)] private float alturaAnuncioRound = 168f;
+    [SerializeField] private float posicaoVerticalAnuncioRound = 70f;
+    [SerializeField, Min(8f)] private float tamanhoRoundAnuncio = 42f;
+    [SerializeField, Min(8f)] private float tamanhoFaseAnuncio = 18f;
+    [SerializeField, Min(80f)] private float larguraLinhaAnuncio = 460f;
+    [SerializeField, Min(1f)] private float espessuraLinhaAnuncio = 1f;
+    [SerializeField, Min(8f)] private float larguraSegmentoAnuncio = 92f;
+    [SerializeField, Min(1f)] private float espessuraSegmentoAnuncio = 3f;
+    [SerializeField, Min(0f)] private float margemLinhaAnuncio = 18f;
+    [SerializeField, Min(0f)] private float deslocamentoAnuncio = 34f;
+    [SerializeField, Range(0.8f, 1f)] private float escalaInicialAnuncio = 0.94f;
+    [SerializeField, Range(1f, 1.2f)] private float escalaFinalAnuncio = 1.025f;
+    [SerializeField] private Color superficieAnuncio =
+        new Color(0.025f, 0.045f, 0.06f, 0.78f);
+    [SerializeField] private Color corLinhaAnuncio =
+        new Color(0.17f, 0.72f, 0.78f, 0.32f);
+
+    // ============================================================
+    // 05. AÇÕES PREPARADAS SOBRE O MAPA
+    // ============================================================
+
+    [Header("Ações Preparadas")]
+    [SerializeField, Min(1f)] private float preparedArrowThickness = 7f;
+    [SerializeField, Min(8f)] private float preparedArrowHeadSize = 25f;
+    [SerializeField, Min(0f)] private float preparedArrowEndpointInset = 24f;
+    [SerializeField, Min(0.01f)] private float preparedArrowRevealDuration = 0.24f;
+    [SerializeField, Range(0f, 1f)] private float arrowColorOpacity = 0.82f;
+    [SerializeField, Min(4f)] private float preparedArrowEnergyLength = 54f;
+    [SerializeField, Min(1f)] private float preparedArrowEnergyThickness = 2f;
+    [SerializeField, Min(8f)] private float preparedArrowAmountSize = 17f;
+    [SerializeField, Min(0f)] private float preparedArrowAmountOffset = 18f;
+    [SerializeField, Min(8f)] private float preparedOriginMarkerSize = 38f;
+
+    // ============================================================
+    // 06. PRIMEIRA COREOGRAFIA VISUAL DE ATAQUE
+    // ============================================================
+
+    [Header("Resolução de Ataque")]
+    [SerializeField, Min(0.05f)] private float attackTravelDuration = 0.75f;
+    [SerializeField, Min(0.05f)] private float attackImpactDuration = 0.30f;
+    [SerializeField, Min(0f)] private float attackResultDuration = 0.80f;
+    [SerializeField, Min(12f)] private float attackIndicatorSize = 42f;
+    [SerializeField, Min(8f)] private float attackIndicatorTextSize = 18f;
+    [SerializeField, Min(8f)] private float attackPulseSize = 54f;
+    [SerializeField, Min(1f)] private float attackRouteThickness = 4f;
+    [SerializeField, Range(0f, 1f)] private float attackImpactIntensity = 0.85f;
+    [SerializeField, Min(8f)] private float attackResultTextSize = 20f;
+    [SerializeField, Min(0f)] private float attackResultOffset = 42f;
+
     public TMP_FontAsset FonteDisplay => fonteDisplay;
     public TMP_FontAsset FonteInterface => fonteInterface != null ? fonteInterface : fonteDisplay;
     public float TamanhoTitulo => tamanhoTitulo;
@@ -60,4 +118,42 @@ public sealed class WarDominionUITheme : ScriptableObject
     public float LarguraTopBar => larguraTopBar;
     public float MargemSuperior => margemSuperior;
     public float MargemLateral => margemLateral;
+    public float DuracaoEntradaAnuncio => duracaoEntradaAnuncio;
+    public float DuracaoVisivelAnuncio => duracaoVisivelAnuncio;
+    public float DuracaoSaidaAnuncio => duracaoSaidaAnuncio;
+    public float LarguraAnuncioRound => larguraAnuncioRound;
+    public float AlturaAnuncioRound => alturaAnuncioRound;
+    public float PosicaoVerticalAnuncioRound => posicaoVerticalAnuncioRound;
+    public float TamanhoRoundAnuncio => tamanhoRoundAnuncio;
+    public float TamanhoFaseAnuncio => tamanhoFaseAnuncio;
+    public float LarguraLinhaAnuncio => larguraLinhaAnuncio;
+    public float EspessuraLinhaAnuncio => espessuraLinhaAnuncio;
+    public float LarguraSegmentoAnuncio => larguraSegmentoAnuncio;
+    public float EspessuraSegmentoAnuncio => espessuraSegmentoAnuncio;
+    public float MargemLinhaAnuncio => margemLinhaAnuncio;
+    public float DeslocamentoAnuncio => deslocamentoAnuncio;
+    public float EscalaInicialAnuncio => escalaInicialAnuncio;
+    public float EscalaFinalAnuncio => escalaFinalAnuncio;
+    public Color SuperficieAnuncio => superficieAnuncio;
+    public Color CorLinhaAnuncio => corLinhaAnuncio;
+    public float PreparedArrowThickness => preparedArrowThickness;
+    public float PreparedArrowHeadSize => preparedArrowHeadSize;
+    public float PreparedArrowEndpointInset => preparedArrowEndpointInset;
+    public float PreparedArrowRevealDuration => preparedArrowRevealDuration;
+    public float ArrowColorOpacity => arrowColorOpacity;
+    public float PreparedArrowEnergyLength => preparedArrowEnergyLength;
+    public float PreparedArrowEnergyThickness => preparedArrowEnergyThickness;
+    public float PreparedArrowAmountSize => preparedArrowAmountSize;
+    public float PreparedArrowAmountOffset => preparedArrowAmountOffset;
+    public float PreparedOriginMarkerSize => preparedOriginMarkerSize;
+    public float AttackTravelDuration => attackTravelDuration;
+    public float AttackImpactDuration => attackImpactDuration;
+    public float AttackResultDuration => attackResultDuration;
+    public float AttackIndicatorSize => attackIndicatorSize;
+    public float AttackIndicatorTextSize => attackIndicatorTextSize;
+    public float AttackPulseSize => attackPulseSize;
+    public float AttackRouteThickness => attackRouteThickness;
+    public float AttackImpactIntensity => attackImpactIntensity;
+    public float AttackResultTextSize => attackResultTextSize;
+    public float AttackResultOffset => attackResultOffset;
 }

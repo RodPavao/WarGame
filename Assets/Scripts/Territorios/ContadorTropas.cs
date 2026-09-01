@@ -468,8 +468,17 @@ public class ContadorTropas : MonoBehaviour
             borda == null)
             return;
 
-        numero.text =
-            territorio.Tropas.ToString();
+        AtualizarVisual(territorio.Tropas, territorio.dono);
+    }
+
+    public void AtualizarVisual(
+        int quantidade,
+        TerritorioClique.Dono donoVisual)
+    {
+        if (numero == null || borda == null)
+            return;
+
+        numero.text = Mathf.Max(0, quantidade).ToString();
 
         int quantidadeDigitos =
             numero.text.Length;
@@ -487,7 +496,7 @@ public class ContadorTropas : MonoBehaviour
 
         borda.color =
             PaletaJogadores.ObterCorAtiva(
-                territorio.dono
+                donoVisual
             );
 
         if (bordaExterna != null)

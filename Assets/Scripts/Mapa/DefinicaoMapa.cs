@@ -85,6 +85,7 @@ public sealed class DefinicaoMapa : ScriptableObject
     [SerializeField] private Sprite arteBase;
     [SerializeField] private Vector2 centroCamera;
     [SerializeField, Min(0.1f)] private float tamanhoOrtografico = 5f;
+    [SerializeField] private Vector2 deslocamentoEnquadramento;
 
     [Header("Dados")]
     [SerializeField] private List<DefinicaoTerritorioMapa> territorios = new List<DefinicaoTerritorioMapa>();
@@ -102,6 +103,7 @@ public sealed class DefinicaoMapa : ScriptableObject
     public Sprite ArteBase => arteBase;
     public Vector2 CentroCamera => centroCamera;
     public float TamanhoOrtografico => tamanhoOrtografico;
+    public Vector2 DeslocamentoEnquadramento => deslocamentoEnquadramento;
     public IReadOnlyList<DefinicaoTerritorioMapa> Territorios => territorios;
     public IReadOnlyList<DefinicaoRegiaoMapa> Regioes => regioes;
     public IReadOnlyList<DefinicaoConexaoMapa> Conexoes => conexoes;

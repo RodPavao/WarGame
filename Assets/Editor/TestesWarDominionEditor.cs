@@ -1,11 +1,110 @@
 #if UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 public static class TestesWarDominionEditor
 {
     private const string Raiz = "War Dominion/Testes/";
+
+    // ============================================================
+    // 00. DIAGNÓSTICO SINTÉTICO DA FILA VISUAL
+    // ============================================================
+
+    [MenuItem(Raiz + "Resolução Visual/Testar Sequência")]
+    private static void TestarSequenciaVisual()
+    {
+        ResolutionSequenceController controller =
+            UnityEngine.Object.FindAnyObjectByType<ResolutionSequenceController>();
+        if (controller == null) return;
+
+        var events = new List<ResolutionVisualEvent>
+        {
+            ResolutionVisualEvent.Reinforcement(
+                TerritorioClique.Dono.Jogador1, "TesteA", 3, 2, 5),
+            ResolutionVisualEvent.Attack(
+                TerritorioClique.Dono.Jogador1, "TesteA", "TesteB", 4,
+                5, 1, 3, 0, true,
+                TerritorioClique.Dono.Jogador2, TerritorioClique.Dono.Jogador1),
+            ResolutionVisualEvent.Transfer(
+                TerritorioClique.Dono.Jogador2, "TesteC", "TesteD", 1,
+                4, 3, 2, 3)
+        };
+
+        controller.Play(events);
+    }
+
+    [MenuItem(Raiz + "Resolução Visual/Testar Sequência", true)]
+    private static bool ValidarTestarSequenciaVisual() =>
+        EmPlayCom<ResolutionSequenceController>();
+
+    [MenuItem(Raiz + "Resolução Visual/Testar Ataque Visual")]
+    private static void TestarAtaqueVisual()
+    {
+        ResolutionSequenceController controller =
+            UnityEngine.Object.FindAnyObjectByType<ResolutionSequenceController>();
+        if (controller == null) return;
+
+        var territories = new List<TerritorioClique>(MapaAtivo.ObterTerritoriosOuCena());
+        territories.RemoveAll(territory => territory == null);
+        territories.Sort((left, right) =>
+            string.CompareOrdinal(left.idTerritorio, right.idTerritorio));
+        if (territories.Count < 2) return;
+
+        TerritorioClique origin = territories.Find(
+            territory => territory.dono != TerritorioClique.Dono.Neutro) ?? territories[0];
+        TerritorioClique destination = territories.Find(territory => territory != origin);
+        if (destination == null) return;
+
+        int amount = Mathf.Max(1, Mathf.Min(origin.Tropas - 1, 3));
+        var visualEvent = ResolutionVisualEvent.Attack(
+            origin.dono,
+            origin.idTerritorio,
+            destination.idTerritorio,
+            amount,
+            origin.Tropas,
+            origin.Tropas,
+            destination.Tropas,
+            destination.Tropas,
+            false,
+            destination.dono,
+            destination.dono);
+
+        controller.Play(new[] { visualEvent });
+    }
+
+    [MenuItem(Raiz + "Resolução Visual/Testar Ataque Visual", true)]
+    private static bool ValidarTestarAtaqueVisual() =>
+        EmPlayCom<ResolutionSequenceController>();
+
+    // ============================================================
+    // 01. CONTROLE MANUAL DO CENÁRIO VISUAL DE RESOLUÇÃO
+    // ============================================================
+
+    [MenuItem(Raiz + "Rodada/Entrar em Resolução")]
+    private static void EntrarEmResolucao() =>
+        ComGameManager(g => g.TesteEditorEntrarEmResolucao());
+
+    [MenuItem(Raiz + "Rodada/Entrar em Resolução", true)]
+    private static bool ValidarEntrarEmResolucao()
+    {
+        if (!EditorApplication.isPlaying) return false;
+        GameManager manager = UnityEngine.Object.FindAnyObjectByType<GameManager>();
+        return manager != null && manager.PodeEntrarResolucaoTesteEditor;
+    }
+
+    [MenuItem(Raiz + "Rodada/Avançar para Próximo Round")]
+    private static void AvancarParaProximoRound() =>
+        ComGameManager(g => g.TesteEditorAvancarParaProximoRound());
+
+    [MenuItem(Raiz + "Rodada/Avançar para Próximo Round", true)]
+    private static bool ValidarAvancarParaProximoRound()
+    {
+        if (!EditorApplication.isPlaying) return false;
+        GameManager manager = UnityEngine.Object.FindAnyObjectByType<GameManager>();
+        return manager != null && manager.PodeAvancarResolucaoTesteEditor;
+    }
 
     [MenuItem(Raiz + "Partida/Iniciar Partida Teste")]
     private static void IniciarPartida() => ComRodada(r => r.TesteEditorIniciarPartida());
@@ -61,6 +160,40 @@ public static class TestesWarDominionEditor
     private static void DesativarAutoenvio() => ComGameManager(g => g.TesteEditorDesativarAutoenvio());
     [MenuItem(Raiz + "Jogadores Simulados/Desativar Autoenvio", true)]
     private static bool ValidarDesativarAutoenvio() => EmPlayCom<GameManager>();
+
+    // ============================================================
+    // 02. ACESSO À PALETA EXISTENTE DA CENA ATIVA
+    // ============================================================
+
+    [MenuItem(Raiz + "Jogadores Simulados/Editar Cores dos Jogadores")]
+    private static void EditarCoresDosJogadores()
+    {
+        PaletaJogadores paleta = ObterPaletaDaCenaAtiva();
+        if (paleta == null) return;
+
+        Selection.activeGameObject = paleta.gameObject;
+        EditorGUIUtility.PingObject(paleta.gameObject);
+        EditorApplication.ExecuteMenuItem("Window/General/Inspector");
+    }
+
+    [MenuItem(Raiz + "Jogadores Simulados/Editar Cores dos Jogadores", true)]
+    private static bool ValidarEditarCoresDosJogadores() =>
+        ObterPaletaDaCenaAtiva() != null;
+
+    private static PaletaJogadores ObterPaletaDaCenaAtiva()
+    {
+        UnityEngine.SceneManagement.Scene cena =
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        if (!cena.IsValid() || !cena.isLoaded) return null;
+
+        foreach (GameObject raiz in cena.GetRootGameObjects())
+        {
+            PaletaJogadores paleta = raiz.GetComponentInChildren<PaletaJogadores>(true);
+            if (paleta != null) return paleta;
+        }
+
+        return null;
+    }
 
     private static bool EmPlayCom<T>() where T : UnityEngine.Object =>
         EditorApplication.isPlaying && UnityEngine.Object.FindAnyObjectByType<T>() != null;

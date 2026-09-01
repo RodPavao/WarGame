@@ -21,6 +21,7 @@ MonoBehaviour:
   arteBase: {fileID: 5559561540143506820, guid: f328fe402440c014b88800328223fa03, type: 3}
   centroCamera: {x: -0.0234, y: 0.0257}
   tamanhoOrtografico: 5.12
+  deslocamentoEnquadramento: {x: 0, y: 0}
   territorios:
   - id: Afghanistan
     nomeExibido: Afghanistan

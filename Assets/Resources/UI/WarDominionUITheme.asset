@@ -27,3 +27,41 @@ MonoBehaviour:
   larguraTopBar: 1320
   margemSuperior: 16
   margemLateral: 24
+  duracaoEntradaAnuncio: 0.3
+  duracaoVisivelAnuncio: 1.9
+  duracaoSaidaAnuncio: 0.35
+  larguraAnuncioRound: 680
+  alturaAnuncioRound: 168
+  posicaoVerticalAnuncioRound: 70
+  tamanhoRoundAnuncio: 42
+  tamanhoFaseAnuncio: 18
+  larguraLinhaAnuncio: 460
+  espessuraLinhaAnuncio: 1
+  larguraSegmentoAnuncio: 92
+  espessuraSegmentoAnuncio: 3
+  margemLinhaAnuncio: 18
+  deslocamentoAnuncio: 34
+  escalaInicialAnuncio: 0.94
+  escalaFinalAnuncio: 1.025
+  superficieAnuncio: {r: 0.025, g: 0.045, b: 0.06, a: 0.78}
+  corLinhaAnuncio: {r: 0.17, g: 0.72, b: 0.78, a: 0.32}
+  preparedArrowThickness: 7
+  preparedArrowHeadSize: 25
+  preparedArrowEndpointInset: 24
+  preparedArrowRevealDuration: 0.24
+  arrowColorOpacity: 0.82
+  preparedArrowEnergyLength: 54
+  preparedArrowEnergyThickness: 2
+  preparedArrowAmountSize: 17
+  preparedArrowAmountOffset: 18
+  preparedOriginMarkerSize: 38
+  attackTravelDuration: 0.75
+  attackImpactDuration: 0.3
+  attackResultDuration: 0.8
+  attackIndicatorSize: 42
+  attackIndicatorTextSize: 18
+  attackPulseSize: 54
+  attackRouteThickness: 4
+  attackImpactIntensity: 0.85
+  attackResultTextSize: 20
+  attackResultOffset: 42

@@ -12,7 +12,13 @@ public sealed class UICompositionRoot : MonoBehaviour
     private const string CaminhoTema = "UI/WarDominionUITheme";
     private MatchUIPresenter presenter;
     private RectTransform safeArea;
-    private TopBarView topBar;
+    private RoundAnnouncementView roundAnnouncement;
+    private ResolutionSequenceController resolutionSequence;
+    private AttackResolutionPresenter attackResolutionPresenter;
+    private PreparedActionsOverlayController preparedActionsOverlay;
+    private bool possuiFaseAnterior;
+    private GameManager.FaseTurno faseAnterior;
+    private string ultimoCicloResolucaoAnunciado = string.Empty;
     private Rect ultimaAreaSegura;
     private Vector2Int ultimaResolucao;
 
@@ -61,7 +67,7 @@ public sealed class UICompositionRoot : MonoBehaviour
 
     private void GarantirEstrutura()
     {
-        if (topBar != null)
+        if (roundAnnouncement != null)
             return;
 
         WarDominionUITheme tema = Resources.Load<WarDominionUITheme>(CaminhoTema);
@@ -96,16 +102,29 @@ public sealed class UICompositionRoot : MonoBehaviour
         scaler.matchWidthOrHeight = 0.5f;
 
         safeArea = CriarCamada("SafeArea", raizRect);
-        RectTransform topBarRect = CriarCamada("TopBar", safeArea);
         CriarCamada("LeftDock", safeArea);
         CriarCamada("RightDock", safeArea);
         CriarCamada("BottomActionBar", safeArea);
-        CriarCamada("MapOverlayLayer", raizRect);
-        CriarCamada("NotificationLayer", raizRect);
+        RectTransform mapOverlayLayer = CriarCamada("MapOverlayLayer", raizRect);
+        RectTransform notificationLayer = CriarCamada("NotificationLayer", raizRect);
         CriarCamada("ModalLayer", raizRect);
 
-        topBar = topBarRect.gameObject.AddComponent<TopBarView>();
-        topBar.Construir(tema);
+        RectTransform anuncioRect = CriarCamada("RoundAnnouncement", notificationLayer);
+        roundAnnouncement = anuncioRect.gameObject.AddComponent<RoundAnnouncementView>();
+        roundAnnouncement.Construir(tema);
+
+        attackResolutionPresenter =
+            mapOverlayLayer.gameObject.AddComponent<AttackResolutionPresenter>();
+        attackResolutionPresenter.Configure(tema);
+
+        resolutionSequence =
+            mapOverlayLayer.gameObject.AddComponent<ResolutionSequenceController>();
+        resolutionSequence.Configure(mapOverlayLayer, roundAnnouncement);
+
+        preparedActionsOverlay =
+            mapOverlayLayer.gameObject.AddComponent<PreparedActionsOverlayController>();
+        preparedActionsOverlay.Configure(
+            GetComponent<MatchUIPresenter>(), mapOverlayLayer, tema);
         AtualizarSafeArea(true);
     }
 
@@ -166,6 +185,28 @@ public sealed class UICompositionRoot : MonoBehaviour
 
     private void AoEstadoAlterado(MatchUIState state)
     {
-        topBar?.Apresentar(state);
+        if (state == null)
+            return;
+
+        bool entrouEmResolucao =
+            possuiFaseAnterior &&
+            faseAnterior != GameManager.FaseTurno.Resolucao &&
+            state.Fase == GameManager.FaseTurno.Resolucao;
+
+        faseAnterior = state.Fase;
+        possuiFaseAnterior = true;
+
+        if (!entrouEmResolucao)
+            return;
+
+        string cicloResolucao = state.EmMorteSubita
+            ? $"morte-subita:{state.RoundMorteSubita}"
+            : $"round:{state.Round}";
+
+        if (cicloResolucao == ultimoCicloResolucaoAnunciado)
+            return;
+
+        ultimoCicloResolucaoAnunciado = cicloResolucao;
+        roundAnnouncement?.ExibirResolucao(state);
     }
 }

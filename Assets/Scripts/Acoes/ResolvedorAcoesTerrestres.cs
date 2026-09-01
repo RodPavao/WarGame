@@ -120,6 +120,10 @@ public class ResolvedorAcoesTerrestres : MonoBehaviour
         if (resolvedorCombate == null)
             return Cancelar("Resolvedor de combate não está disponível.");
 
+        int tropasOrigemAntes = ordem.Origem.Tropas;
+        int tropasDestinoAntes = ordem.Destino.Tropas;
+        TerritorioClique.Dono donoDestinoAntes = ordem.Destino.dono;
+
         ResultadoCombate combate = resolvedorCombate.ResolverAtaque(
             ordem,
             quantidadeEfetiva);
@@ -129,7 +133,14 @@ public class ResolvedorAcoesTerrestres : MonoBehaviour
             ResultadoAcaoTerrestre.TipoResultado.Ataque,
             quantidadeEfetiva,
             combate.Motivo,
-            combate);
+            combate,
+            ordem,
+            tropasOrigemAntes,
+            ordem.Origem.Tropas,
+            tropasDestinoAntes,
+            ordem.Destino.Tropas,
+            donoDestinoAntes,
+            ordem.Destino.dono);
     }
 
     // =====================================================

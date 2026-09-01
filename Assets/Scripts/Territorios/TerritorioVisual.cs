@@ -126,6 +126,20 @@ public class TerritorioVisual : MonoBehaviour
         }
     }
 
+    public void AplicarDonoVisual(TerritorioClique.Dono donoVisual)
+    {
+        if (sr == null)
+            sr = GetComponent<SpriteRenderer>();
+        if (sr == null)
+            return;
+
+        GarantirMaterialSemLuz();
+        selecionado = false;
+        corBase = PaletaJogadores.ObterCorAtiva(donoVisual);
+        corBase.a = 1f;
+        sr.color = corBase;
+    }
+
     public void DestacarContinente(
         Color cor)
     {

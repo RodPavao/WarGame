@@ -232,6 +232,21 @@ public class TerritorioClique : MonoBehaviour
         AtualizarIdentidadeVisual();
     }
 
+    public void AplicarEstadoVisualResolucao(int tropasVisuais, Dono donoVisual)
+    {
+        if (territorioVisual == null)
+            territorioVisual = GetComponent<TerritorioVisual>();
+        territorioVisual?.AplicarDonoVisual(donoVisual);
+
+        ContadorTropas contador = GetComponentInChildren<ContadorTropas>(true);
+        contador?.AtualizarVisual(tropasVisuais, donoVisual);
+    }
+
+    public void RestaurarEstadoVisualLogico()
+    {
+        AtualizarIdentidadeVisual();
+    }
+
     public void DestacarContinente(
         Color cor)
     {

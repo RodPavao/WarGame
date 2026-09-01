@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     private FilaTransferencias filaTransferencias;
     private SistemaTransferencias sistemaTransferencias;
     private ResolvedorTransferencias resolvedorTransferencias;
+    private ResolutionSequenceController sequenciaResolucaoVisualAtiva;
     private GerenciadorRodada gerenciadorRodada;
     private readonly HistoricoReforcos historicoReforcos =
         new HistoricoReforcos();
@@ -906,18 +907,78 @@ public class GameManager : MonoBehaviour
             EstadoPreparacao.Resolvendo;
 
         gerenciadorRodada.NotificarInicioResolucao();
+        GetComponent<MatchUIPresenter>()?.SolicitarSnapshotAtual();
 
         resolvedorTransferencias.Resolver(
             filaTransferencias,
             gerenciadorRodada.ObterPrioridadeJogadores());
 
-        resolvedorAcoesTerrestres.Resolver(
+        List<ResultadoAcaoTerrestre> resultadosTerrestres =
+            resolvedorAcoesTerrestres.Resolver(
             filaAcoes,
             gerenciadorRodada.ObterPrioridadeJogadores());
 
         CancelarSelecaoAtual();
 
+        List<ResolutionVisualEvent> eventosVisuais =
+            CriarEventosVisuaisAtaque(resultadosTerrestres);
+
+        if (eventosVisuais.Count > 0)
+        {
+            ResolutionSequenceController controller =
+                FindAnyObjectByType<ResolutionSequenceController>();
+            if (controller != null)
+            {
+                sequenciaResolucaoVisualAtiva = controller;
+                controller.SequenceCompleted -= ConcluirResolucaoAposVisual;
+                controller.SequenceCompleted += ConcluirResolucaoAposVisual;
+                controller.PlayAfterAnnouncement(eventosVisuais);
+                return;
+            }
+        }
+
         gerenciadorRodada.ConcluirResolucao();
+    }
+
+    private static List<ResolutionVisualEvent> CriarEventosVisuaisAtaque(
+        IReadOnlyList<ResultadoAcaoTerrestre> resultados)
+    {
+        var eventos = new List<ResolutionVisualEvent>();
+        if (resultados == null)
+            return eventos;
+
+        foreach (ResultadoAcaoTerrestre resultado in resultados)
+        {
+            if (resultado == null || !resultado.Executada ||
+                resultado.Tipo != ResultadoAcaoTerrestre.TipoResultado.Ataque ||
+                resultado.Ordem == null || resultado.Combate == null)
+            {
+                continue;
+            }
+
+            eventos.Add(ResolutionVisualEvent.Attack(
+                resultado.Ordem.Jogador,
+                resultado.Ordem.IdOrigem,
+                resultado.Ordem.IdDestino,
+                resultado.QuantidadeEfetiva,
+                resultado.TropasOrigemAntes,
+                resultado.TropasOrigemDepois,
+                resultado.TropasDestinoAntes,
+                resultado.TropasDestinoDepois,
+                resultado.Combate.Conquistou,
+                resultado.DonoDestinoAntes,
+                resultado.DonoDestinoDepois));
+        }
+
+        return eventos;
+    }
+
+    private void ConcluirResolucaoAposVisual()
+    {
+        if (sequenciaResolucaoVisualAtiva != null)
+            sequenciaResolucaoVisualAtiva.SequenceCompleted -= ConcluirResolucaoAposVisual;
+        sequenciaResolucaoVisualAtiva = null;
+        gerenciadorRodada?.ConcluirResolucao();
     }
 
     private IReadOnlyList<OrdemTerrestre> ObterOrdensDoJogadorLocal()
@@ -994,6 +1055,52 @@ public class GameManager : MonoBehaviour
     // =====================================================
     // 22. ISOLAMENTO DOS CENÁRIOS DE TESTE DO EDITOR
     // =====================================================
+
+    private bool resolucaoVisualTesteEditor;
+
+    public bool PodeEntrarResolucaoTesteEditor =>
+        Application.isPlaying && !PartidaEncerrada &&
+        faseAtual == FaseTurno.Preparacao && gerenciadorRodada != null;
+
+    public bool PodeAvancarResolucaoTesteEditor =>
+        Application.isPlaying && !PartidaEncerrada &&
+        resolucaoVisualTesteEditor && faseAtual == FaseTurno.Resolucao &&
+        gerenciadorRodada != null;
+
+    // =====================================================
+    // 23. RESOLUÇÃO VISUAL MANUAL, SEM EXECUTAR ORDENS
+    // =====================================================
+
+    public void TesteEditorEntrarEmResolucao()
+    {
+        if (!PodeEntrarResolucaoTesteEditor)
+            return;
+
+        // Publica a preparação antes da transição mesmo entre dois polls da UI.
+        MatchUIPresenter presenter = GetComponent<MatchUIPresenter>();
+        presenter?.SolicitarSnapshotAtual();
+        resolucaoVisualTesteEditor = true;
+        faseAtual = FaseTurno.Resolucao;
+        estadoPreparacao = EstadoPreparacao.Resolvendo;
+        gerenciadorRodada.NotificarInicioResolucao();
+        CancelarSelecaoTransferencia();
+        CancelarSelecaoAtual();
+        presenter?.SolicitarSnapshotAtual();
+        // Update já interrompe o cronômetro fora de Preparacao.
+        // Não chama ResolverRodadaAgora nem ConcluirResolucao.
+    }
+
+    public void TesteEditorAvancarParaProximoRound()
+    {
+        if (!PodeAvancarResolucaoTesteEditor)
+            return;
+
+        resolucaoVisualTesteEditor = false;
+        // Ordens não executadas neste cenário não podem vazar para outro round.
+        LimparPreparacaoParaTesteEditor();
+        gerenciadorRodada.TesteEditorIniciarProximaRodada();
+        GetComponent<MatchUIPresenter>()?.SolicitarSnapshotAtual();
+    }
 
     public void LimparPreparacaoParaTesteEditor()
     {
