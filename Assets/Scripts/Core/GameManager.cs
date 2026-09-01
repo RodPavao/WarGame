@@ -272,10 +272,25 @@ public class GameManager : MonoBehaviour
             gameObject.AddComponent<HUDPreparacao>();
         }
 
-        if (GetComponent<MatchUIPresenter>() == null)
+        MatchUIPresenter matchUIPresenter =
+            GetComponent<MatchUIPresenter>();
+
+        if (matchUIPresenter == null)
         {
-            gameObject.AddComponent<MatchUIPresenter>();
+            matchUIPresenter =
+                gameObject.AddComponent<MatchUIPresenter>();
         }
+
+        UICompositionRoot uiCompositionRoot =
+            GetComponent<UICompositionRoot>();
+
+        if (uiCompositionRoot == null)
+        {
+            uiCompositionRoot =
+                gameObject.AddComponent<UICompositionRoot>();
+        }
+
+        uiCompositionRoot.Inicializar(matchUIPresenter);
 
         sistemaAcoesTerrestres.Inicializar(filaAcoes);
         resolvedorAcoesTerrestres.Inicializar(resolvedorCombate);

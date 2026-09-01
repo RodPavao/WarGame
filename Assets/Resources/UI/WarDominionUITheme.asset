@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34cfdfdc49b4a59a025aa3d37fd8809, type: 3}
+  m_Name: WarDominionUITheme
+  m_EditorClassIdentifier:
+  fonteDisplay: {fileID: 11400000, guid: 81dd437db8c91464c8427c76d67b8dba, type: 2}
+  fonteInterface: {fileID: 11400000, guid: 81dd437db8c91464c8427c76d67b8dba, type: 2}
+  tamanhoTitulo: 26
+  tamanhoEstado: 20
+  tamanhoCronometro: 26
+  superficiePrincipal: {r: 0.035, g: 0.055, b: 0.075, a: 0.94}
+  superficieSecundaria: {r: 0.075, g: 0.105, b: 0.13, a: 0.82}
+  textoPrincipal: {r: 0.92, g: 0.95, b: 0.96, a: 1}
+  textoSecundario: {r: 0.64, g: 0.72, b: 0.76, a: 1}
+  acento: {r: 0.17, g: 0.72, b: 0.78, a: 1}
+  moldura: {r: 0.31, g: 0.39, b: 0.43, a: 0.72}
+  alturaTopBar: 72
+  larguraTopBar: 1320
+  margemSuperior: 16
+  margemLateral: 24
