@@ -166,6 +166,14 @@ public class GameManager : MonoBehaviour
         QuantidadeOrdensPreparadas > 0 ||
         TransferenciaPreparada != null;
 
+    public int LimiteAcoesPorRodada =>
+        FilaAcoes.MaximoAcoesPorRodada;
+
+    public bool PodeCancelarEnvio =>
+        faseAtual == FaseTurno.Preparacao &&
+        estadoPreparacao == EstadoPreparacao.Enviado &&
+        tempoPreparacaoRestante > 0f;
+
 #if UNITY_EDITOR
     // =====================================================
     // 8. TESTE LOCAL DE PARTICIPANTES SIMULADOS
@@ -262,6 +270,11 @@ public class GameManager : MonoBehaviour
         if (GetComponent<HUDPreparacao>() == null)
         {
             gameObject.AddComponent<HUDPreparacao>();
+        }
+
+        if (GetComponent<MatchUIPresenter>() == null)
+        {
+            gameObject.AddComponent<MatchUIPresenter>();
         }
 
         sistemaAcoesTerrestres.Inicializar(filaAcoes);
@@ -825,12 +838,8 @@ public class GameManager : MonoBehaviour
 
     public void CancelarEnvio()
     {
-        if (faseAtual != FaseTurno.Preparacao ||
-            estadoPreparacao != EstadoPreparacao.Enviado ||
-            tempoPreparacaoRestante <= 0f)
-        {
+        if (!PodeCancelarEnvio)
             return;
-        }
 
         estadoPreparacao =
             EstadoPreparacao.Preparando;
