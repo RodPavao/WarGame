@@ -113,22 +113,19 @@ public sealed class ResolutionVisualEvent
             player, player, string.Empty);
     }
 
-    public static ResolutionVisualEvent Transfer(
+    public static ResolutionVisualEvent TerritoryHandoff(
         TerritorioClique.Dono player,
-        string originId,
-        string destinationId,
-        int amount,
-        int originBefore,
-        int originAfter,
-        int destinationBefore,
-        int destinationAfter)
+        TerritorioClique.Dono recipient,
+        string territoryId,
+        int troopsBefore,
+        int troopsAfter)
     {
         return new ResolutionVisualEvent(
             ResolutionVisualEventType.Transfer,
             ResolutionVisualResult.Completed,
-            player, originId, destinationId, amount,
-            originBefore, originAfter, destinationBefore, destinationAfter,
-            false, player, player, string.Empty);
+            player, string.Empty, territoryId, 0,
+            0, 0, troopsBefore, troopsAfter,
+            false, player, recipient, string.Empty);
     }
 
     public static ResolutionVisualEvent FutureContent(

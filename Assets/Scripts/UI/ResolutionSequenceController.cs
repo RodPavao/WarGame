@@ -197,14 +197,25 @@ public sealed class ResolutionSequenceController : MonoBehaviour
             EventStarted?.Invoke(visualEvent, index);
 
             IResolutionVisualPresenter presenter = FindPresenter(visualEvent.Type);
+            Debug.Log(
+                "[ResolutionVisual][DEBUG]\n" +
+                $"Index: {index + 1}\n" +
+                $"Tipo: {visualEvent.Type}\n" +
+                $"OrigemId: '{visualEvent.OriginTerritoryId}'\n" +
+                $"DestinoId: '{visualEvent.DestinationTerritoryId}'\n" +
+                $"Quantidade: {visualEvent.Amount}\n" +
+                $"ProprietarioAntes: {visualEvent.PreviousOwner}\n" +
+                $"ProprietarioDepois: {visualEvent.NewOwner}\n" +
+                $"Presenter selecionado: {(presenter != null ? presenter.GetType().Name : "nenhum")}");
             if (presenter != null)
             {
-                IEnumerator presentation = presenter.Present(visualEvent, context);
-                if (presentation != null)
-                    yield return presentation;
+                yield return PresentSafely(presenter, visualEvent);
             }
             else
             {
+                Debug.LogWarning(
+                    $"[ResolutionVisual] Presenter não registrado para {visualEvent.Type}; " +
+                    "o evento será ignorado sem bloquear a partida.");
                 yield return null;
             }
 
@@ -216,6 +227,47 @@ public sealed class ResolutionSequenceController : MonoBehaviour
         CompleteVisualState();
         Debug.Log("[ResolutionVisual] Sequência concluída");
         SequenceCompleted?.Invoke();
+    }
+
+    private IEnumerator PresentSafely(
+        IResolutionVisualPresenter presenter,
+        ResolutionVisualEvent visualEvent)
+    {
+        IEnumerator presentation;
+        try
+        {
+            presentation = presenter.Present(visualEvent, context);
+        }
+        catch (Exception exception)
+        {
+            Debug.LogError(
+                $"[ResolutionVisual] Falha ao iniciar {visualEvent}: {exception}");
+            yield break;
+        }
+
+        if (presentation == null)
+            yield break;
+
+        while (true)
+        {
+            bool hasNext;
+            object current;
+            try
+            {
+                hasNext = presentation.MoveNext();
+                current = hasNext ? presentation.Current : null;
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError(
+                    $"[ResolutionVisual] Falha durante {visualEvent}: {exception}");
+                yield break;
+            }
+
+            if (!hasNext)
+                yield break;
+            yield return current;
+        }
     }
 
     // ============================================================

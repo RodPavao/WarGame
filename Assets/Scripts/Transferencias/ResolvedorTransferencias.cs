@@ -64,6 +64,7 @@ public class ResolvedorTransferencias : MonoBehaviour
             return Cancelar(ordem, "O destinatário não é mais aliado.");
 
         int tropasAntes = ordem.Territorio.Tropas;
+        TerritorioClique.Dono donoAntes = ordem.Territorio.dono;
         ordem.Territorio.DefinirDono(ordem.Destinatario);
 
         Debug.Log(
@@ -75,7 +76,11 @@ public class ResolvedorTransferencias : MonoBehaviour
             true,
             ordem,
             tropasAntes,
-            "Transferência concluída.");
+            "Transferência concluída.",
+            tropasAntes,
+            ordem.Territorio.Tropas,
+            donoAntes,
+            ordem.Territorio.dono);
     }
 
     private ResultadoTransferencia Cancelar(

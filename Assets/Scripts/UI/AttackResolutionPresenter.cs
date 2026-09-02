@@ -6,15 +6,12 @@ using UnityEngine.UI;
 
 [DisallowMultipleComponent]
 public sealed class AttackResolutionPresenter : MonoBehaviour,
-    IResolutionVisualPresenter,
-    IResolutionVisualStateCoordinator
+    IResolutionVisualPresenter
 {
     // ============================================================
     // 01. CONFIGURAÇÃO E ESTADO VISUAL TEMPORÁRIO
     // ============================================================
 
-    private readonly HashSet<TerritorioClique> overriddenTerritories =
-        new HashSet<TerritorioClique>();
     private WarDominionUITheme theme;
 
     public void Configure(WarDominionUITheme newTheme)
@@ -26,81 +23,45 @@ public sealed class AttackResolutionPresenter : MonoBehaviour,
         type == ResolutionVisualEventType.Attack;
 
     // ============================================================
-    // 02. SNAPSHOT VISUAL ANTERIOR E RESTAURAÇÃO LÓGICA
-    // ============================================================
-
-    public void PrepareVisualState(IReadOnlyList<ResolutionVisualEvent> events)
-    {
-        CompleteVisualState();
-        if (events == null)
-            return;
-
-        foreach (ResolutionVisualEvent visualEvent in events)
-        {
-            if (visualEvent == null || visualEvent.Type != ResolutionVisualEventType.Attack)
-                continue;
-
-            ApplyInitialIfFirst(
-                visualEvent.OriginTerritoryId,
-                visualEvent.OriginBefore,
-                visualEvent.Player);
-            ApplyInitialIfFirst(
-                visualEvent.DestinationTerritoryId,
-                visualEvent.DestinationBefore,
-                visualEvent.PreviousOwner);
-        }
-    }
-
-    public void CompleteVisualState()
-    {
-        foreach (TerritorioClique territory in overriddenTerritories)
-            if (territory != null)
-                territory.RestaurarEstadoVisualLogico();
-        overriddenTerritories.Clear();
-    }
-
-    private void ApplyInitialIfFirst(
-        string territoryId,
-        int troops,
-        TerritorioClique.Dono owner)
-    {
-        if (!TryGetTerritory(territoryId, out TerritorioClique territory) ||
-            overriddenTerritories.Contains(territory))
-        {
-            return;
-        }
-
-        overriddenTerritories.Add(territory);
-        territory.AplicarEstadoVisualResolucao(troops, owner);
-    }
-
-    // ============================================================
-    // 03. COREOGRAFIA DO ATAQUE JÁ CALCULADO
+    // 02. COREOGRAFIA DO ATAQUE JÁ CALCULADO
     // ============================================================
 
     public IEnumerator Present(
         ResolutionVisualEvent visualEvent,
         ResolutionVisualPresentationContext context)
     {
+        Debug.Log(
+            $"[AttackResolution][DEBUG] Presenter de ataque acionado para evento: " +
+            $"{visualEvent}");
         if (theme == null || visualEvent == null || context == null ||
-            !TryGetTerritory(visualEvent.OriginTerritoryId, out TerritorioClique origin) ||
-            !TryGetTerritory(visualEvent.DestinationTerritoryId, out TerritorioClique destination) ||
-            !TryGetPosition(origin, context, out Vector2 originPosition) ||
-            !TryGetPosition(destination, context, out Vector2 destinationPosition))
+            !ResolutionVisualMapUtility.TryGetTerritory(
+                visualEvent.OriginTerritoryId, out TerritorioClique origin) ||
+            !ResolutionVisualMapUtility.TryGetTerritory(
+                visualEvent.DestinationTerritoryId, out TerritorioClique destination) ||
+            !ResolutionVisualMapUtility.TryGetPosition(
+                origin, context, out Vector2 originPosition) ||
+            !ResolutionVisualMapUtility.TryGetPosition(
+                destination, context, out Vector2 destinationPosition))
         {
             yield break;
         }
 
         Color playerColor = context.GetPlayerColor(visualEvent.Player);
-        RectTransform root = CreateRoot(context.Overlay);
-        Image route = CreateImage("Route", root, playerColor, 0.28f);
-        Image originPulse = CreateImage("OriginPulse", root, playerColor, 0.35f);
-        Image destinationPulse = CreateImage("DestinationPulse", root, playerColor, 0.28f);
+        RectTransform root = ResolutionVisualMapUtility.CreateRoot(
+            "AttackResolution", context.Overlay);
+        Image route = ResolutionVisualMapUtility.CreateImage(
+            "Route", root, playerColor, 0.28f);
+        Image originPulse = ResolutionVisualMapUtility.CreateImage(
+            "OriginPulse", root, playerColor, 0.35f);
+        Image destinationPulse = ResolutionVisualMapUtility.CreateImage(
+            "DestinationPulse", root, playerColor, 0.28f);
         RectTransform attacker = CreateAttacker(root, playerColor, visualEvent.Amount);
-        Image impact = CreateImage("Impact", root, playerColor, 0f);
+        Image impact = ResolutionVisualMapUtility.CreateImage(
+            "Impact", root, playerColor, 0f);
         TextMeshProUGUI result = CreateResult(root, playerColor);
 
-        LayoutLine((RectTransform)route.transform, originPosition, destinationPosition,
+        ResolutionVisualMapUtility.LayoutLine(
+            (RectTransform)route.transform, originPosition, destinationPosition,
             theme.AttackRouteThickness);
         ConfigurePulse((RectTransform)originPulse.transform, originPosition);
         ConfigurePulse((RectTransform)destinationPulse.transform, destinationPosition);
@@ -160,88 +121,27 @@ public sealed class AttackResolutionPresenter : MonoBehaviour,
 
     private static void ApplyFinalVisualState(ResolutionVisualEvent visualEvent)
     {
-        if (TryGetTerritory(visualEvent.OriginTerritoryId, out TerritorioClique origin))
+        if (ResolutionVisualMapUtility.TryGetTerritory(
+                visualEvent.OriginTerritoryId, out TerritorioClique origin))
             origin.AplicarEstadoVisualResolucao(
                 visualEvent.OriginAfter, visualEvent.Player);
-        if (TryGetTerritory(visualEvent.DestinationTerritoryId, out TerritorioClique destination))
+        if (ResolutionVisualMapUtility.TryGetTerritory(
+                visualEvent.DestinationTerritoryId, out TerritorioClique destination))
             destination.AplicarEstadoVisualResolucao(
                 visualEvent.DestinationAfter, visualEvent.NewOwner);
     }
 
     // ============================================================
-    // 05. RESOLUÇÃO GENÉRICA DE TERRITÓRIOS E POSIÇÕES
+    // 05. ELEMENTOS ESPECÍFICOS DO ATAQUE
     // ============================================================
-
-    private static bool TryGetTerritory(string id, out TerritorioClique territory)
-    {
-        territory = null;
-        if (MapaAtivo.Instance != null &&
-            MapaAtivo.Instance.TentarObterTerritorio(id, out territory))
-        {
-            return territory != null;
-        }
-
-        foreach (TerritorioClique candidate in MapaAtivo.ObterTerritoriosOuCena())
-        {
-            if (candidate != null && candidate.idTerritorio == id)
-            {
-                territory = candidate;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static bool TryGetPosition(
-        TerritorioClique territory,
-        ResolutionVisualPresentationContext context,
-        out Vector2 position)
-    {
-        ContadorTropas counter = territory.GetComponentInChildren<ContadorTropas>(true);
-        Vector3 world = counter != null ? counter.transform.position : territory.transform.position;
-        Camera camera = Camera.main != null ? Camera.main : FindAnyObjectByType<Camera>();
-        return context.TryWorldToOverlay(world, camera, out position);
-    }
-
-    // ============================================================
-    // 06. FÁBRICA VISUAL SEM RAYCAST
-    // ============================================================
-
-    private static RectTransform CreateRoot(RectTransform parent)
-    {
-        var gameObject = new GameObject("AttackResolution", typeof(RectTransform));
-        RectTransform rect = gameObject.GetComponent<RectTransform>();
-        rect.SetParent(parent, false);
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-        return rect;
-    }
-
-    private Image CreateImage(
-        string name,
-        Transform parent,
-        Color color,
-        float alpha)
-    {
-        var gameObject = new GameObject(name, typeof(RectTransform), typeof(Image));
-        RectTransform rect = gameObject.GetComponent<RectTransform>();
-        rect.SetParent(parent, false);
-        rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
-        Image image = gameObject.GetComponent<Image>();
-        color.a = alpha;
-        image.color = color;
-        image.raycastTarget = false;
-        return image;
-    }
 
     private RectTransform CreateAttacker(
         Transform parent,
         Color color,
         int amount)
     {
-        Image image = CreateImage("Attacker", parent, color, 0.95f);
+        Image image = ResolutionVisualMapUtility.CreateImage(
+            "Attacker", parent, color, 0.95f);
         RectTransform rect = (RectTransform)image.transform;
         rect.sizeDelta = Vector2.one * theme.AttackIndicatorSize;
         rect.localEulerAngles = new Vector3(0f, 0f, 45f);
@@ -266,19 +166,12 @@ public sealed class AttackResolutionPresenter : MonoBehaviour,
 
     private TextMeshProUGUI CreateResult(Transform parent, Color color)
     {
-        var gameObject = new GameObject("Result", typeof(RectTransform), typeof(TextMeshProUGUI));
-        RectTransform rect = gameObject.GetComponent<RectTransform>();
-        rect.SetParent(parent, false);
-        rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
+        TextMeshProUGUI text = ResolutionVisualMapUtility.CreateText(
+            "Result", parent, theme.FonteInterface,
+            theme.AttackResultTextSize, color);
+        RectTransform rect = text.rectTransform;
         rect.sizeDelta = new Vector2(260f, 38f);
-        TextMeshProUGUI text = gameObject.GetComponent<TextMeshProUGUI>();
-        text.font = theme.FonteInterface;
-        text.fontSize = theme.AttackResultTextSize;
-        text.fontStyle = FontStyles.Bold;
-        text.alignment = TextAlignmentOptions.Center;
-        text.color = color;
         text.alpha = 0f;
-        text.raycastTarget = false;
         return text;
     }
 
@@ -287,18 +180,5 @@ public sealed class AttackResolutionPresenter : MonoBehaviour,
         rect.anchoredPosition = position;
         rect.sizeDelta = Vector2.one * theme.AttackPulseSize;
         rect.localEulerAngles = new Vector3(0f, 0f, 45f);
-    }
-
-    private static void LayoutLine(
-        RectTransform line,
-        Vector2 start,
-        Vector2 end,
-        float thickness)
-    {
-        Vector2 delta = end - start;
-        line.anchoredPosition = (start + end) * 0.5f;
-        line.sizeDelta = new Vector2(delta.magnitude, thickness);
-        line.localEulerAngles = new Vector3(
-            0f, 0f, Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg);
     }
 }

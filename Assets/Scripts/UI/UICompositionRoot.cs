@@ -15,6 +15,9 @@ public sealed class UICompositionRoot : MonoBehaviour
     private RoundAnnouncementView roundAnnouncement;
     private ResolutionSequenceController resolutionSequence;
     private AttackResolutionPresenter attackResolutionPresenter;
+    private ReinforcementResolutionPresenter reinforcementResolutionPresenter;
+    private TransferResolutionPresenter transferResolutionPresenter;
+    private ResolutionVisualStateCoordinator resolutionVisualStateCoordinator;
     private PreparedActionsOverlayController preparedActionsOverlay;
     private bool possuiFaseAnterior;
     private GameManager.FaseTurno faseAnterior;
@@ -116,6 +119,17 @@ public sealed class UICompositionRoot : MonoBehaviour
         attackResolutionPresenter =
             mapOverlayLayer.gameObject.AddComponent<AttackResolutionPresenter>();
         attackResolutionPresenter.Configure(tema);
+
+        reinforcementResolutionPresenter =
+            mapOverlayLayer.gameObject.AddComponent<ReinforcementResolutionPresenter>();
+        reinforcementResolutionPresenter.Configure(tema);
+
+        transferResolutionPresenter =
+            mapOverlayLayer.gameObject.AddComponent<TransferResolutionPresenter>();
+        transferResolutionPresenter.Configure(tema);
+
+        resolutionVisualStateCoordinator =
+            mapOverlayLayer.gameObject.AddComponent<ResolutionVisualStateCoordinator>();
 
         resolutionSequence =
             mapOverlayLayer.gameObject.AddComponent<ResolutionSequenceController>();

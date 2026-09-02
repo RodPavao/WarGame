@@ -17,26 +17,98 @@ public static class TestesWarDominionEditor
     {
         ResolutionSequenceController controller =
             UnityEngine.Object.FindAnyObjectByType<ResolutionSequenceController>();
-        if (controller == null) return;
+        List<TerritorioClique> territories = ObterTerritoriosReaisOrdenados();
+        if (controller == null || territories.Count < 2) return;
+
+        TerritorioClique origin = territories.Find(
+            territory => territory.dono != TerritorioClique.Dono.Neutro) ?? territories[0];
+        TerritorioClique destination = territories.Find(territory => territory != origin);
+        if (destination == null) return;
 
         var events = new List<ResolutionVisualEvent>
         {
             ResolutionVisualEvent.Reinforcement(
-                TerritorioClique.Dono.Jogador1, "TesteA", 3, 2, 5),
+                origin.dono, origin.idTerritorio, 3, origin.Tropas, origin.Tropas),
             ResolutionVisualEvent.Attack(
-                TerritorioClique.Dono.Jogador1, "TesteA", "TesteB", 4,
-                5, 1, 3, 0, true,
-                TerritorioClique.Dono.Jogador2, TerritorioClique.Dono.Jogador1),
-            ResolutionVisualEvent.Transfer(
-                TerritorioClique.Dono.Jogador2, "TesteC", "TesteD", 1,
-                4, 3, 2, 3)
+                origin.dono, origin.idTerritorio, destination.idTerritorio, 3,
+                origin.Tropas, origin.Tropas,
+                destination.Tropas, destination.Tropas, false,
+                destination.dono, destination.dono),
+            CriarPassagemControleSintetica(destination)
         };
+
+        for (int index = 0; index < events.Count; index++)
+            Debug.Log($"[ResolutionVisual][DEBUG][Teste Sequência] " +
+                $"Evento {index + 1}: {events[index]}");
 
         controller.Play(events);
     }
 
     [MenuItem(Raiz + "Resolução Visual/Testar Sequência", true)]
     private static bool ValidarTestarSequenciaVisual() =>
+        EmPlayCom<ResolutionSequenceController>();
+
+    [MenuItem(Raiz + "Resolução Visual/Testar Reforço Visual")]
+    private static void TestarReforcoVisual()
+    {
+        ResolutionSequenceController controller =
+            UnityEngine.Object.FindAnyObjectByType<ResolutionSequenceController>();
+        List<TerritorioClique> territories = ObterTerritoriosReaisOrdenados();
+        if (controller == null || territories.Count == 0) return;
+
+        TerritorioClique territory = territories.Find(
+            item => item.dono != TerritorioClique.Dono.Neutro) ?? territories[0];
+        controller.Play(new[]
+        {
+            ResolutionVisualEvent.Reinforcement(
+                territory.dono, territory.idTerritorio, 3,
+                territory.Tropas, territory.Tropas)
+        });
+    }
+
+    [MenuItem(Raiz + "Resolução Visual/Testar Reforço Visual", true)]
+    private static bool ValidarTestarReforcoVisual() =>
+        EmPlayCom<ResolutionSequenceController>();
+
+    [MenuItem(Raiz + "Resolução Visual/Testar Transferência Visual")]
+    private static void TestarTransferenciaVisual()
+    {
+        ResolutionSequenceController controller =
+            UnityEngine.Object.FindAnyObjectByType<ResolutionSequenceController>();
+        List<TerritorioClique> territories = ObterTerritoriosReaisOrdenados();
+        if (controller == null || territories.Count == 0) return;
+
+        TerritorioClique territory = territories.Find(
+            item => item.dono != TerritorioClique.Dono.Neutro) ?? territories[0];
+        controller.Play(new[]
+        {
+            CriarPassagemControleSintetica(territory)
+        });
+    }
+
+    [MenuItem(Raiz + "Resolução Visual/Testar Transferência Visual", true)]
+    private static bool ValidarTestarTransferenciaVisual() =>
+        EmPlayCom<ResolutionSequenceController>();
+
+    [MenuItem(Raiz + "Resolução Visual/Diagnóstico: Apenas Handoff via Sequência")]
+    private static void DiagnosticarApenasHandoffViaSequencia()
+    {
+        ResolutionSequenceController controller =
+            UnityEngine.Object.FindAnyObjectByType<ResolutionSequenceController>();
+        List<TerritorioClique> territories = ObterTerritoriosReaisOrdenados();
+        if (controller == null || territories.Count == 0) return;
+
+        TerritorioClique territory = territories.Find(
+            item => item.dono != TerritorioClique.Dono.Neutro) ?? territories[0];
+        ResolutionVisualEvent visualEvent =
+            CriarPassagemControleSintetica(territory);
+        Debug.Log($"[ResolutionVisual][DEBUG][Apenas Handoff] {visualEvent}");
+        controller.Play(new[] { visualEvent });
+    }
+
+    [MenuItem(
+        Raiz + "Resolução Visual/Diagnóstico: Apenas Handoff via Sequência", true)]
+    private static bool ValidarDiagnosticarApenasHandoffViaSequencia() =>
         EmPlayCom<ResolutionSequenceController>();
 
     [MenuItem(Raiz + "Resolução Visual/Testar Ataque Visual")]
@@ -46,10 +118,7 @@ public static class TestesWarDominionEditor
             UnityEngine.Object.FindAnyObjectByType<ResolutionSequenceController>();
         if (controller == null) return;
 
-        var territories = new List<TerritorioClique>(MapaAtivo.ObterTerritoriosOuCena());
-        territories.RemoveAll(territory => territory == null);
-        territories.Sort((left, right) =>
-            string.CompareOrdinal(left.idTerritorio, right.idTerritorio));
+        List<TerritorioClique> territories = ObterTerritoriosReaisOrdenados();
         if (territories.Count < 2) return;
 
         TerritorioClique origin = territories.Find(
@@ -72,6 +141,44 @@ public static class TestesWarDominionEditor
             destination.dono);
 
         controller.Play(new[] { visualEvent });
+    }
+
+    private static List<TerritorioClique> ObterTerritoriosReaisOrdenados()
+    {
+        var territories = new List<TerritorioClique>(MapaAtivo.ObterTerritoriosOuCena());
+        territories.RemoveAll(territory => territory == null);
+        territories.Sort((left, right) =>
+            string.CompareOrdinal(left.idTerritorio, right.idTerritorio));
+        return territories;
+    }
+
+    private static TerritorioClique.Dono ObterAliadoVisual(
+        TerritorioClique.Dono owner)
+    {
+        switch (owner)
+        {
+            case TerritorioClique.Dono.Jogador1:
+                return TerritorioClique.Dono.Jogador2;
+            case TerritorioClique.Dono.Jogador2:
+                return TerritorioClique.Dono.Jogador1;
+            case TerritorioClique.Dono.Jogador3:
+                return TerritorioClique.Dono.Jogador4;
+            case TerritorioClique.Dono.Jogador4:
+                return TerritorioClique.Dono.Jogador3;
+            default:
+                return TerritorioClique.Dono.Jogador1;
+        }
+    }
+
+    private static ResolutionVisualEvent CriarPassagemControleSintetica(
+        TerritorioClique territory)
+    {
+        return ResolutionVisualEvent.TerritoryHandoff(
+            territory.dono,
+            ObterAliadoVisual(territory.dono),
+            territory.idTerritorio,
+            territory.Tropas,
+            territory.Tropas);
     }
 
     [MenuItem(Raiz + "Resolução Visual/Testar Ataque Visual", true)]

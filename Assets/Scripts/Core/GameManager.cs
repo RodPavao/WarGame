@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     private SistemaTransferencias sistemaTransferencias;
     private ResolvedorTransferencias resolvedorTransferencias;
     private ResolutionSequenceController sequenciaResolucaoVisualAtiva;
+    private List<ResolutionVisualEvent> eventosReforcoPendentes =
+        new List<ResolutionVisualEvent>();
     private GerenciadorRodada gerenciadorRodada;
     private readonly HistoricoReforcos historicoReforcos =
         new HistoricoReforcos();
@@ -876,6 +878,8 @@ public class GameManager : MonoBehaviour
         estadoPreparacao =
             EstadoPreparacao.Resolvendo;
 
+        eventosReforcoPendentes = CriarEventosVisuaisReforco(
+            historicoReforcos.Distribuicoes);
         reforcosDisponiveis = 0;
         historicoReforcos.Limpar();
 
@@ -909,7 +913,8 @@ public class GameManager : MonoBehaviour
         gerenciadorRodada.NotificarInicioResolucao();
         GetComponent<MatchUIPresenter>()?.SolicitarSnapshotAtual();
 
-        resolvedorTransferencias.Resolver(
+        List<ResultadoTransferencia> resultadosTransferencias =
+            resolvedorTransferencias.Resolver(
             filaTransferencias,
             gerenciadorRodada.ObterPrioridadeJogadores());
 
@@ -920,21 +925,22 @@ public class GameManager : MonoBehaviour
 
         CancelarSelecaoAtual();
 
-        List<ResolutionVisualEvent> eventosVisuais =
-            CriarEventosVisuaisAtaque(resultadosTerrestres);
+        var eventosVisuais = new List<ResolutionVisualEvent>();
+        eventosVisuais.AddRange(eventosReforcoPendentes);
+        eventosVisuais.AddRange(
+            CriarEventosVisuaisTransferencia(resultadosTransferencias));
+        eventosVisuais.AddRange(CriarEventosVisuaisAtaque(resultadosTerrestres));
+        eventosReforcoPendentes.Clear();
 
-        if (eventosVisuais.Count > 0)
+        ResolutionSequenceController controller =
+            FindAnyObjectByType<ResolutionSequenceController>();
+        if (controller != null)
         {
-            ResolutionSequenceController controller =
-                FindAnyObjectByType<ResolutionSequenceController>();
-            if (controller != null)
-            {
-                sequenciaResolucaoVisualAtiva = controller;
-                controller.SequenceCompleted -= ConcluirResolucaoAposVisual;
-                controller.SequenceCompleted += ConcluirResolucaoAposVisual;
-                controller.PlayAfterAnnouncement(eventosVisuais);
-                return;
-            }
+            sequenciaResolucaoVisualAtiva = controller;
+            controller.SequenceCompleted -= ConcluirResolucaoAposVisual;
+            controller.SequenceCompleted += ConcluirResolucaoAposVisual;
+            controller.PlayAfterAnnouncement(eventosVisuais);
+            return;
         }
 
         gerenciadorRodada.ConcluirResolucao();
@@ -968,6 +974,73 @@ public class GameManager : MonoBehaviour
                 resultado.Combate.Conquistou,
                 resultado.DonoDestinoAntes,
                 resultado.DonoDestinoDepois));
+        }
+
+        return eventos;
+    }
+
+    // =====================================================
+    // 21. SNAPSHOTS VISUAIS DE REFORÇO E TRANSFERÊNCIA
+    // =====================================================
+
+    private static List<ResolutionVisualEvent> CriarEventosVisuaisReforco(
+        IReadOnlyList<DistribuicaoReforco> distribuicoes)
+    {
+        var eventos = new List<ResolutionVisualEvent>();
+        if (distribuicoes == null)
+            return eventos;
+
+        var totais = new Dictionary<TerritorioClique, int>();
+        foreach (DistribuicaoReforco distribuicao in distribuicoes)
+        {
+            if (distribuicao?.Territorio == null || distribuicao.Quantidade <= 0)
+                continue;
+            totais.TryGetValue(distribuicao.Territorio, out int total);
+            totais[distribuicao.Territorio] = total + distribuicao.Quantidade;
+        }
+
+        var valores = new Dictionary<TerritorioClique, int>();
+        foreach (KeyValuePair<TerritorioClique, int> item in totais)
+            valores[item.Key] = Mathf.Max(0, item.Key.Tropas - item.Value);
+
+        foreach (DistribuicaoReforco distribuicao in distribuicoes)
+        {
+            TerritorioClique territorio = distribuicao?.Territorio;
+            if (territorio == null || distribuicao.Quantidade <= 0)
+                continue;
+
+            int antes = valores[territorio];
+            int depois = antes + distribuicao.Quantidade;
+            valores[territorio] = depois;
+            eventos.Add(ResolutionVisualEvent.Reinforcement(
+                territorio.dono,
+                territorio.idTerritorio,
+                distribuicao.Quantidade,
+                antes,
+                depois));
+        }
+
+        return eventos;
+    }
+
+    private static List<ResolutionVisualEvent> CriarEventosVisuaisTransferencia(
+        IReadOnlyList<ResultadoTransferencia> resultados)
+    {
+        var eventos = new List<ResolutionVisualEvent>();
+        if (resultados == null)
+            return eventos;
+
+        foreach (ResultadoTransferencia resultado in resultados)
+        {
+            if (resultado == null || !resultado.Executada)
+                continue;
+
+            eventos.Add(ResolutionVisualEvent.TerritoryHandoff(
+                resultado.DonoAntes,
+                resultado.DonoDepois,
+                resultado.IdTerritorio,
+                resultado.TropasAntes,
+                resultado.TropasDepois));
         }
 
         return eventos;

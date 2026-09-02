@@ -103,6 +103,28 @@ public sealed class WarDominionUITheme : ScriptableObject
     [SerializeField, Min(8f)] private float attackResultTextSize = 20f;
     [SerializeField, Min(0f)] private float attackResultOffset = 42f;
 
+    // ============================================================
+    // 07. REFORÇO E TRANSFERÊNCIA NA RESOLUÇÃO
+    // ============================================================
+
+    [Header("Resolução de Reforço")]
+    [SerializeField, Min(0.05f)] private float reinforcementEntryDuration = 0.28f;
+    [SerializeField, Min(0f)] private float reinforcementReactionDuration = 0.32f;
+    [SerializeField, Min(0.05f)] private float reinforcementExitDuration = 0.28f;
+    [SerializeField, Range(0.5f, 1f)] private float reinforcementInitialScale = 0.72f;
+    [SerializeField, Min(8f)] private float reinforcementTextSize = 21f;
+    [SerializeField, Min(8f)] private float reinforcementPulseSize = 58f;
+    [SerializeField, Range(0f, 1f)] private float reinforcementPulseOpacity = 0.32f;
+    [SerializeField, Min(0f)] private float reinforcementIndicatorOffset = 42f;
+
+    [Header("Resolução de Transferência")]
+    [SerializeField, Min(0.05f)] private float transferTransitionDuration = 0.55f;
+    [SerializeField, Min(0.05f)] private float transferReactionDuration = 0.42f;
+    [SerializeField, Min(8f)] private float transferPulseSize = 62f;
+    [SerializeField, Range(0f, 1f)] private float transferPulseOpacity = 0.38f;
+    [SerializeField, Min(8f)] private float transferTextSize = 14f;
+    [SerializeField, Min(0f)] private float transferTextOffset = 46f;
+
     public TMP_FontAsset FonteDisplay => fonteDisplay;
     public TMP_FontAsset FonteInterface => fonteInterface != null ? fonteInterface : fonteDisplay;
     public float TamanhoTitulo => tamanhoTitulo;
@@ -156,4 +178,18 @@ public sealed class WarDominionUITheme : ScriptableObject
     public float AttackImpactIntensity => attackImpactIntensity;
     public float AttackResultTextSize => attackResultTextSize;
     public float AttackResultOffset => attackResultOffset;
+    public float ReinforcementEntryDuration => reinforcementEntryDuration;
+    public float ReinforcementReactionDuration => reinforcementReactionDuration;
+    public float ReinforcementExitDuration => reinforcementExitDuration;
+    public float ReinforcementInitialScale => reinforcementInitialScale;
+    public float ReinforcementTextSize => reinforcementTextSize;
+    public float ReinforcementPulseSize => reinforcementPulseSize;
+    public float ReinforcementPulseOpacity => reinforcementPulseOpacity;
+    public float ReinforcementIndicatorOffset => reinforcementIndicatorOffset;
+    public float TransferTransitionDuration => transferTransitionDuration;
+    public float TransferReactionDuration => transferReactionDuration;
+    public float TransferPulseSize => transferPulseSize;
+    public float TransferPulseOpacity => transferPulseOpacity;
+    public float TransferTextSize => transferTextSize;
+    public float TransferTextOffset => transferTextOffset;
 }

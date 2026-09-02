@@ -65,3 +65,17 @@ MonoBehaviour:
   attackImpactIntensity: 0.85
   attackResultTextSize: 20
   attackResultOffset: 42
+  reinforcementEntryDuration: 0.28
+  reinforcementReactionDuration: 0.32
+  reinforcementExitDuration: 0.28
+  reinforcementInitialScale: 0.72
+  reinforcementTextSize: 21
+  reinforcementPulseSize: 58
+  reinforcementPulseOpacity: 0.32
+  reinforcementIndicatorOffset: 42
+  transferTransitionDuration: 0.55
+  transferReactionDuration: 0.42
+  transferPulseSize: 62
+  transferPulseOpacity: 0.38
+  transferTextSize: 14
+  transferTextOffset: 46
