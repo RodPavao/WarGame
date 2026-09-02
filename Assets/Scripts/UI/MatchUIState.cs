@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 // ============================================================
 // 01. SNAPSHOT IMUTÁVEL DA PARTIDA
@@ -24,6 +25,10 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
     public bool AcoesEnviadas { get; }
     public bool PodeCancelarEnvio { get; }
     public bool PodeEditarPreparacao { get; }
+    public bool PodeEnviarPreparacao { get; }
+    public bool PodeConfirmarAcao { get; }
+    public bool PodeDesfazerAcao { get; }
+    public bool PodeAdicionarReforco { get; }
     public TerritorioClique.Dono JogadorLocal { get; }
     public string OrigemSelecionadaId { get; }
     public string DestinoSelecionadoId { get; }
@@ -31,7 +36,9 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
     public int QuantidadeAcaoSelecionada { get; }
     public string TipoAcaoEsperado { get; }
     public string FeedbackTransferencia { get; }
+    public MatchUIFeedbackState FeedbackAtual { get; }
     public IReadOnlyList<MatchUIPlayerState> Jogadores { get; }
+    public IReadOnlyList<MatchUITerritoryState> Territorios { get; }
     public IReadOnlyList<MatchUIActionState> Acoes { get; }
     public IReadOnlyList<MatchUIReinforcementState> Distribuicoes { get; }
     public MatchUITransferState Transferencia { get; }
@@ -53,6 +60,10 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
         bool acoesEnviadas,
         bool podeCancelarEnvio,
         bool podeEditarPreparacao,
+        bool podeEnviarPreparacao,
+        bool podeConfirmarAcao,
+        bool podeDesfazerAcao,
+        bool podeAdicionarReforco,
         TerritorioClique.Dono jogadorLocal,
         string origemSelecionadaId,
         string destinoSelecionadoId,
@@ -60,7 +71,9 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
         int quantidadeAcaoSelecionada,
         string tipoAcaoEsperado,
         string feedbackTransferencia,
+        MatchUIFeedbackState feedbackAtual,
         MatchUIPlayerState[] jogadores,
+        MatchUITerritoryState[] territorios,
         MatchUIActionState[] acoes,
         MatchUIReinforcementState[] distribuicoes,
         MatchUITransferState transferencia,
@@ -82,6 +95,10 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
         AcoesEnviadas = acoesEnviadas;
         PodeCancelarEnvio = podeCancelarEnvio;
         PodeEditarPreparacao = podeEditarPreparacao;
+        PodeEnviarPreparacao = podeEnviarPreparacao;
+        PodeConfirmarAcao = podeConfirmarAcao;
+        PodeDesfazerAcao = podeDesfazerAcao;
+        PodeAdicionarReforco = podeAdicionarReforco;
         JogadorLocal = jogadorLocal;
         OrigemSelecionadaId = origemSelecionadaId ?? string.Empty;
         DestinoSelecionadoId = destinoSelecionadoId ?? string.Empty;
@@ -89,7 +106,9 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
         QuantidadeAcaoSelecionada = quantidadeAcaoSelecionada;
         TipoAcaoEsperado = tipoAcaoEsperado ?? string.Empty;
         FeedbackTransferencia = feedbackTransferencia ?? string.Empty;
+        FeedbackAtual = feedbackAtual;
         Jogadores = Array.AsReadOnly(jogadores ?? Array.Empty<MatchUIPlayerState>());
+        Territorios = Array.AsReadOnly(territorios ?? Array.Empty<MatchUITerritoryState>());
         Acoes = Array.AsReadOnly(acoes ?? Array.Empty<MatchUIActionState>());
         Distribuicoes = Array.AsReadOnly(distribuicoes ?? Array.Empty<MatchUIReinforcementState>());
         Transferencia = transferencia;
@@ -119,17 +138,92 @@ public readonly struct MatchUIPlayerState
     public EquipesJogadores.Equipe Equipe { get; }
     public int TerritoriosControlados { get; }
     public bool EhJogadorLocal { get; }
+    public string Nome { get; }
+    public Color Cor { get; }
+    public MatchUIPlayerRoundStatus EstadoRodada { get; }
 
     public MatchUIPlayerState(
         TerritorioClique.Dono jogador,
         EquipesJogadores.Equipe equipe,
         int territoriosControlados,
-        bool ehJogadorLocal)
+        bool ehJogadorLocal,
+        string nome,
+        Color cor,
+        MatchUIPlayerRoundStatus estadoRodada)
     {
         Jogador = jogador;
         Equipe = equipe;
         TerritoriosControlados = territoriosControlados;
         EhJogadorLocal = ehJogadorLocal;
+        Nome = nome ?? string.Empty;
+        Cor = cor;
+        EstadoRodada = estadoRodada;
+    }
+}
+
+public enum MatchUIPlayerRoundStatus
+{
+    Participante,
+    Preparando,
+    Enviado,
+    EmResolucao
+}
+
+[Flags]
+public enum MatchUITerritoryVisualState
+{
+    Normal = 0,
+    Hover = 1 << 0,
+    Selecionado = 1 << 1,
+    Origem = 1 << 2,
+    Destino = 1 << 3,
+    DestinoValido = 1 << 4,
+    DestinoInvalido = 1 << 5,
+    Aliado = 1 << 6,
+    Inimigo = 1 << 7,
+    AcaoPreparada = 1 << 8,
+    EmResolucao = 1 << 9,
+    ConquistaEmTransicao = 1 << 10
+}
+
+public readonly struct MatchUITerritoryState
+{
+    public string Id { get; }
+    public TerritorioClique.Dono Proprietario { get; }
+    public int Tropas { get; }
+    public MatchUITerritoryVisualState EstadoVisual { get; }
+
+    public MatchUITerritoryState(
+        string id,
+        TerritorioClique.Dono proprietario,
+        int tropas,
+        MatchUITerritoryVisualState estadoVisual)
+    {
+        Id = id ?? string.Empty;
+        Proprietario = proprietario;
+        Tropas = tropas;
+        EstadoVisual = estadoVisual;
+    }
+}
+
+public enum MatchUIFeedbackKind
+{
+    Nenhum,
+    Informacao,
+    Sucesso,
+    Aviso,
+    Erro
+}
+
+public readonly struct MatchUIFeedbackState
+{
+    public MatchUIFeedbackKind Tipo { get; }
+    public string Mensagem { get; }
+
+    public MatchUIFeedbackState(MatchUIFeedbackKind tipo, string mensagem)
+    {
+        Tipo = tipo;
+        Mensagem = mensagem ?? string.Empty;
     }
 }
 

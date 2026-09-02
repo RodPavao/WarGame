@@ -72,6 +72,8 @@ public sealed class MatchUIPresenter : MonoBehaviour
         IReadOnlyList<TerritorioClique> territorios = MapaAtivo.ObterTerritoriosOuCena();
         MatchUIPlayerState[] jogadores = CriarJogadores(territorios);
         MatchUIActionState[] acoes = CriarAcoes();
+        MatchUITerritoryState[] estadosTerritorios =
+            CriarTerritorios(territorios, acoes);
         MatchUIReinforcementState[] distribuicoes = CriarDistribuicoes();
         MatchUITransferState transferencia = CriarTransferencia();
         MatchUIResultState resultado = gameManager.ResultadoPartidaAtual != null
@@ -84,8 +86,10 @@ public sealed class MatchUIPresenter : MonoBehaviour
         string origemId = ObterId(gameManager.territorioSelecionado);
         string destinoId = ObterId(gameManager.territorioDestinoSelecionado);
         string transferenciaId = ObterId(gameManager.territorioTransferenciaSelecionado);
+        MatchUIFeedbackState feedbackAtual = CriarFeedbackAtual();
         string chave = CriarChaveConteudo(
-            tempo, jogadores, acoes, distribuicoes, transferencia, resultado,
+            tempo, jogadores, estadosTerritorios, acoes, distribuicoes,
+            transferencia, resultado, feedbackAtual,
             origemId, destinoId, transferenciaId);
 
         return new MatchUIState(
@@ -104,6 +108,12 @@ public sealed class MatchUIPresenter : MonoBehaviour
             gameManager.AcoesEnviadas,
             gameManager.PodeCancelarEnvio,
             gameManager.PodeEditarPreparacao,
+            gameManager.PossuiPreparacaoParaEnviar && gameManager.PodeEditarPreparacao,
+            gameManager.PodeEditarPreparacao &&
+                gameManager.territorioSelecionado != null &&
+                gameManager.territorioDestinoSelecionado != null,
+            gameManager.PodeEditarPreparacao && gameManager.QuantidadeOrdensPreparadas > 0,
+            gameManager.PodeEditarPreparacao && gameManager.reforcosDisponiveis > 0,
             gameManager.jogadorLocal,
             origemId,
             destinoId,
@@ -111,7 +121,9 @@ public sealed class MatchUIPresenter : MonoBehaviour
             gameManager.quantidadeAcaoSelecionada,
             gameManager.TipoAcaoSelecionadaEsperado,
             gameManager.feedbackTransferencia,
+            feedbackAtual,
             jogadores,
+            estadosTerritorios,
             acoes,
             distribuicoes,
             transferencia,
@@ -141,10 +153,112 @@ public sealed class MatchUIPresenter : MonoBehaviour
                 jogador,
                 EquipesJogadores.ObterEquipe(jogador),
                 controlados,
-                jogador == gameManager.jogadorLocal);
+                jogador == gameManager.jogadorLocal,
+                jogador.ToString(),
+                PaletaJogadores.ObterCorAtiva(jogador),
+                ObterEstadoRodadaJogador(jogador));
         }
 
         return resultado;
+    }
+
+    private MatchUIPlayerRoundStatus ObterEstadoRodadaJogador(
+        TerritorioClique.Dono jogador)
+    {
+        if (gameManager.faseAtual == GameManager.FaseTurno.Resolucao)
+            return MatchUIPlayerRoundStatus.EmResolucao;
+        if (jogador != gameManager.jogadorLocal)
+            return MatchUIPlayerRoundStatus.Participante;
+        return gameManager.AcoesEnviadas
+            ? MatchUIPlayerRoundStatus.Enviado
+            : MatchUIPlayerRoundStatus.Preparando;
+    }
+
+    private MatchUITerritoryState[] CriarTerritorios(
+        IReadOnlyList<TerritorioClique> territorios,
+        IReadOnlyList<MatchUIActionState> acoes)
+    {
+        var preparados = new HashSet<string>();
+        foreach (MatchUIActionState acao in acoes)
+        {
+            preparados.Add(acao.OrigemId);
+            preparados.Add(acao.DestinoId);
+        }
+        foreach (DistribuicaoReforco distribuicao in gameManager.DistribuicoesReforcos)
+            preparados.Add(ObterId(distribuicao.Territorio));
+        if (gameManager.TransferenciaPreparada != null)
+            preparados.Add(gameManager.TransferenciaPreparada.IdTerritorio);
+
+        var resultado = new List<MatchUITerritoryState>(territorios.Count);
+        foreach (TerritorioClique territorio in territorios)
+        {
+            if (territorio == null)
+                continue;
+
+            string id = ObterId(territorio);
+            MatchUITerritoryVisualState estado =
+                MatchUITerritoryVisualState.Normal;
+            if (territorio == gameManager.territorioSelecionado)
+                estado |= MatchUITerritoryVisualState.Selecionado |
+                    MatchUITerritoryVisualState.Origem;
+            if (territorio == gameManager.territorioDestinoSelecionado)
+                estado |= MatchUITerritoryVisualState.Selecionado |
+                    MatchUITerritoryVisualState.Destino;
+            if (territorio == gameManager.territorioTransferenciaSelecionado)
+                estado |= MatchUITerritoryVisualState.Selecionado |
+                    MatchUITerritoryVisualState.Origem;
+
+            if (gameManager.territorioSelecionado != null &&
+                territorio != gameManager.territorioSelecionado)
+            {
+                estado |= gameManager.PodeSelecionarDestinoParaUI(territorio)
+                    ? MatchUITerritoryVisualState.DestinoValido
+                    : MatchUITerritoryVisualState.DestinoInvalido;
+            }
+
+            if (territorio.dono == gameManager.jogadorLocal ||
+                EquipesJogadores.SaoAliados(
+                    territorio.dono, gameManager.jogadorLocal))
+            {
+                estado |= MatchUITerritoryVisualState.Aliado;
+            }
+            else if (territorio.dono != TerritorioClique.Dono.Neutro)
+            {
+                estado |= MatchUITerritoryVisualState.Inimigo;
+            }
+
+            if (preparados.Contains(id))
+                estado |= MatchUITerritoryVisualState.AcaoPreparada;
+            if (gameManager.faseAtual == GameManager.FaseTurno.Resolucao)
+                estado |= MatchUITerritoryVisualState.EmResolucao;
+
+            resultado.Add(new MatchUITerritoryState(
+                id, territorio.dono, territorio.Tropas, estado));
+        }
+
+        return resultado.ToArray();
+    }
+
+    private MatchUIFeedbackState CriarFeedbackAtual()
+    {
+        if (!string.IsNullOrWhiteSpace(gameManager.feedbackTransferencia))
+        {
+            return new MatchUIFeedbackState(
+                MatchUIFeedbackKind.Informacao,
+                gameManager.feedbackTransferencia);
+        }
+
+        if (gameManager.AcoesEnviadas)
+            return new MatchUIFeedbackState(
+                MatchUIFeedbackKind.Sucesso, "Preparação enviada.");
+        if (gameManager.territorioDestinoSelecionado != null)
+            return new MatchUIFeedbackState(
+                MatchUIFeedbackKind.Informacao,
+                gameManager.TipoAcaoSelecionadaEsperado + " preparado para confirmação.");
+        if (gameManager.territorioSelecionado != null)
+            return new MatchUIFeedbackState(
+                MatchUIFeedbackKind.Informacao, "Selecione o território de destino.");
+        return new MatchUIFeedbackState(MatchUIFeedbackKind.Nenhum, string.Empty);
     }
 
     private MatchUIActionState[] CriarAcoes()
@@ -203,10 +317,12 @@ public sealed class MatchUIPresenter : MonoBehaviour
     private string CriarChaveConteudo(
         float tempo,
         MatchUIPlayerState[] jogadores,
+        MatchUITerritoryState[] territorios,
         MatchUIActionState[] acoes,
         MatchUIReinforcementState[] distribuicoes,
         MatchUITransferState transferencia,
         MatchUIResultState resultado,
+        MatchUIFeedbackState feedbackAtual,
         string origemId,
         string destinoId,
         string transferenciaId)
@@ -224,8 +340,20 @@ public sealed class MatchUIPresenter : MonoBehaviour
             .Append(origemId).Append('|').Append(destinoId).Append('|')
             .Append(transferenciaId).Append('|').Append(gameManager.feedbackTransferencia);
 
+        chave.Append('|').Append((int)feedbackAtual.Tipo).Append(':')
+            .Append(feedbackAtual.Mensagem);
+
         foreach (MatchUIPlayerState jogador in jogadores)
-            chave.Append("|P:").Append((int)jogador.Jogador).Append(':').Append(jogador.TerritoriosControlados);
+            chave.Append("|P:").Append((int)jogador.Jogador).Append(':')
+                .Append(jogador.TerritoriosControlados).Append(':')
+                .Append((int)jogador.EstadoRodada).Append(':')
+                .Append(jogador.Cor);
+
+        foreach (MatchUITerritoryState territorio in territorios)
+            chave.Append("|D:").Append(territorio.Id).Append(':')
+                .Append((int)territorio.Proprietario).Append(':')
+                .Append(territorio.Tropas).Append(':')
+                .Append((int)territorio.EstadoVisual);
 
         foreach (MatchUIActionState acao in acoes)
             chave.Append("|A:").Append(acao.Posicao).Append(':').Append(acao.OrigemId)

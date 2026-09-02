@@ -721,6 +721,20 @@ public class GameManager : MonoBehaviour
         AtualizarHighlightsPreparacao();
     }
 
+    public bool PodeSelecionarDestinoParaUI(TerritorioClique territorio)
+    {
+        if (!PodeEditarPreparacao || modoAcao != ModoAcao.AcaoTerrestre ||
+            territorioSelecionado == null || territorio == null ||
+            territorio == territorioSelecionado || filaAcoes == null)
+        {
+            return false;
+        }
+
+        return territorioSelecionado.dono == jogadorLocal &&
+            territorioSelecionado.EhVizinho(territorio) &&
+            filaAcoes.TropasDisponiveis(territorioSelecionado, jogadorLocal) > 0;
+    }
+
     // =====================================================
     // 16. EDIÇÃO DE ORDENS
     // =====================================================
