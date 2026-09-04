@@ -204,6 +204,33 @@ Eventos e torneios devem ter presença identificável e permitir descoberta de c
 
 Informações secundárias devem aparecer em popups, painéis contextuais, janelas ou overlays. A Home não deve permanecer permanentemente congestionada para provar que uma função existe.
 
+### [DEFINITIVO] Composição e escala dos cards
+
+Os cards da Home não devem ocupar ou preencher toda a superfície disponível da tela. A referência estrutural e comportamental é WarTime, sem reprodução literal de sua identidade visual.
+
+A composição final deve favorecer:
+
+- cards menores;
+- elementos gráficos;
+- espaçamento entre componentes;
+- áreas de fundo visíveis;
+- sensação de profundidade e composição, em vez de uma grade preenchida;
+- tamanhos diferentes conforme a importância;
+- informações secundárias sob demanda.
+
+PLAY continua sendo o protagonista, mas não deve terminar como um enorme retângulo simples preenchendo o centro.
+
+A hierarquia de escala desejada é:
+
+- Perfil e Amigos compactos, porém importantes;
+- Chat e Configurações pequenos;
+- Loja e VIP médios;
+- Missões e Ranking compactos;
+- Eventos/Torneios com destaque variável e contextual;
+- Cards e Clan menores e mais gráficos que na implementação provisória atual.
+
+A Home da Passada 1 valida arquitetura e fluxo. Seu dimensionamento visual atual não é aprovação do tamanho definitivo dos cards.
+
 ### [PENDENTE] Definições da Home
 
 Permanecem pendentes:
@@ -414,6 +441,7 @@ Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste docu
 | Usar glow de forma controlada | [DEFINITIVO] | Menor na Preparação e maior na Resolução. |
 | Usar packs externos como matéria-prima | [DEFINITIVO] | Nenhum pack define isoladamente a identidade. |
 | Tornar PLAY protagonista da Home | [DEFINITIVO] | Progressão competitiva e recursos sociais se organizam ao redor desse foco. |
+| Preservar fundo visível e composição não preenchida na Home | [DEFINITIVO] | Cards variam de escala conforme importância; PLAY não deve se tornar um retângulo simples gigantesco. |
 | Adotar 10 ligas seguidas de Veteran | [DEFINITIVO] | Veteran tem progressão prática sem limite fechado. |
 | Rejeitar pay-to-win | [DEFINITIVO] | Monetização não concede vantagem competitiva comprável. |
 | Separar intenção de execução | [DEFINITIVO] | Preparação comunica plano; Resolução comunica consequência. |
@@ -432,6 +460,7 @@ Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste docu
 | Setas de ações preparadas | [PROVISÓRIO] | `PreparedActionArrowView` deverá receber direção visual premium. |
 | Presenters da Resolução | [PROVISÓRIO] | Contratos e sequência são reutilizáveis; aparência ainda evoluirá. |
 | Molduras, botões, tipografia, contadores e feedbacks atuais | [PROVISÓRIO] | Devem ser avaliados no passe de polimento premium. |
+| Dimensionamento dos cards da Home na Passada 1 | [PROVISÓRIO] | Valida arquitetura e fluxo, não a composição visual definitiva. |
 
 ### Decisões pendentes
 
