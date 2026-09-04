@@ -43,6 +43,19 @@ public class ResultadoPartida
         };
     }
 
+    public static ResultadoPartida CriarEmpateFinal(int round, int quantidade)
+    {
+        return new ResultadoPartida
+        {
+            Encerrada = true,
+            Empate = true,
+            Tipo = TipoVencedor.Nenhum,
+            QuantidadeTerritorios = quantidade,
+            RoundFinal = round,
+            HouveMorteSubita = false
+        };
+    }
+
     public static ResultadoPartida CriarVitoriaEquipe(
         EquipesJogadores.Equipe equipe,
         int quantidade,

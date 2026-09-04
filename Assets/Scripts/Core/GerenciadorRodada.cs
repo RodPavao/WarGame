@@ -25,11 +25,14 @@ public class GerenciadorRodada : MonoBehaviour
     public bool PartidaEncerrada => estadoAtual == EstadoPartida.Encerrada;
     public bool EmMorteSubita => estadoAtual == EstadoPartida.MorteSubita;
     public int RoundMorteSubita => EmMorteSubita
-        ? Mathf.Max(1, rodadaAtual - TotalRoundsNormais)
+        ? Mathf.Max(1, rodadaAtual - LimiteRoundsNormais)
         : 0;
     public ResultadoPartida ResultadoAtual { get; private set; }
 
     public const int TotalRoundsNormais = 10;
+    private int LimiteRoundsNormais => gameManager != null
+        ? gameManager.LimiteRoundsDaPartida
+        : TotalRoundsNormais;
 
     [Header("Rodada")]
     [SerializeField]
@@ -112,7 +115,7 @@ public class GerenciadorRodada : MonoBehaviour
     {
         bool deveAvaliar =
             EmMorteSubita ||
-            rodadaAtual >= TotalRoundsNormais;
+            rodadaAtual >= LimiteRoundsNormais;
 
         if (!deveAvaliar)
         {
@@ -131,6 +134,16 @@ public class GerenciadorRodada : MonoBehaviour
         {
             estadoAtual = EstadoPartida.Encerrada;
             Debug.Log("PARTIDA ENCERRADA: " + DescreverVencedor(ResultadoAtual));
+            return;
+        }
+
+        if (!gameManager.MorteSubitaHabilitada)
+        {
+            ResultadoAtual = ResultadoPartida.CriarEmpateFinal(
+                rodadaAtual,
+                ResultadoAtual.QuantidadeTerritorios);
+            estadoAtual = EstadoPartida.Encerrada;
+            Debug.Log("PARTIDA ENCERRADA EM EMPATE | Round: " + rodadaAtual);
             return;
         }
 
@@ -308,7 +321,7 @@ public class GerenciadorRodada : MonoBehaviour
         if (PartidaEncerrada)
             return;
 
-        rodadaAtual = TotalRoundsNormais;
+        rodadaAtual = LimiteRoundsNormais;
         estadoAtual = EstadoPartida.EmPreparacao;
         ResultadoAtual = null;
         gameManager?.LimparPreparacaoParaTesteEditor();
@@ -336,7 +349,7 @@ public class GerenciadorRodada : MonoBehaviour
             return;
         }
 
-        rodadaAtual = TotalRoundsNormais;
+        rodadaAtual = LimiteRoundsNormais;
         estadoAtual = EstadoPartida.EmPreparacao;
         ResultadoAtual = null;
         gameManager?.LimparPreparacaoParaTesteEditor();

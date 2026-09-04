@@ -138,6 +138,9 @@ return cor;
     public static Color ObterCorAtiva(
         TerritorioClique.Dono dono)
     {
+        if (WDMatchSetupContext.TryGetParticipant(dono, out WDMatchParticipant participant))
+            return participant.MatchColor;
+
         if (instance == null)
         {
             instance =

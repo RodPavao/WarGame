@@ -207,10 +207,10 @@ public class LayoutPartida : MonoBehaviour
             limitesMapa.size.y;
 
 
-        float aspectoViewport =
-            Screen.height > 0
-                ? (Screen.width * cameraPrincipal.rect.width) / Screen.height
-                : cameraPrincipal.aspect;
+        Rect viewportPixels = cameraPrincipal.pixelRect;
+        float aspectoViewport = viewportPixels.height > 0f
+            ? viewportPixels.width / viewportPixels.height
+            : cameraPrincipal.aspect;
 
         float tamanhoPelaAltura =
             alturaMapa / 2f;
@@ -221,6 +221,9 @@ public class LayoutPartida : MonoBehaviour
 
         float tamanhoCamera =
             Mathf.Max(tamanhoPelaAltura, tamanhoPelaLargura);
+        string eixoLimitante = tamanhoPelaLargura > tamanhoPelaAltura
+            ? "largura"
+            : "altura";
 
 
         tamanhoCamera /=
@@ -274,6 +277,10 @@ public class LayoutPartida : MonoBehaviour
                 larguraDireitaEfetiva * 100f
             ) +
             "%"
+            + " | Limite: " + eixoLimitante +
+            " | Viewport px: " +
+            Mathf.RoundToInt(viewportPixels.width) + "x" +
+            Mathf.RoundToInt(viewportPixels.height)
         );
     }
 

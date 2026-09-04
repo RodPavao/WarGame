@@ -168,6 +168,27 @@ public static class WDMatchSetupContext
 
     public static void Clear() => Current = null;
 
+    public static bool TryGetParticipant(
+        TerritorioClique.Dono owner,
+        out WDMatchParticipant participant)
+    {
+        participant = null;
+        if (Current == null || owner == TerritorioClique.Dono.Neutro)
+            return false;
+
+        int slotIndex = (int)owner - 1;
+        foreach (WDMatchParticipant candidate in Current.Participants)
+        {
+            if (candidate.SlotIndex != slotIndex)
+                continue;
+
+            participant = candidate;
+            return true;
+        }
+
+        return false;
+    }
+
     public static void ExitToHome()
     {
         Clear();

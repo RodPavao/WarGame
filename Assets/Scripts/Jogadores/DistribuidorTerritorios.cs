@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class DistribuidorTerritorios : MonoBehaviour
 {
-    [Header("Distribuição automática 2x2")]
+    [Header("Distribuição automática da partida")]
     [SerializeField]
     private bool distribuirAoIniciar = true;
+    private bool distribuicaoInicialExecutada;
 
     private IEnumerator Start()
     {
@@ -15,12 +16,16 @@ public class DistribuidorTerritorios : MonoBehaviour
         yield return null;
 
         if (distribuirAoIniciar)
-        {
-            Distribuir();
-        }
+            GarantirDistribuicaoInicial();
     }
 
-    [ContextMenu("Distribuir Territorios 2x2")]
+    public void GarantirDistribuicaoInicial()
+    {
+        if (!distribuicaoInicialExecutada)
+            Distribuir();
+    }
+
+    [ContextMenu("Distribuir Territórios da Partida")]
     public void Distribuir()
     {
         List<TerritorioClique> lista =
@@ -28,16 +33,14 @@ public class DistribuidorTerritorios : MonoBehaviour
                 MapaAtivo.ObterTerritoriosOuCena()
             );
 
-        Embaralhar(lista);
-
-        TerritorioClique.Dono[] jogadores =
+        List<TerritorioClique.Dono> jogadores = ObterParticipantesAtivos();
+        if (jogadores.Count == 0)
         {
-            TerritorioClique.Dono.Jogador1,
-            TerritorioClique.Dono.Jogador2,
-            TerritorioClique.Dono.Jogador3,
-            TerritorioClique.Dono.Jogador4
-        };
+            Debug.LogError("DISTRIBUIÇÃO | Nenhum participante ativo válido.");
+            return;
+        }
 
+        Embaralhar(lista);
         for (int i = 0;
              i < lista.Count;
              i++)
@@ -47,7 +50,7 @@ public class DistribuidorTerritorios : MonoBehaviour
 
             TerritorioClique.Dono jogador =
                 jogadores[
-                    i % jogadores.Length
+                    i % jogadores.Count
                 ];
 
             territorio.DefinirDono(
@@ -59,12 +62,42 @@ public class DistribuidorTerritorios : MonoBehaviour
             );
         }
 
+        distribuicaoInicialExecutada = true;
+        WDMatchSetup setup = WDMatchSetupContext.Current;
         Debug.Log(
-            "Distribuição 2x2 concluída | " +
-            "J1+J2 = Vanguard | " +
-            "J3+J4 = Sentinel"
-        );
+            $"Distribuição concluída | Participantes ativos: {jogadores.Count}" +
+            (setup != null ? $" | Modo: {setup.ModeId}" : " | Legado sem Match Setup"));
     }
+
+    // =====================================================
+    // 2. PARTICIPANTES AUTORITATIVOS DO MATCH SETUP
+    // =====================================================
+
+    private static List<TerritorioClique.Dono> ObterParticipantesAtivos()
+    {
+        var jogadores = new List<TerritorioClique.Dono>();
+        WDMatchSetup setup = WDMatchSetupContext.Current;
+        if (setup != null)
+        {
+            foreach (WDMatchParticipant participant in setup.Participants)
+            {
+                int ownerValue = participant.SlotIndex + 1;
+                if (System.Enum.IsDefined(typeof(TerritorioClique.Dono), ownerValue))
+                    jogadores.Add((TerritorioClique.Dono)ownerValue);
+            }
+            return jogadores;
+        }
+
+        jogadores.Add(TerritorioClique.Dono.Jogador1);
+        jogadores.Add(TerritorioClique.Dono.Jogador2);
+        jogadores.Add(TerritorioClique.Dono.Jogador3);
+        jogadores.Add(TerritorioClique.Dono.Jogador4);
+        return jogadores;
+    }
+
+    // =====================================================
+    // 3. EMBARALHAMENTO PRESERVADO
+    // =====================================================
 
     private void Embaralhar(
         List<TerritorioClique> lista)

@@ -205,6 +205,28 @@ public sealed class WDMapVoteControllerTests
     }
 
     [Test]
+    public void MatchSetup_OneVsOneNormalHasTwoIndependentParticipants()
+    {
+        WarDominionMatchFlowConfig config = LoadFlowConfig();
+        WDMatchModeDefinition duel = config.Modes.Single(mode => mode.Id == "1x1");
+        WDMatchSubmodeDefinition normal = duel.Submodes.Single(mode => mode.Id == "normal");
+        WDMatchSetup setup = WDMatchSetupFactory.Create(
+            new WDMatchmakingRequest(duel, normal, string.Empty),
+            LoadMap("Classic"), LoadProfile(), 0);
+
+        Assert.That(setup.Participants, Has.Count.EqualTo(2));
+        Assert.That(setup.Participants.Count(item => item.Kind == WDMatchParticipantKind.Local),
+            Is.EqualTo(1));
+        Assert.That(setup.Participants.Select(item => item.TeamIndex).Distinct(),
+            Has.Count.EqualTo(2));
+        Assert.That(setup.RoundLimit, Is.EqualTo(10));
+        Assert.That(setup.SuddenDeathEnabled, Is.True);
+        Assert.That(setup.CardRuleId, Is.EqualTo("standard_deck"));
+        Assert.That(setup.Participants.Select(item => item.SlotIndex),
+            Is.EquivalentTo(new[] { 0, 1 }));
+    }
+
+    [Test]
     public void Profile_ProvidesThreeDecksWithEightMainSlots()
     {
         WarDominionHomeData profile = LoadProfile();

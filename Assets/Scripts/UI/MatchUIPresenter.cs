@@ -139,7 +139,12 @@ public sealed class MatchUIPresenter : MonoBehaviour
 
     private MatchUIPlayerState[] CriarJogadores(IReadOnlyList<TerritorioClique> territorios)
     {
-        IReadOnlyList<TerritorioClique.Dono> jogadoresAtivos = gameManager.ObterJogadoresTransferencia();
+        WDMatchSetup setup = gameManager.MatchSetupAtual;
+        if (setup != null)
+            return CriarJogadoresDoSetup(setup, territorios);
+
+        IReadOnlyList<TerritorioClique.Dono> jogadoresAtivos =
+            gameManager.ObterJogadoresTransferencia();
         var resultado = new MatchUIPlayerState[jogadoresAtivos.Count];
 
         for (int i = 0; i < jogadoresAtivos.Count; i++)
@@ -162,6 +167,41 @@ public sealed class MatchUIPresenter : MonoBehaviour
         }
 
         return resultado;
+    }
+
+    private MatchUIPlayerState[] CriarJogadoresDoSetup(
+        WDMatchSetup setup,
+        IReadOnlyList<TerritorioClique> territorios)
+    {
+        var resultado = new List<MatchUIPlayerState>(setup.Participants.Count);
+        foreach (WDMatchParticipant participant in setup.Participants)
+        {
+            int ownerValue = participant.SlotIndex + 1;
+            if (!Enum.IsDefined(typeof(TerritorioClique.Dono), ownerValue))
+                continue;
+
+            TerritorioClique.Dono owner = (TerritorioClique.Dono)ownerValue;
+            int controlled = 0;
+            foreach (TerritorioClique territory in territorios)
+                if (territory != null && territory.dono == owner)
+                    controlled++;
+
+            string displayName = participant.Kind == WDMatchParticipantKind.Local &&
+                !string.IsNullOrWhiteSpace(participant.Nickname)
+                ? participant.Nickname
+                : participant.Kind == WDMatchParticipantKind.Local
+                    ? "Jogador"
+                    : "Adversário";
+            resultado.Add(new MatchUIPlayerState(
+                owner,
+                EquipesJogadores.ObterEquipe(owner),
+                controlled,
+                participant.Kind == WDMatchParticipantKind.Local,
+                displayName,
+                participant.MatchColor,
+                ObterEstadoRodadaJogador(owner)));
+        }
+        return resultado.ToArray();
     }
 
     private MatchUIPlayerRoundStatus ObterEstadoRodadaJogador(

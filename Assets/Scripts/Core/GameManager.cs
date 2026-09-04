@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,11 @@ public class GameManager : MonoBehaviour
     // =====================================================
 
     public WDMatchSetup MatchSetupAtual => WDMatchSetupContext.Current;
+    public int LimiteRoundsDaPartida =>
+        MatchSetupAtual != null ? Mathf.Max(1, MatchSetupAtual.RoundLimit) :
+        GerenciadorRodada.TotalRoundsNormais;
+    public bool MorteSubitaHabilitada =>
+        MatchSetupAtual == null || MatchSetupAtual.SuddenDeathEnabled;
 
     public TerritorioClique territorioSelecionado;
     public TerritorioClique territorioDestinoSelecionado;
@@ -322,14 +328,63 @@ public class GameManager : MonoBehaviour
         sistemaTransferencias.Inicializar(filaTransferencias);
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return null;
+        DistribuidorTerritorios distribuidor =
+            FindAnyObjectByType<DistribuidorTerritorios>();
+        if (distribuidor != null)
+            distribuidor.GarantirDistribuicaoInicial();
+        else
+            AplicarParticipantesDoMatchSetupAoTabuleiro();
         gerenciadorRodada
             .IniciarPartida();
     }
 
     // =====================================================
-    // 10. CICLO DA PREPARAÇÃO
+    // 10. PARTICIPANTES AUTORITATIVOS DO MATCH SETUP
+    // =====================================================
+
+    private void AplicarParticipantesDoMatchSetupAoTabuleiro()
+    {
+        WDMatchSetup setup = MatchSetupAtual;
+        if (setup == null || setup.Participants.Count == 0)
+            return;
+
+        var owners = new List<TerritorioClique.Dono>();
+        foreach (WDMatchParticipant participant in setup.Participants)
+        {
+            int ownerValue = participant.SlotIndex + 1;
+            if (System.Enum.IsDefined(typeof(TerritorioClique.Dono), ownerValue))
+                owners.Add((TerritorioClique.Dono)ownerValue);
+        }
+
+        if (owners.Count == 0)
+            return;
+
+        foreach (TerritorioClique territory in MapaAtivo.ObterTerritoriosOuCena())
+        {
+            if (territory == null || territory.dono == TerritorioClique.Dono.Neutro)
+                continue;
+
+            int serializedSlot = Mathf.Max(0, (int)territory.dono - 1);
+            TerritorioClique.Dono expectedOwner = owners[serializedSlot % owners.Count];
+            if (territory.dono != expectedOwner)
+                territory.DefinirDono(expectedOwner);
+            else
+                territory.AtualizarCor();
+        }
+
+        WDMatchParticipant local = null;
+        foreach (WDMatchParticipant participant in setup.Participants)
+            if (participant.Kind == WDMatchParticipantKind.Local)
+                local = participant;
+        if (local != null)
+            jogadorLocal = (TerritorioClique.Dono)(local.SlotIndex + 1);
+    }
+
+    // =====================================================
+    // 11. CICLO DA PREPARAÇÃO
     // =====================================================
 
     private void Update()
