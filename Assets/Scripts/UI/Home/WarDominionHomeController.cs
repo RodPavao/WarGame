@@ -174,9 +174,9 @@ public sealed class WarDominionHomeController : MonoBehaviour
     private void BuildLeft(RectTransform parent)
     {
         BuildIdentity(parent);
-        CreateCard(parent, "◆", "MISSÕES", "Objetivos e recompensas provisórias", "MISSÕES", MissionBody());
-        CreateCard(parent, "▲", "RANKING", "Classificação competitiva", "RANKING", RankingBody());
-        CreateCard(parent, "●", "EVENTOS / TORNEIOS", $"{mockData.RegistrationState} · {mockData.Countdown}", "EVENTOS / TORNEIOS", EventBody(), 132f);
+        CreateCard(parent, "M", "MISSÕES", "Objetivos e recompensas provisórias", "MISSÕES", MissionBody());
+        CreateCard(parent, "R", "RANKING", "Classificação competitiva", "RANKING", RankingBody());
+        CreateCard(parent, "E", "EVENTOS / TORNEIOS", $"{mockData.RegistrationState} · {mockData.Countdown}", "EVENTOS / TORNEIOS", EventBody(), 132f);
     }
 
     private void BuildIdentity(RectTransform parent)
@@ -211,7 +211,7 @@ public sealed class WarDominionHomeController : MonoBehaviour
         nickname.rectTransform.offsetMax = new Vector2(-54f, 0f);
 
         TextMeshProUGUI status = WDHomeUIFactory.Text(
-            "Status", identity, theme, $"●  {mockData.Status}   |   Conta ▾",
+            "Status", identity, theme, $"{mockData.Status}   |   Conta v",
             theme.TypeBody, theme.Success, TextAlignmentOptions.Left);
         status.rectTransform.anchorMin = new Vector2(0f, 0.22f);
         status.rectTransform.anchorMax = new Vector2(1f, 0.52f);
@@ -245,7 +245,7 @@ public sealed class WarDominionHomeController : MonoBehaviour
         leagueText.rectTransform.anchorMax = Vector2.one;
         leagueText.rectTransform.offsetMin = leagueText.rectTransform.offsetMax = Vector2.zero;
         TextMeshProUGUI trophyText = WDHomeUIFactory.Text(
-            "Trophies", league, theme, $"◆  {mockData.Trophies} TROFÉUS",
+            "Trophies", league, theme, $"*  {mockData.Trophies} TROFÉUS",
             theme.TypeBody, theme.Acento, TextAlignmentOptions.Center);
         trophyText.rectTransform.anchorMin = Vector2.zero;
         trophyText.rectTransform.anchorMax = new Vector2(1f, 0.43f);
@@ -253,7 +253,7 @@ public sealed class WarDominionHomeController : MonoBehaviour
 
         RectTransform playRect = WDHomeUIFactory.Rect("MainPlayCard", parent);
         playRect.gameObject.AddComponent<WDHomePlayCard>().Build(
-            theme, "▶", "PLAY", "JOGAR PARTIDA", OpenMatchFlow, 300f);
+            theme, ">", "PLAY", "JOGAR PARTIDA", OpenMatchFlow, 300f);
 
         RectTransform lower = WDHomeUIFactory.Rect("CenterSecondaryRow", parent);
         LayoutElement lowerElement = lower.gameObject.AddComponent<LayoutElement>();
@@ -264,22 +264,22 @@ public sealed class WarDominionHomeController : MonoBehaviour
         lowerLayout.childControlHeight = true;
         lowerLayout.childForceExpandWidth = true;
         lowerLayout.childForceExpandHeight = true;
-        CreateCard(lower, "▣", "CARDS", "Coleção e loadouts", "CARDS", CardsBody(), 140f);
-        CreateCard(lower, "⬟", "CLAN", "Comunidade competitiva", "CLAN", ClanBody(), 140f);
+        CreateCard(lower, "C", "CARDS", "Coleção e loadouts", "CARDS", CardsBody(), 140f);
+        CreateCard(lower, "C", "CLAN", "Comunidade competitiva", "CLAN", ClanBody(), 140f);
     }
 
     private void BuildRight(RectTransform parent)
     {
-        CreateCard(parent, "◎", "PERFIL", "Identidade e personalização", "PERFIL", ProfileBody(), 112f);
-        CreateCard(parent, "◉", "AMIGOS", "Lista, presença e convites", "AMIGOS", FriendsBody(), 104f);
+        CreateCard(parent, "P", "PERFIL", "Identidade e personalização", "PERFIL", ProfileBody(), 112f);
+        CreateCard(parent, "A", "AMIGOS", "Lista, presença e convites", "AMIGOS", FriendsBody(), 104f);
 
         RectTransform smallRow = CreateRow("CommunicationRow", parent, 96f);
-        CreateCard(smallRow, "✦", "CHAT", "Mensagens", "CHAT", ChatBody(), 90f);
-        CreateCard(smallRow, "⚙", "CONFIGURAÇÕES", "Preferências", "CONFIGURAÇÕES", SettingsBody(), 90f);
+        CreateCard(smallRow, "C", "CHAT", "Mensagens", "CHAT", ChatBody(), 90f);
+        CreateCard(smallRow, "S", "CONFIGURAÇÕES", "Preferências", "CONFIGURAÇÕES", SettingsBody(), 90f);
 
         RectTransform commerceRow = CreateRow("CommerceRow", parent, 112f);
-        CreateCard(commerceRow, "▰", "LOJA", "Modelo pendente", "LOJA", StoreBody(), 106f);
-        CreateCard(commerceRow, "★", "VIP", "Detalhes pendentes", "VIP", VipBody(), 106f);
+        CreateCard(commerceRow, "L", "LOJA", "Modelo pendente", "LOJA", StoreBody(), 106f);
+        CreateCard(commerceRow, "V", "VIP", "Detalhes pendentes", "VIP", VipBody(), 106f);
 
         CreateCard(parent, "D", "DISCORD", "Comunidade oficial · ação provisória", "DISCORD", DiscordBody(), 76f);
     }

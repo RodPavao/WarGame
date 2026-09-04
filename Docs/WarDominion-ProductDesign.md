@@ -324,7 +324,7 @@ O fluxo com amigo exige aceite antes de entrar no matchmaking. Duplas formadas p
 
 ### [DEFINITIVO] Ordem pré-partida e privacidade dos adversários
 
-Para todos os modos, quando cada etapa for aplicável, a ordem é: modo/submodo → formação de equipe e confirmação de parceiro(s) → matchmaking com contador crescente → adversário(s) encontrado(s) → votação de mapa → partida. O cancelamento é permitido somente durante a procura e fica bloqueado assim que os adversários são encontrados.
+Para todos os modos, quando cada etapa for aplicável, a ordem é: modo/submodo → formação de equipe e confirmação de parceiro(s) → matchmaking com contador crescente → adversário(s) encontrado(s) → votação de mapa → partida. A conclusão da formação de equipe inicia automaticamente o matchmaking, sem comando manual para procurar adversários. O cancelamento é permitido somente durante a procura e fica bloqueado assim que os adversários são encontrados.
 
 - FFA sempre utiliza Classic e não realiza votação de mapa.
 - Em 1x1, o jogador escolhe o submodo, procura o adversário, recebe confirmação neutra do encontro e somente então participa da votação.
@@ -332,6 +332,7 @@ Para todos os modos, quando cada etapa for aplicável, a ordem é: modo/submodo 
 - Nickname, avatar, clã, ranking, composição e qualquer outro dado identificável dos oponentes permanecem ocultos durante matchmaking e votação. Essas identidades só podem aparecer com o início efetivo da partida.
 - A fila apresenta um contador crescente de tempo de espera em segundos, não uma contagem regressiva.
 - O ingresso na fila pode ser cancelado somente enquanto adversários ainda estão sendo procurados. Depois da confirmação do encontro, o cancelamento deixa de estar disponível.
+- Encontrar adversários avança automaticamente para a próxima etapa aplicável, sem tela de confirmação ou botão para continuar. O fluxo pré-partida deve minimizar cliques redundantes.
 
 ### [FUTURO] 3x3 e Battle Royale
 
@@ -360,7 +361,7 @@ Mapas acima do padrão atual de 42 territórios não são inicialmente elegívei
 
 A Passada 1 possui votação funcional local desacoplada da interface. Ela seleciona até dois candidatos ponderados sem repetição, mostra as artes já cadastradas nas definições dos mapas, aceita no máximo um voto por jogador, permite substituir ou remover a escolha anterior, preserva abstenção e resolve empates aleatoriamente apenas entre os mapas empatados.
 
-A simulação local respeita `PROCURANDO ADVERSÁRIO → ADVERSÁRIO ENCONTRADO → VOTAÇÃO`, quando o modo possui votação. A confirmação do encontro não apresenta jogadores fictícios nem dados identificáveis. FFA segue da confirmação diretamente para Classic, sem instanciar votação.
+A simulação local respeita `PROCURANDO ADVERSÁRIO → ADVERSÁRIO ENCONTRADO → VOTAÇÃO`, quando o modo possui votação. O encontro dispara essa transição imediatamente, sem confirmação intermediária, jogadores fictícios ou dados identificáveis. FFA segue automaticamente do encontro para Classic, sem instanciar votação.
 
 Quando houver somente um mapa elegível com peso positivo, a votação apresenta apenas esse candidato; não inclui mapa inelegível para completar a quantidade e não gera erro. Quando não houver nenhum candidato válido, o fluxo informa a ausência de configuração e não avança silenciosamente.
 

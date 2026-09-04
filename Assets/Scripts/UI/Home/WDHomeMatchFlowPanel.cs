@@ -266,7 +266,7 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         var options = new List<Option>
         {
             new("COMPANHEIRO ALEATÓRIO", "Entrar com uma vaga aberta", WDContentAvailability.Enabled,
-                () => ShowTeammateConfirmed(
+                () => BeginMatchmaking(
                     new WDMatchmakingRequest(selectedMode, selectedSubmode, "random_teammate"),
                     ShowTeamFormation)),
             new("COMPANHEIRO DE CLÃ", "Convite futuro ao clã inteiro", WDContentAvailability.Enabled, SelectClanTeammate),
@@ -291,7 +291,7 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
             "CONVITE AO CLÃ",
             "Convite provisório enviado ao clã. A primeira aceitação válida preencherá a vaga; aceitações posteriores receberão ‘Vaga já preenchida.’",
             "SIMULAR ACEITE",
-            () => ShowTeammateConfirmed(
+            () => BeginMatchmaking(
                 new WDMatchmakingRequest(selectedMode, selectedSubmode, "clan_teammate"),
                 ShowTeamFormation),
             ShowTeamFormation);
@@ -303,7 +303,7 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
             "CONVIDAR AMIGO",
             "Fluxo provisório de convite. O grupo só entrará no matchmaking depois do aceite do amigo.",
             "SIMULAR ACEITE",
-            () => ShowTeammateConfirmed(
+            () => BeginMatchmaking(
                 new WDMatchmakingRequest(selectedMode, selectedSubmode, "friend_invite"),
                 ShowTeamFormation),
             ShowTeamFormation);
@@ -312,16 +312,6 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
     // ============================================================
     // 04. MATCHMAKING LOCAL, CONTADOR E IDENTIDADE PROTEGIDA
     // ============================================================
-
-    private void ShowTeammateConfirmed(WDMatchmakingRequest request, Action onBack)
-    {
-        ShowConfirmation(
-            "EQUIPE CONFIRMADA",
-            "Parceiro(s) confirmado(s). Nenhum adversário foi procurado ainda.",
-            "PROCURAR ADVERSÁRIOS",
-            () => BeginMatchmaking(request, onBack),
-            onBack);
-    }
 
     private void BeginMatchmaking(WDMatchmakingRequest request, Action onCancel)
     {
@@ -360,17 +350,7 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         if (preMatchFlow == null || !preMatchFlow.MarkOpponentFound())
             return;
 
-        string found = matchmakingRequest.GroupSize > 1
-            ? "EQUIPE ADVERSÁRIA ENCONTRADA"
-            : "ADVERSÁRIO ENCONTRADO";
-        ShowConfirmation(
-            found,
-            "Identidade protegida. O cancelamento não está mais disponível.",
-            matchmakingRequest.MapSelectionPolicy == WDMapSelectionPolicy.Fixed
-                ? "CONTINUAR"
-                : "IR PARA VOTAÇÃO",
-            ContinueAfterOpponentFound,
-            null);
+        ContinueAfterOpponentFound();
     }
 
     private void ContinueAfterOpponentFound()
