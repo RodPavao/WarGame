@@ -161,4 +161,113 @@ public sealed class WDMapVoteControllerTests
         Assert.That(ffa.MapSelectionPolicy, Is.EqualTo(WDMapSelectionPolicy.Fixed));
         Assert.That(ffa.FixedMapId, Is.EqualTo("classic"));
     }
+
+    // ============================================================
+    // 04. MATCH SETUP, DECKS, ROUNDS E PARTICIPANTES
+    // ============================================================
+
+    [Test]
+    public void MatchSetup_FfaUsesClassicDefaultDeckAndNoSuddenDeath()
+    {
+        WarDominionMatchFlowConfig config = LoadFlowConfig();
+        WarDominionHomeData profile = LoadProfile();
+        WDMatchModeDefinition ffa = config.Modes.Single(mode => mode.Id == "ffa");
+        WDMatchSetup setup = WDMatchSetupFactory.Create(
+            new WDMatchmakingRequest(ffa, null, string.Empty),
+            LoadMap("Classic"), profile, 2);
+
+        Assert.That(setup.MapId, Is.EqualTo("classic"));
+        Assert.That(setup.Participants, Has.Count.EqualTo(4));
+        Assert.That(setup.Participants[0].DeckId,
+            Is.EqualTo(profile.GetDeck(profile.DefaultDeckIndex).Id));
+        Assert.That(setup.RoundLimit, Is.EqualTo(10));
+        Assert.That(setup.SuddenDeathEnabled, Is.False);
+    }
+
+    [Test]
+    public void MatchSetup_DeckChoiceIsMatchOnlyAndMapWinnerIsPreserved()
+    {
+        WarDominionMatchFlowConfig config = LoadFlowConfig();
+        WarDominionHomeData profile = LoadProfile();
+        int defaultBefore = profile.DefaultDeckIndex;
+        WDMatchModeDefinition duel = config.Modes.Single(mode => mode.Id == "1x1");
+        WDMatchSubmodeDefinition normal = duel.Submodes.Single(mode => mode.Id == "normal");
+        WDMatchSetup setup = WDMatchSetupFactory.Create(
+            new WDMatchmakingRequest(duel, normal, string.Empty),
+            LoadMap("Riachuelo"), profile, 2);
+
+        Assert.That(setup.MapId, Is.EqualTo("riachuelo"));
+        Assert.That(setup.Participants[0].DeckId, Is.EqualTo(profile.GetDeck(2).Id));
+        Assert.That(profile.DefaultDeckIndex, Is.EqualTo(defaultBefore));
+        Assert.That(setup.RoundLimit, Is.EqualTo(10));
+        Assert.That(setup.SuddenDeathEnabled, Is.True);
+        Assert.That(setup.ScenePath, Is.Not.Empty);
+    }
+
+    [Test]
+    public void Profile_ProvidesThreeDecksWithEightMainSlots()
+    {
+        WarDominionHomeData profile = LoadProfile();
+
+        Assert.That(profile.Decks, Has.Count.EqualTo(3));
+        Assert.That(profile.Decks, Has.All.Matches<WDDeckProfile>(
+            deck => deck.CardIds.Count == 8));
+        Assert.That(profile.DefaultDeckIndex, Is.InRange(0, 2));
+    }
+
+    [Test]
+    public void MatchSetup_BattleRoyaleUsesFiveRounds()
+    {
+        WarDominionMatchFlowConfig config = LoadFlowConfig();
+        WDMatchModeDefinition mode = config.Modes.Single(item => item.Id == "battle_royale");
+        WDMatchSetup setup = WDMatchSetupFactory.Create(
+            new WDMatchmakingRequest(mode, null, string.Empty),
+            LoadMap("Classic"), LoadProfile(), 0);
+
+        Assert.That(setup.RoundLimit, Is.EqualTo(5));
+    }
+
+    [Test]
+    public void MatchSetup_TeamModeRepresentsParticipantsAndTeams()
+    {
+        WarDominionMatchFlowConfig config = LoadFlowConfig();
+        WDMatchModeDefinition mode = config.Modes.Single(item => item.Id == "2x2");
+        WDMatchSubmodeDefinition submode = mode.Submodes.Single(item => item.Id == "normal");
+        WDMatchSetup setup = WDMatchSetupFactory.Create(
+            new WDMatchmakingRequest(mode, submode, "random_teammate"),
+            LoadMap("Classic"), LoadProfile(), 0);
+
+        Assert.That(setup.Participants, Has.Count.EqualTo(4));
+        Assert.That(setup.Participants.Count(item => item.TeamIndex == 0), Is.EqualTo(2));
+        Assert.That(setup.Participants.Count(item => item.TeamIndex == 1), Is.EqualTo(2));
+        Assert.That(setup.Participants.Select(item => item.SlotIndex).Distinct(), Has.Count.EqualTo(4));
+    }
+
+    [Test]
+    public void ColorResolver_ChangesOnlyEffectiveDuplicateColors()
+    {
+        UnityEngine.Color preferred = UnityEngine.Color.red;
+        var participants = new List<WDMatchParticipant>
+        {
+            new("a", "A", 0, 0, preferred, "skin", "deck", WDMatchParticipantKind.Local),
+            new("b", string.Empty, 1, 1, preferred, string.Empty, string.Empty, WDMatchParticipantKind.Remote)
+        };
+
+        WDMatchColorResolver.Resolve(participants);
+
+        Assert.That(participants[0].ProfileColor, Is.EqualTo(preferred));
+        Assert.That(participants[1].ProfileColor, Is.EqualTo(preferred));
+        Assert.That(participants[0].MatchColor, Is.Not.EqualTo(participants[1].MatchColor));
+    }
+
+    private static WarDominionMatchFlowConfig LoadFlowConfig() =>
+        UnityEngine.Resources.Load<WarDominionMatchFlowConfig>(
+            "UI/Home/WarDominionMatchFlowConfig");
+
+    private static WarDominionHomeData LoadProfile() =>
+        UnityEngine.Resources.Load<WarDominionHomeData>(
+            "UI/Home/WarDominionHomeMockData");
+
+    private static DefinicaoMapa LoadMap(string name) =>
+        UnityEngine.Resources.Load<DefinicaoMapa>($"Mapas/{name}");
 }

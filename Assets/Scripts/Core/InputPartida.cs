@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class InputPartida : MonoBehaviour
@@ -60,6 +61,14 @@ public class InputPartida : MonoBehaviour
         // pode ficar temporariamente indisponível por um frame.
         if (GameManager.instance == null)
             return;
+
+        // A UI tem prioridade sobre o mapa. Isso impede que um clique em
+        // controles sobre o viewport também alcance território/collider atrás.
+        if (EventSystem.current != null &&
+            EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
 
         Vector2 posicaoTela =
             Pointer.current.position.ReadValue();

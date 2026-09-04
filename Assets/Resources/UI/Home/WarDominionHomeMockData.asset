@@ -17,6 +17,42 @@ MonoBehaviour:
   playerColor: {r: 0.12, g: 0.75, b: 0.82, a: 1}
   notifications: 3
   hasClan: 0
+  skinId: default
+  decks:
+  - id: deck_1
+    displayName: DECK 1
+    cardIds:
+    - card_01
+    - card_02
+    - card_03
+    - card_04
+    - card_05
+    - card_06
+    - card_07
+    - card_08
+  - id: deck_2
+    displayName: DECK 2
+    cardIds:
+    - card_09
+    - card_10
+    - card_11
+    - card_12
+    - card_13
+    - card_14
+    - card_15
+    - card_16
+  - id: deck_3
+    displayName: DECK 3
+    cardIds:
+    - card_17
+    - card_18
+    - card_19
+    - card_20
+    - card_21
+    - card_22
+    - card_23
+    - card_24
+  defaultDeckIndex: 0
   league: Liga 1
   trophies: 0
   nextEvent: Operação Atlântico

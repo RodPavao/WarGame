@@ -73,6 +73,8 @@ public sealed class WDMatchModeDefinition
     [SerializeField] private bool botsAllowed = true;
     [SerializeField] private WDMapSelectionPolicy mapSelectionPolicy;
     [SerializeField] private string fixedMapId;
+    [SerializeField, Min(1)] private int roundLimit = 10;
+    [SerializeField] private bool suddenDeathEnabled = true;
     [SerializeField] private List<WDMapModeRule> eligibleMaps = new();
     [SerializeField] private List<WDMatchSubmodeDefinition> submodes = new();
 
@@ -86,6 +88,8 @@ public sealed class WDMatchModeDefinition
     public bool BotsAllowed => botsAllowed;
     public WDMapSelectionPolicy MapSelectionPolicy => mapSelectionPolicy;
     public string FixedMapId => fixedMapId;
+    public int RoundLimit => roundLimit;
+    public bool SuddenDeathEnabled => suddenDeathEnabled;
     public IReadOnlyList<WDMapModeRule> EligibleMaps => eligibleMaps;
     public IReadOnlyList<WDMatchSubmodeDefinition> Submodes => submodes;
 }
@@ -105,6 +109,8 @@ public sealed class WDMatchmakingRequest
     public bool BotsAllowed { get; }
     public WDMapSelectionPolicy MapSelectionPolicy { get; }
     public string FixedMapId { get; }
+    public int RoundLimit { get; }
+    public bool SuddenDeathEnabled { get; }
     public IReadOnlyList<WDMapModeRule> EligibleMaps { get; }
 
     public WDMatchmakingRequest(
@@ -120,6 +126,8 @@ public sealed class WDMatchmakingRequest
         BotsAllowed = mode?.BotsAllowed ?? false;
         MapSelectionPolicy = mode?.MapSelectionPolicy ?? WDMapSelectionPolicy.Vote;
         FixedMapId = mode?.FixedMapId ?? string.Empty;
+        RoundLimit = mode?.RoundLimit ?? 10;
+        SuddenDeathEnabled = mode?.SuddenDeathEnabled ?? true;
         EligibleMaps = submode != null && submode.EligibleMaps.Count > 0
             ? submode.EligibleMaps
             : mode?.EligibleMaps ?? Array.Empty<WDMapModeRule>();

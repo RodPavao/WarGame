@@ -22,9 +22,6 @@ public sealed class PreparedActionsOverlayController : MonoBehaviour
     private MatchUIPresenter presenter;
     private RectTransform overlay;
     private WarDominionUITheme theme;
-    private RectTransform originMarker;
-    private CanvasGroup originMarkerCanvas;
-    private string selectedOriginId = string.Empty;
 
     // ============================================================
     // 02. INICIALIZAÇÃO E ASSINATURA
@@ -41,7 +38,6 @@ public sealed class PreparedActionsOverlayController : MonoBehaviour
         presenter = newPresenter;
         overlay = newOverlay;
         theme = newTheme;
-        EnsureOriginMarker();
 
         if (presenter != null)
         {
@@ -72,22 +68,19 @@ public sealed class PreparedActionsOverlayController : MonoBehaviour
         activeKeys.Clear();
         foreach (MatchUIActionState action in state.Acoes)
         {
-            if (action.TipoEsperado != "ATAQUE")
-                continue;
-
             string key = $"action:{action.Posicao}:{action.OrigemId}:{action.DestinoId}";
             EnsureArrow(
                 key, action.OrigemId, action.DestinoId,
-                state.JogadorLocal, action.Quantidade);
+                state.JogadorLocal, action.Quantidade, false);
             activeKeys.Add(key);
         }
 
-        bool hasPreview =
+        bool hasChosenDestination =
             !string.IsNullOrEmpty(state.OrigemSelecionadaId) &&
             !string.IsNullOrEmpty(state.DestinoSelecionadoId) &&
-            state.TipoAcaoEsperado == "ATAQUE";
+            !string.IsNullOrEmpty(state.TipoAcaoEsperado);
 
-        if (hasPreview)
+        if (hasChosenDestination)
         {
             const string previewKey = "preview";
             EnsureArrow(
@@ -95,13 +88,30 @@ public sealed class PreparedActionsOverlayController : MonoBehaviour
                 state.OrigemSelecionadaId,
                 state.DestinoSelecionadoId,
                 state.JogadorLocal,
-                state.QuantidadeAcaoSelecionada);
+                state.QuantidadeAcaoSelecionada,
+                false);
             activeKeys.Add(previewKey);
+        }
+        else if (!string.IsNullOrEmpty(state.OrigemSelecionadaId))
+        {
+            foreach (MatchUITerritoryState territory in state.Territorios)
+            {
+                if ((territory.EstadoVisual & MatchUITerritoryVisualState.DestinoValido) == 0)
+                    continue;
+
+                string key = "possibility:" + territory.Id;
+                EnsureArrow(
+                    key,
+                    state.OrigemSelecionadaId,
+                    territory.Id,
+                    state.JogadorLocal,
+                    0,
+                    true);
+                activeKeys.Add(key);
+            }
         }
 
         RemoveInactiveArrows();
-        selectedOriginId = state.OrigemSelecionadaId;
-        originMarker.gameObject.SetActive(!string.IsNullOrEmpty(selectedOriginId));
     }
 
     private void EnsureArrow(
@@ -109,7 +119,8 @@ public sealed class PreparedActionsOverlayController : MonoBehaviour
         string originId,
         string destinationId,
         TerritorioClique.Dono player,
-        int amount)
+        int amount,
+        bool planning)
     {
         if (!arrows.TryGetValue(key, out ArrowBinding binding))
         {
@@ -126,6 +137,7 @@ public sealed class PreparedActionsOverlayController : MonoBehaviour
         binding.DestinationId = destinationId;
         binding.View.SetColorAndAmount(
             PaletaJogadores.ObterCorAtiva(player), amount);
+        binding.View.SetPlanning(planning);
     }
 
     private void RemoveInactiveArrows()
@@ -166,7 +178,6 @@ public sealed class PreparedActionsOverlayController : MonoBehaviour
             }
         }
 
-        UpdateOriginMarker();
     }
 
     private bool TryGetOverlayPosition(string territoryId, out Vector2 position)
@@ -210,51 +221,6 @@ public sealed class PreparedActionsOverlayController : MonoBehaviour
         return false;
     }
 
-    // ============================================================
-    // 05. FEEDBACK DISCRETO DA ORIGEM/CONTADOR
-    // ============================================================
-
-    private void EnsureOriginMarker()
-    {
-        if (originMarker != null)
-            return;
-
-        var markerObject = new GameObject(
-            "PreparedOriginMarker", typeof(RectTransform),
-            typeof(Image), typeof(CanvasGroup));
-        originMarker = markerObject.GetComponent<RectTransform>();
-        originMarker.SetParent(overlay, false);
-        originMarker.anchorMin = new Vector2(0.5f, 0.5f);
-        originMarker.anchorMax = new Vector2(0.5f, 0.5f);
-        originMarker.sizeDelta = Vector2.one * theme.PreparedOriginMarkerSize;
-        originMarker.localEulerAngles = new Vector3(0f, 0f, 45f);
-
-        Image image = markerObject.GetComponent<Image>();
-        image.color = theme.Acento;
-        image.raycastTarget = false;
-        originMarkerCanvas = markerObject.GetComponent<CanvasGroup>();
-        originMarkerCanvas.blocksRaycasts = false;
-        originMarkerCanvas.interactable = false;
-        markerObject.SetActive(false);
-    }
-
-    private void UpdateOriginMarker()
-    {
-        if (originMarker == null || !originMarker.gameObject.activeSelf)
-            return;
-
-        if (!TryGetOverlayPosition(selectedOriginId, out Vector2 position))
-        {
-            originMarker.gameObject.SetActive(false);
-            return;
-        }
-
-        float pulse = (Mathf.Sin(Time.unscaledTime * 5f) + 1f) * 0.5f;
-        originMarker.anchoredPosition = position;
-        originMarker.localScale = Vector3.one * Mathf.Lerp(0.82f, 1.08f, pulse);
-        originMarkerCanvas.alpha = Mathf.Lerp(0.10f, 0.25f, pulse);
-    }
-
     private void ClearAll()
     {
         foreach (ArrowBinding binding in arrows.Values)
@@ -262,8 +228,5 @@ public sealed class PreparedActionsOverlayController : MonoBehaviour
                 Destroy(binding.View.gameObject);
         arrows.Clear();
         activeKeys.Clear();
-        selectedOriginId = string.Empty;
-        if (originMarker != null)
-            originMarker.gameObject.SetActive(false);
     }
 }

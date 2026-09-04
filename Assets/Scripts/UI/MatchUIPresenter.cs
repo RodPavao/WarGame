@@ -105,6 +105,8 @@ public sealed class MatchUIPresenter : MonoBehaviour
             gameManager.QuantidadeOrdensPreparadas,
             gameManager.LimiteAcoesPorRodada,
             gameManager.TransferenciaPreparada != null,
+            gameManager.TransferenciaDisponivelParaJogadorLocal,
+            gameManager.MatchSetupUsaEquipes,
             gameManager.AcoesEnviadas,
             gameManager.PodeCancelarEnvio,
             gameManager.PodeEditarPreparacao,
@@ -337,6 +339,8 @@ public sealed class MatchUIPresenter : MonoBehaviour
             .Append(tempo).Append('|')
             .Append(gameManager.reforcosDisponiveis).Append('|')
             .Append(gameManager.quantidadeAcaoSelecionada).Append('|')
+            .Append(gameManager.TransferenciaDisponivelParaJogadorLocal).Append('|')
+            .Append(gameManager.MatchSetupUsaEquipes).Append('|')
             .Append(origemId).Append('|').Append(destinoId).Append('|')
             .Append(transferenciaId).Append('|').Append(gameManager.feedbackTransferencia);
 

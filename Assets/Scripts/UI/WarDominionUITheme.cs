@@ -83,6 +83,10 @@ public sealed class WarDominionUITheme : ScriptableObject
     [SerializeField, Range(0f, 1f)] private float arrowColorOpacity = 0.82f;
     [SerializeField, Min(4f)] private float preparedArrowEnergyLength = 54f;
     [SerializeField, Min(1f)] private float preparedArrowEnergyThickness = 2f;
+    [SerializeField, Min(0.05f)] private float planningBeamSpeed = 0.62f;
+    [SerializeField, Min(2)] private int planningDashStride = 3;
+    [SerializeField, Range(0f, 0.5f)] private float preparedArrowCurveFactor = 0.18f;
+    [SerializeField, Min(0f)] private float preparedArrowMaxCurveHeight = 70f;
     [SerializeField, Min(8f)] private float preparedArrowAmountSize = 17f;
     [SerializeField, Min(0f)] private float preparedArrowAmountOffset = 18f;
     [SerializeField, Min(8f)] private float preparedOriginMarkerSize = 38f;
@@ -102,6 +106,8 @@ public sealed class WarDominionUITheme : ScriptableObject
     [SerializeField, Range(0f, 1f)] private float attackImpactIntensity = 0.85f;
     [SerializeField, Min(8f)] private float attackResultTextSize = 20f;
     [SerializeField, Min(0f)] private float attackResultOffset = 42f;
+    [SerializeField, Range(0f, 0.5f)] private float attackCurveFactor = 0.18f;
+    [SerializeField, Min(0f)] private float attackMaxCurveHeight = 1.1f;
 
     // ============================================================
     // 07. REFORÇO E TRANSFERÊNCIA NA RESOLUÇÃO
@@ -197,6 +203,10 @@ public sealed class WarDominionUITheme : ScriptableObject
     public float ArrowColorOpacity => arrowColorOpacity;
     public float PreparedArrowEnergyLength => preparedArrowEnergyLength;
     public float PreparedArrowEnergyThickness => preparedArrowEnergyThickness;
+    public float PlanningBeamSpeed => planningBeamSpeed;
+    public int PlanningDashStride => planningDashStride;
+    public float PreparedArrowCurveFactor => preparedArrowCurveFactor;
+    public float PreparedArrowMaxCurveHeight => preparedArrowMaxCurveHeight;
     public float PreparedArrowAmountSize => preparedArrowAmountSize;
     public float PreparedArrowAmountOffset => preparedArrowAmountOffset;
     public float PreparedOriginMarkerSize => preparedOriginMarkerSize;
@@ -210,6 +220,8 @@ public sealed class WarDominionUITheme : ScriptableObject
     public float AttackImpactIntensity => attackImpactIntensity;
     public float AttackResultTextSize => attackResultTextSize;
     public float AttackResultOffset => attackResultOffset;
+    public float AttackCurveFactor => attackCurveFactor;
+    public float AttackMaxCurveHeight => attackMaxCurveHeight;
     public float ReinforcementEntryDuration => reinforcementEntryDuration;
     public float ReinforcementReactionDuration => reinforcementReactionDuration;
     public float ReinforcementExitDuration => reinforcementExitDuration;

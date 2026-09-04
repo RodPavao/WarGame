@@ -19,6 +19,8 @@ public sealed class WarDominionHomeController : MonoBehaviour
     private WDHomeModal modal;
     private WDHomeMatchFlowPanel matchFlowPanel;
     private RectTransform safeArea;
+    private GameObject homeUIRoot;
+    private EventSystem homeEventSystem;
     private Rect lastSafeArea;
     private Vector2Int lastResolution;
 
@@ -36,7 +38,7 @@ public sealed class WarDominionHomeController : MonoBehaviour
             return;
         }
 
-        EnsureEventSystem();
+        homeEventSystem = EnsureEventSystem();
         BuildHome();
         UpdateSafeArea(true);
     }
@@ -62,6 +64,7 @@ public sealed class WarDominionHomeController : MonoBehaviour
         var root = new GameObject(
             "HomeUIRoot", typeof(RectTransform), typeof(Canvas),
             typeof(CanvasScaler), typeof(GraphicRaycaster));
+        homeUIRoot = root;
         root.transform.SetParent(transform, false);
         Canvas canvas = root.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -337,13 +340,23 @@ public sealed class WarDominionHomeController : MonoBehaviour
     // 05. INPUT E RESPONSIVIDADE
     // ============================================================
 
-    private static void EnsureEventSystem()
+    public void PrepareForSceneTransition()
+    {
+        enabled = false;
+        if (homeUIRoot != null)
+            homeUIRoot.SetActive(false);
+        if (homeEventSystem != null)
+            homeEventSystem.gameObject.SetActive(false);
+    }
+
+    private static EventSystem EnsureEventSystem()
     {
         if (EventSystem.current != null)
-            return;
+            return null;
 
         var eventSystem = new GameObject("EventSystem", typeof(EventSystem));
         eventSystem.AddComponent<InputSystemUIInputModule>();
+        return eventSystem.GetComponent<EventSystem>();
     }
 
     private void UpdateSafeArea(bool force)

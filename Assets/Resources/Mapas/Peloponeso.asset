@@ -1567,4 +1567,6 @@ MonoBehaviour:
     tipo: 0
     bidirecional: 1
   condicoesEstrategicas: []
-  metadados: []
+  metadados:
+  - chave: scenePath
+    valor: Assets/Mapas/Peloponeso/Peloponeso.unity

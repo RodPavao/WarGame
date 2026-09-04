@@ -24,6 +24,8 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
     public int AcoesPreparadas { get; }
     public int LimiteAcoes { get; }
     public bool TransferenciaUsada { get; }
+    public bool TransferenciaDisponivel { get; }
+    public bool UsaEquipes { get; }
     public bool AcoesEnviadas { get; }
     public bool PodeCancelarEnvio { get; }
     public bool PodeEditarPreparacao { get; }
@@ -59,6 +61,8 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
         int acoesPreparadas,
         int limiteAcoes,
         bool transferenciaUsada,
+        bool transferenciaDisponivel,
+        bool usaEquipes,
         bool acoesEnviadas,
         bool podeCancelarEnvio,
         bool podeEditarPreparacao,
@@ -94,6 +98,8 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
         AcoesPreparadas = acoesPreparadas;
         LimiteAcoes = limiteAcoes;
         TransferenciaUsada = transferenciaUsada;
+        TransferenciaDisponivel = transferenciaDisponivel;
+        UsaEquipes = usaEquipes;
         AcoesEnviadas = acoesEnviadas;
         PodeCancelarEnvio = podeCancelarEnvio;
         PodeEditarPreparacao = podeEditarPreparacao;

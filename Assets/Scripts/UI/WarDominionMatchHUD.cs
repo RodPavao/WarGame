@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,312 +8,604 @@ using UnityEngine.UI;
 public sealed class WarDominionMatchHUD : MonoBehaviour
 {
     // ============================================================
-    // 01. REFERÊNCIAS E ESTADO PUBLICADO
+    // 01. ESTADO E REFERÊNCIAS DA COMPOSIÇÃO
     // ============================================================
 
+    private const int EnergiaMock = 100;
+    private static readonly int[] CustosDeckMock = { 15, 20, 25, 30, 35, 40, 45, 50 };
     private WarDominionUITheme theme;
     private IMatchUICommands commands;
     private MatchUIState state;
-    private TextMeshProUGUI roundText;
-    private TextMeshProUGUI phaseText;
-    private TextMeshProUGUI timerText;
-    private TextMeshProUGUI reinforcementText;
-    private TextMeshProUGUI selectionText;
-    private TextMeshProUGUI feedbackText;
-    private RectTransform playersContent;
-    private RectTransform actionsContent;
-    private WDUIPremiumButton actionModeButton;
-    private WDUIPremiumButton transferModeButton;
-    private WDUIPremiumButton reinforceButton;
-    private WDUIPremiumButton confirmButton;
-    private WDUIPremiumButton undoButton;
-    private WDUIPremiumButton sendButton;
+    private TextMeshProUGUI energyText, troopsText, timerText, roundText, phaseText, attackAmountText;
+    private RectTransform playersContent, actionsContent, actionsDrawer, actionsDismissLayer, attackBar, popupLayer;
+    private TextMeshProUGUI socialEmojiToast;
+    private WDUIPremiumButton transferButton, finishRoundButton, decreaseAttackButton, increaseAttackButton, sendAttackButton;
+    private WDUIPremiumButton socialEmojiFilterButton;
+    private readonly List<WDUIPremiumButton> deckButtons = new List<WDUIPremiumButton>();
+    private bool actionsOpen;
+    private bool hideSocialEmojis;
+    private int selectedCard = -1;
+    private Coroutine drawerAnimation;
+    private Coroutine emojiToastAnimation;
+    private string actionsContentKey = string.Empty;
+    private string playersContentKey = string.Empty;
+    private int lastPresentedRound = -1;
 
     // ============================================================
-    // 02. COMPOSIÇÃO PERIFÉRICA RESPONSIVA
+    // 02. COMPOSIÇÃO LATERAL, SEM PAINEL INFERIOR PERMANENTE
     // ============================================================
 
     public void Build(WarDominionUITheme newTheme, IMatchUICommands newCommands)
     {
         theme = newTheme;
         commands = newCommands;
-
-        RectTransform identity = CreatePanel(
-            "MatchIdentity", new Vector2(0f, 1f), new Vector2(0f, 1f),
-            new Vector2(24f, -24f), new Vector2(292f, 104f));
-        roundText = CreateText(identity, "Round", theme.TypeTitle, theme.TextoPrincipal,
-            new Vector2(16f, -12f), new Vector2(250f, 34f));
-        phaseText = CreateText(identity, "Phase", theme.TypeSection, theme.Acento,
-            new Vector2(16f, -51f), new Vector2(250f, 28f));
-
-        RectTransform timer = CreatePanel(
-            "CriticalTimer", Vector2.one, Vector2.one,
-            new Vector2(-24f, -24f), new Vector2(210f, 104f));
-        CreateText(timer, "TimerLabel", theme.TypeMicro, theme.TextoSecundario,
-            new Vector2(14f, -10f), new Vector2(175f, 22f)).text = "TEMPO RESTANTE";
-        timerText = CreateText(timer, "Timer", theme.TypeNumber, theme.TextoPrincipal,
-            new Vector2(14f, -36f), new Vector2(175f, 48f));
-
-        RectTransform players = CreatePanel(
-            "Players", new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
-            new Vector2(24f, 52f), new Vector2(252f, 330f));
-        CreateText(players, "Title", theme.TypeSection, theme.TextoSecundario,
-            new Vector2(14f, -12f), new Vector2(220f, 24f)).text = "COMANDO / EQUIPES";
-        playersContent = WDUIFactory.Rect("Content", players);
-        SetStretch(playersContent, 12f, 12f, 44f, 12f);
-        VerticalLayoutGroup playerLayout = playersContent.gameObject.AddComponent<VerticalLayoutGroup>();
-        playerLayout.spacing = theme.SpacingSm;
-        playerLayout.childControlHeight = true;
-        playerLayout.childForceExpandHeight = false;
-
-        RectTransform bottom = CreatePanel(
-            "PreparationActions", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
-            new Vector2(0f, 22f), new Vector2(940f, 188f));
-        reinforcementText = CreateText(bottom, "Reinforcements", theme.TypeSection,
-            theme.TextoPrincipal, new Vector2(18f, -12f), new Vector2(230f, 28f));
-        selectionText = CreateText(bottom, "Selection", theme.TypeBody,
-            theme.TextoSecundario, new Vector2(250f, -13f), new Vector2(660f, 28f));
-        BuildButtons(bottom);
-        actionsContent = WDUIFactory.Rect("PreparedActions", bottom);
-        actionsContent.anchorMin = new Vector2(0f, 0f);
-        actionsContent.anchorMax = new Vector2(1f, 0f);
-        actionsContent.pivot = new Vector2(0.5f, 0f);
-        actionsContent.anchoredPosition = new Vector2(0f, 10f);
-        actionsContent.sizeDelta = new Vector2(-30f, 43f);
-        HorizontalLayoutGroup actionLayout = actionsContent.gameObject.AddComponent<HorizontalLayoutGroup>();
-        actionLayout.spacing = theme.SpacingSm;
-        actionLayout.childControlWidth = true;
-        actionLayout.childForceExpandWidth = true;
-
-        RectTransform feedback = CreatePanel(
-            "ContextFeedback", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(0f, -24f), new Vector2(520f, 48f));
-        feedbackText = CreateText(feedback, "Message", theme.TypeBody,
-            theme.TextoPrincipal, new Vector2(12f, -7f), new Vector2(496f, 32f));
-        feedbackText.alignment = TextAlignmentOptions.Center;
+        RectTransform left = CreateNeutralPanel("LeftCommandRail", Vector2.zero,
+            new Vector2(0f, 1f), Vector2.zero, new Vector2(300f, 0f));
+        RectTransform right = CreateNeutralPanel("RightCommandRail", new Vector2(1f, 0f),
+            Vector2.one, Vector2.zero, new Vector2(300f, 0f));
+        BuildLeftRail(left);
+        BuildRightRail(right);
+        BuildAttackBar();
+        BuildActionsDrawer();
+        BuildSocialEmojiToast();
+        popupLayer = WDUIFactory.Rect("ContextPopupLayer", transform);
+        Stretch(popupLayer);
+        popupLayer.gameObject.SetActive(false);
     }
 
-    private void BuildButtons(RectTransform parent)
-    {
-        RectTransform row = WDUIFactory.Rect("CommandRow", parent);
-        row.anchorMin = new Vector2(0f, 1f);
-        row.anchorMax = new Vector2(1f, 1f);
-        row.pivot = new Vector2(0.5f, 1f);
-        row.anchoredPosition = new Vector2(0f, -48f);
-        row.sizeDelta = new Vector2(-30f, theme.ButtonHeight);
-        HorizontalLayoutGroup layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
-        layout.spacing = theme.SpacingSm;
-        layout.childControlWidth = true;
-        layout.childForceExpandWidth = true;
+    public void BindCommands(IMatchUICommands newCommands) => commands = newCommands;
 
-        actionModeButton = CreateButton(row, "AÇÃO", () => commands?.SelecionarModoAcao());
-        transferModeButton = CreateButton(row, "TRANSFERIR", () => commands?.SelecionarModoTransferencia());
-        reinforceButton = CreateButton(row, "+ REFORÇO", AddReinforcement);
-        confirmButton = CreateButton(row, "CONFIRMAR", () => commands?.ConfirmarAcao());
-        undoButton = CreateButton(row, "DESFAZER", () => commands?.DesfazerUltimaAcao());
-        sendButton = CreateButton(row, "ENVIAR", ToggleSend);
+    private void BuildLeftRail(RectTransform rail)
+    {
+        RectTransform indicators = WDUIFactory.Rect("RoundResources", rail);
+        AnchorTop(indicators, 14f, 14f, 272f, 72f);
+        HorizontalLayoutGroup row = indicators.gameObject.AddComponent<HorizontalLayoutGroup>();
+        row.spacing = 6f; row.childControlWidth = true; row.childForceExpandWidth = true;
+        energyText = CreateIndicator(indicators, "ENERGIA", "E");
+        troopsText = CreateIndicator(indicators, "TROPAS", "T");
+        timerText = CreateIndicator(indicators, "TEMPO", "@");
+        roundText = CreateText(rail, "Round", theme.TypeTitle, theme.TextoPrincipal,
+            new Vector2(16f, -98f), new Vector2(268f, 32f));
+        phaseText = CreateText(rail, "Phase", theme.TypeMicro, theme.Acento,
+            new Vector2(16f, -128f), new Vector2(268f, 22f));
+        CreateText(rail, "DeckTitle", theme.TypeSection, theme.TextoSecundario,
+            new Vector2(16f, -164f), new Vector2(268f, 24f)).text = "DECK  8 SLOTS";
+        RectTransform deck = WDUIFactory.Rect("Deck", rail);
+        AnchorTop(deck, 16f, 194f, 268f, 356f);
+        GridLayoutGroup grid = deck.gameObject.AddComponent<GridLayoutGroup>();
+        grid.cellSize = new Vector2(128f, 80f); grid.spacing = new Vector2(8f, 8f);
+        grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount; grid.constraintCount = 2;
+        for (int i = 0; i < 8; i++)
+        {
+            int slot = i;
+            WDUIPremiumButton card = CreateButton(deck,
+                $"CARTA {i + 1}\nE {CustosDeckMock[i]}  CD --", () => ToggleCard(slot));
+            card.GetComponent<LayoutElement>().preferredHeight = 80f;
+            deckButtons.Add(card);
+        }
+        transferButton = CreateCompactControl(rail, "TransferControl", "< >  TRANSFERIR",
+            new Vector2(16f, -570f), ToggleTransfer);
+        CreateCompactControl(rail, "ActionsControl", "=  AÇÕES",
+            new Vector2(16f, -626f), ToggleActionsDrawer);
+    }
+
+    private void BuildRightRail(RectTransform rail)
+    {
+        RectTransform tools = WDUIFactory.Rect("UtilityControls", rail);
+        AnchorTop(tools, 14f, 14f, 272f, 48f);
+        HorizontalLayoutGroup row = tools.gameObject.AddComponent<HorizontalLayoutGroup>();
+        row.spacing = 6f; row.childControlWidth = true; row.childForceExpandWidth = true;
+        CreateButton(tools, "CHAT", ShowChatPopup);
+        socialEmojiFilterButton = CreateButton(tools, "EMOJI", ToggleSocialEmojiFilter);
+        CreateButton(tools, "INFO", ShowMatchInfo);
+        CreateButton(tools, "MENU", ShowMatchSettings);
+        CreateText(rail, "PlayersTitle", theme.TypeSection, theme.TextoSecundario,
+            new Vector2(16f, -84f), new Vector2(268f, 24f)).text = "ORDEM DO ROUND";
+        playersContent = WDUIFactory.Rect("Players", rail);
+        AnchorTop(playersContent, 14f, 116f, 272f, 560f);
+        VerticalLayoutGroup list = playersContent.gameObject.AddComponent<VerticalLayoutGroup>();
+        list.spacing = 8f; list.childControlHeight = true; list.childForceExpandHeight = false;
+        finishRoundButton = CreateCompactControl(rail, "FinishRound", ">>  FINALIZAR ROUND",
+            new Vector2(16f, -704f), FinishRound);
     }
 
     // ============================================================
-    // 03. APRESENTAÇÃO DO MATCHUISTATE
+    // 03. APRESENTAÇÃO DO ESTADO AUTORITATIVO
     // ============================================================
 
     public void Present(MatchUIState newState)
     {
         if (newState == null || theme == null) return;
+        bool newRound = lastPresentedRound >= 0 && lastPresentedRound != newState.Round;
+        lastPresentedRound = newState.Round;
         state = newState;
-        roundText.text = state.EmMorteSubita
-            ? $"MORTE SÚBITA {state.RoundMorteSubita}"
-            : $"ROUND {state.Round:00}";
-        phaseText.text = state.Fase.ToString().ToUpperInvariant();
+        if (newRound || state.Fase != GameManager.FaseTurno.Preparacao || state.AcoesEnviadas)
+            CloseActionsDrawerImmediately();
+        energyText.text = $"E\n{EnergiaMock}";
+        troopsText.text = $"T\n{state.ReforcosDisponiveis}";
         int seconds = Mathf.CeilToInt(state.TempoRestante);
-        timerText.text = $"{seconds / 60:00}:{seconds % 60:00}";
-        timerText.color = seconds <= 10 ? theme.Danger :
-            seconds <= 30 ? theme.Warning : theme.TextoPrincipal;
-        reinforcementText.text = $"REFORÇOS  {state.ReforcosDisponiveis:00}";
-        selectionText.text = BuildSelectionText(state);
-        PresentFeedback(state.FeedbackAtual);
-        PresentButtons();
-        RebuildPlayers();
-        RebuildActions();
+        timerText.text = $"@\n{seconds / 60:00}:{seconds % 60:00}";
+        roundText.text = state.EmMorteSubita ? $"MORTE SÚBITA {state.RoundMorteSubita}" : $"ROUND {state.Round:00}";
+        phaseText.text = state.Fase.ToString().ToUpperInvariant();
+        transferButton.SetInteractable(state.PodeEditarPreparacao && state.TransferenciaDisponivel && !state.TransferenciaUsada);
+        transferButton.SetSelected(state.EmModoTransferencia);
+        transferButton.SetLabel(state.EmModoTransferencia ? "X  CANCELAR TRANSFERIR" : "< >  TRANSFERIR");
+        finishRoundButton.SetInteractable(
+            state.AcoesEnviadas
+                ? state.PodeCancelarEnvio
+                : state.PodeEnviarPreparacao && state.ReforcosDisponiveis == 0);
+        finishRoundButton.SetLabel(state.AcoesEnviadas
+            ? "X  DESFAZER ENVIO"
+            : ">>  FINALIZAR ROUND");
+        PresentSocialEmojiFilter();
+        PresentDeck();
+        string newPlayersKey = BuildPlayersContentKey();
+        if (newPlayersKey != playersContentKey)
+            RebuildPlayers(newPlayersKey);
+        PresentAttackBar();
+        if (actionsOpen && BuildActionsContentKey() != actionsContentKey) RebuildActions();
     }
 
-    private void PresentButtons()
+    private void PresentDeck()
     {
-        actionModeButton.SetSelected(state.EmModoAcaoTerrestre);
-        transferModeButton.SetSelected(state.EmModoTransferencia);
-        actionModeButton.SetInteractable(state.PodeEditarPreparacao);
-        transferModeButton.SetInteractable(state.PodeEditarPreparacao && !state.TransferenciaUsada);
-        reinforceButton.SetInteractable(
-            state.PodeAdicionarReforco && !string.IsNullOrEmpty(state.OrigemSelecionadaId));
-        confirmButton.SetInteractable(state.PodeConfirmarAcao);
-        undoButton.SetInteractable(state.PodeDesfazerAcao);
-        sendButton.SetInteractable(state.AcoesEnviadas
-            ? state.PodeCancelarEnvio : state.PodeEnviarPreparacao);
-        sendButton.SetLabel(state.AcoesEnviadas ? "CANCELAR ENVIO" : "ENVIAR AÇÕES");
-        sendButton.SetSelected(state.AcoesEnviadas);
-    }
-
-    // ============================================================
-    // 04. JOGADORES, EQUIPES E AÇÕES PREPARADAS
-    // ============================================================
-
-    private void RebuildPlayers()
-    {
-        ClearChildren(playersContent);
-        foreach (MatchUIPlayerState player in state.Jogadores)
+        for (int i = 0; i < deckButtons.Count; i++)
         {
-            RectTransform row = WDUIFactory.Rect("Player_" + player.Jogador, playersContent);
-            LayoutElement element = row.gameObject.AddComponent<LayoutElement>();
-            element.preferredHeight = 48f;
-            Image background = row.gameObject.AddComponent<Image>();
-            Color rowColor = theme.BackgroundPrimary;
-            rowColor.a = player.EhJogadorLocal ? 0.96f : 0.72f;
-            background.color = rowColor;
-            background.raycastTarget = false;
-            Image marker = WDUIFactory.Rect("Color", row).gameObject.AddComponent<Image>();
-            marker.color = player.Cor;
-            marker.raycastTarget = false;
-            RectTransform markerRect = marker.rectTransform;
-            markerRect.anchorMin = new Vector2(0f, 0f);
-            markerRect.anchorMax = new Vector2(0f, 1f);
-            markerRect.sizeDelta = new Vector2(5f, 0f);
-            markerRect.anchoredPosition = new Vector2(2.5f, 0f);
-            TextMeshProUGUI name = CreateText(row, "Name", theme.TypeBody,
-                theme.TextoPrincipal, new Vector2(14f, -5f), new Vector2(125f, 22f));
-            name.text = player.Nome + (player.EhJogadorLocal ? "  • VOCÊ" : string.Empty);
-            TextMeshProUGUI meta = CreateText(row, "Meta", theme.TypeMicro,
-                theme.TextoSecundario, new Vector2(14f, -25f), new Vector2(190f, 18f));
-            meta.text = $"{player.Equipe}  |  {player.TerritoriosControlados} TERR.";
-            if (state.EmModoTransferencia &&
-                !string.IsNullOrEmpty(state.TerritorioTransferenciaId) &&
-                player.Jogador != state.JogadorLocal)
-            {
-                Button target = row.gameObject.AddComponent<Button>();
-                target.transition = Selectable.Transition.None;
-                background.raycastTarget = true;
-                TerritorioClique.Dono recipient = player.Jogador;
-                target.onClick.AddListener(() => commands?.SelecionarDestinatarioTransferencia(recipient));
-            }
+            bool selected = selectedCard == i;
+            deckButtons[i].SetInteractable(CustosDeckMock[i] <= EnergiaMock);
+            deckButtons[i].SetSelected(false);
+            deckButtons[i].SetLabel(selected
+                ? $"X  CARTA {i + 1}\nE {CustosDeckMock[i]}  CD --"
+                : $"CARTA {i + 1}\nE {CustosDeckMock[i]}  CD --");
+            Image background = deckButtons[i].GetComponent<Image>();
+            TextMeshProUGUI label = deckButtons[i].GetComponentInChildren<TextMeshProUGUI>();
+            if (selected && background != null)
+                background.color = new Color(0.01f, 0.01f, 0.012f, 0.98f);
+            if (label != null)
+                label.color = selected ? theme.Danger : theme.TextoPrincipal;
         }
+    }
+
+    // ============================================================
+    // 04. ATAQUE CONTEXTUAL: QUANTIDADE E ENVIO INDIVIDUAL
+    // ============================================================
+
+    private void BuildAttackBar()
+    {
+        attackBar = CreateNeutralPanel("AttackContextBar", new Vector2(0.5f, 0f),
+            new Vector2(0.5f, 0f), new Vector2(0f, 22f), new Vector2(560f, 72f));
+        HorizontalLayoutGroup row = attackBar.gameObject.AddComponent<HorizontalLayoutGroup>();
+        row.padding = new RectOffset(10, 10, 10, 10); row.spacing = 8f;
+        row.childControlWidth = true; row.childForceExpandWidth = true;
+        decreaseAttackButton = CreateButton(attackBar, "-", () => commands?.DiminuirQuantidadeAcao());
+        attackAmountText = WDUIFactory.Text("AttackAmount", attackBar, theme, theme.TypeNumber,
+            theme.TextoPrincipal, TextAlignmentOptions.Center);
+        attackAmountText.gameObject.AddComponent<LayoutElement>().preferredWidth = 190f;
+        increaseAttackButton = CreateButton(attackBar, "+", () => commands?.AumentarQuantidadeAcao());
+        sendAttackButton = CreateButton(attackBar, "SEND", () => commands?.ConfirmarAcao());
+        attackBar.gameObject.SetActive(false);
+    }
+
+    private void PresentAttackBar()
+    {
+        bool visible = state.PodeConfirmarAcao && state.ReforcosDisponiveis == 0 && !string.IsNullOrEmpty(state.DestinoSelecionadoId);
+        attackBar.gameObject.SetActive(visible);
+        if (!visible) return;
+        attackAmountText.text = $"ATAQUE  {state.QuantidadeAcaoSelecionada}";
+        decreaseAttackButton.SetInteractable(state.QuantidadeAcaoSelecionada > 1);
+        increaseAttackButton.SetInteractable(true);
+        sendAttackButton.SetInteractable(true);
+    }
+
+    // ============================================================
+    // 05. DRAWER DE AÇÕES PREPARADAS
+    // ============================================================
+
+    private void BuildActionsDrawer()
+    {
+        actionsDismissLayer = WDUIFactory.Rect("ActionsDismissLayer", transform);
+        Stretch(actionsDismissLayer);
+        Image dismissImage = actionsDismissLayer.gameObject.AddComponent<Image>();
+        dismissImage.color = Color.clear;
+        dismissImage.raycastTarget = true;
+        Button dismissButton = actionsDismissLayer.gameObject.AddComponent<Button>();
+        dismissButton.transition = Selectable.Transition.None;
+        dismissButton.onClick.AddListener(CloseActionsDrawer);
+        actionsDismissLayer.gameObject.SetActive(false);
+
+        actionsDrawer = CreateNeutralPanel("ActionsDrawer", Vector2.zero, new Vector2(0f, 1f),
+            new Vector2(300f, 0f), new Vector2(390f, 0f));
+        CreateText(actionsDrawer, "Title", theme.TypeTitle, theme.TextoPrincipal,
+            new Vector2(18f, -18f), new Vector2(250f, 34f)).text = "AÇÕES";
+        CreateCompactControl(actionsDrawer, "Close", "X", new Vector2(326f, -14f), ToggleActionsDrawer, 48f);
+        actionsContent = WDUIFactory.Rect("Items", actionsDrawer);
+        Stretch(actionsContent, 14f, 14f, 70f, 14f);
+        VerticalLayoutGroup list = actionsContent.gameObject.AddComponent<VerticalLayoutGroup>();
+        list.spacing = 8f; list.childControlHeight = true; list.childForceExpandHeight = false;
+        actionsDrawer.anchoredPosition = new Vector2(-90f, 0f);
+        actionsDrawer.gameObject.SetActive(false);
     }
 
     private void RebuildActions()
     {
         ClearChildren(actionsContent);
+        actionsContentKey = BuildActionsContentKey();
+        foreach (MatchUIReinforcementState reinforcement in state.Distribuicoes)
+        {
+            int id = reinforcement.Id;
+            AddActionItem($"REFORÇO  +{reinforcement.Quantidade}\n{reinforcement.TerritorioId}",
+                () => commands?.RemoverDistribuicaoReforco(id));
+        }
         foreach (MatchUIActionState action in state.Acoes)
         {
-            RectTransform item = WDUIFactory.Rect("Action_" + action.Posicao, actionsContent);
-            Image image = item.gameObject.AddComponent<Image>();
-            image.color = theme.BackgroundPrimary;
-            TextMeshProUGUI text = CreateText(item, "Summary", theme.TypeMicro,
-                theme.TextoPrincipal, new Vector2(8f, -4f), new Vector2(250f, 32f));
-            text.text = $"{action.TipoEsperado}  {action.OrigemId} → {action.DestinoId}  x{action.Quantidade}";
-            Button button = item.gameObject.AddComponent<Button>();
-            button.transition = Selectable.Transition.None;
             int position = action.Posicao;
-            button.onClick.AddListener(() => commands?.RemoverAcao(position));
+            AddActionItem($"{action.TipoEsperado}  x{action.Quantidade}\n{action.OrigemId} > {action.DestinoId}",
+                () => commands?.RemoverAcao(position));
         }
-        if (state.Acoes.Count == 0)
+        if (state.Transferencia != null)
+            AddActionItem($"TRANSFERÊNCIA\n{state.Transferencia.TerritorioId}", () => commands?.RemoverTransferencia());
+        if (actionsContent.childCount == 0)
         {
-            TextMeshProUGUI empty = WDUIFactory.Text(
-                "NoActions", actionsContent, theme, theme.TypeMicro,
+            TextMeshProUGUI empty = WDUIFactory.Text("Empty", actionsContent, theme, theme.TypeBody,
                 theme.TextoSecundario, TextAlignmentOptions.Center);
-            empty.text = "NENHUMA AÇÃO PREPARADA";
+            empty.text = "Nenhuma ação preparada";
+            empty.gameObject.AddComponent<LayoutElement>().preferredHeight = 54f;
         }
     }
 
-    // ============================================================
-    // 05. COMANDOS E FEEDBACK SEM REGRA DE GAMEPLAY
-    // ============================================================
-
-    private void AddReinforcement()
+    private string BuildActionsContentKey()
     {
-        if (state != null && !string.IsNullOrEmpty(state.OrigemSelecionadaId))
-            commands?.AdicionarReforco(state.OrigemSelecionadaId, 1);
+        if (state == null) return string.Empty;
+        string key = $"{state.Distribuicoes.Count}|{state.Acoes.Count}|{state.Transferencia?.TerritorioId}";
+        foreach (MatchUIReinforcementState item in state.Distribuicoes)
+            key += $"|R:{item.Id}:{item.Quantidade}:{item.TerritorioId}";
+        foreach (MatchUIActionState item in state.Acoes)
+            key += $"|A:{item.Posicao}:{item.Quantidade}:{item.OrigemId}:{item.DestinoId}";
+        return key;
     }
 
-    private void ToggleSend()
+    private void AddActionItem(string summary, UnityEngine.Events.UnityAction remove)
+    {
+        RectTransform item = WDUIFactory.Rect("Action", actionsContent);
+        item.gameObject.AddComponent<LayoutElement>().preferredHeight = 64f;
+        Image background = item.gameObject.AddComponent<Image>();
+        background.color = new Color(0.025f, 0.025f, 0.03f, 0.96f);
+        TextMeshProUGUI text = CreateText(item, "Summary", theme.TypeMicro, theme.TextoPrincipal,
+            new Vector2(10f, -8f), new Vector2(230f, 48f));
+        text.text = summary; text.textWrappingMode = TextWrappingModes.Normal;
+        CreateMiniButton(item, "X", new Vector2(-42f, -10f), theme.Danger, remove);
+    }
+
+    // ============================================================
+    // 06. JOGADORES E INTERAÇÕES CONTEXTUAIS
+    // ============================================================
+
+    private void RebuildPlayers(string contentKey)
+    {
+        ClearChildren(playersContent);
+        playersContentKey = contentKey;
+        foreach (MatchUIPlayerState player in state.Jogadores)
+        {
+            RectTransform item = WDUIFactory.Rect("Player_" + player.Jogador, playersContent);
+            item.gameObject.AddComponent<LayoutElement>().preferredHeight = 82f;
+            Image background = item.gameObject.AddComponent<Image>();
+            background.color = new Color(0.02f, 0.02f, 0.025f, 0.96f);
+            Image marker = WDUIFactory.Rect("Color", item).gameObject.AddComponent<Image>();
+            marker.color = player.Cor; marker.raycastTarget = false;
+            RectTransform markerRect = marker.rectTransform;
+            markerRect.anchorMin = new Vector2(0f, 0f); markerRect.anchorMax = new Vector2(0f, 1f);
+            markerRect.sizeDelta = new Vector2(7f, 0f); markerRect.anchoredPosition = new Vector2(3.5f, 0f);
+            TextMeshProUGUI name = CreateText(item, "Name", theme.TypeBody, theme.TextoPrincipal,
+                new Vector2(18f, -12f), new Vector2(230f, 24f));
+            name.text = player.Nome + (player.EhJogadorLocal ? "  VOCÊ" : string.Empty);
+            TextMeshProUGUI meta = CreateText(item, "Meta", theme.TypeMicro, theme.TextoSecundario,
+                new Vector2(18f, -46f), new Vector2(230f, 20f));
+            meta.text = state.UsaEquipes
+                ? $"{player.Equipe}  |  {player.TerritoriosControlados} TERR."
+                : $"{player.TerritoriosControlados} TERRITÓRIOS";
+            if (player.EhJogadorLocal ||
+                state.UsaEquipes && EquipesJogadores.SaoAliados(state.JogadorLocal, player.Jogador))
+            {
+                Button button = item.gameObject.AddComponent<Button>();
+                button.transition = Selectable.Transition.None;
+                button.targetGraphic = background;
+                background.raycastTarget = true;
+                if (player.EhJogadorLocal) button.onClick.AddListener(ShowEmojiDrawer);
+                else button.onClick.AddListener(ShowTacticalPopup);
+            }
+        }
+    }
+
+    private string BuildPlayersContentKey()
+    {
+        if (state == null)
+            return string.Empty;
+
+        string key = state.JogadorLocal + "|" + state.UsaEquipes;
+        foreach (MatchUIPlayerState player in state.Jogadores)
+        {
+            key += $"|{player.Jogador}:{player.Nome}:{player.Equipe}:" +
+                $"{player.TerritoriosControlados}:{player.EhJogadorLocal}:{player.Cor}";
+        }
+        return key;
+    }
+
+    // ============================================================
+    // 07. POPUPS LOCAIS PROVISÓRIOS
+    // ============================================================
+
+    private void ShowChatPopup() => ShowPopup("CHAT / MENSAGENS",
+        "TIME   CLÃ\n\nHistórico local provisório\n\n[ campo de mensagem ]   ENVIAR\n\nEMOJIS   |   SUPORTE");
+    private void ShowMatchSettings() => ShowPopup("CONFIGURAÇÕES DA PARTIDA",
+        "CONFIGURAÇÕES\n\nMANUAL", "ABANDONAR PARTIDA", WDMatchSetupContext.ExitToHome);
+    private void ShowEmojiDrawer() => ShowPopup("EMOJIS RÁPIDOS",
+        "Envio social local provisório.", "ENVIAR  :) ", SendLocalTestEmoji);
+    private void ShowTacticalPopup() => ShowPopup("COMUNICAÇÃO TÁTICA",
+        "Selecione um comando local provisório.", "ATACAR   DEFENDER   TRANSFERIR", ClosePopup);
+
+    private void ShowMatchInfo()
+    {
+        string body = $"ROUND {state?.Round ?? 0}\n\n";
+        if (state != null)
+            foreach (MatchUIPlayerState player in state.Jogadores)
+            {
+                int totalTroops = 0;
+                foreach (MatchUITerritoryState territory in state.Territorios)
+                    if (territory.Proprietario == player.Jogador)
+                        totalTroops += territory.Tropas;
+                string team = state.UsaEquipes ? $"  |  {player.Equipe}" : string.Empty;
+                body += $"{player.Nome}{team}\nMapa {player.TerritoriosControlados}   " +
+                    $"Tropas {totalTroops}   Disponíveis {(player.EhJogadorLocal ? state.ReforcosDisponiveis : 0)}   " +
+                    $"Energia {EnergiaMock}\nDeck: {(player.EhJogadorLocal ? "ATUAL" : "OCULTO")}\n\n";
+            }
+        ShowPopup("INFORMAÇÕES DA PARTIDA", body);
+    }
+
+    private void ShowPopup(string title, string body, string actionLabel = null, UnityEngine.Events.UnityAction action = null)
+    {
+        ClearChildren(popupLayer); popupLayer.gameObject.SetActive(true);
+        Image blocker = popupLayer.gameObject.GetComponent<Image>() ?? popupLayer.gameObject.AddComponent<Image>();
+        blocker.color = new Color(0f, 0f, 0f, 0.66f); blocker.raycastTarget = true;
+        RectTransform panel = CreateNeutralPanel("Popup", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+            Vector2.zero, new Vector2(620f, 560f), popupLayer);
+        CreateText(panel, "Title", theme.TypeTitle, theme.TextoPrincipal,
+            new Vector2(24f, -24f), new Vector2(520f, 42f)).text = title;
+        CreateMiniButton(panel, "X", new Vector2(-54f, -20f), theme.Danger, ClosePopup);
+        TextMeshProUGUI bodyText = CreateText(panel, "Body", theme.TypeBody, theme.TextoSecundario,
+            new Vector2(24f, -90f), new Vector2(572f, 380f));
+        bodyText.text = body; bodyText.textWrappingMode = TextWrappingModes.Normal;
+        if (!string.IsNullOrEmpty(actionLabel))
+        {
+            RectTransform actionRect = WDUIFactory.Rect("PopupAction", panel);
+            actionRect.anchorMin = actionRect.anchorMax = new Vector2(0.5f, 0f);
+            actionRect.pivot = new Vector2(0.5f, 0f); actionRect.anchoredPosition = new Vector2(0f, 24f);
+            actionRect.sizeDelta = new Vector2(300f, 52f);
+            actionRect.gameObject.AddComponent<WDUIPremiumButton>().Build(theme, actionLabel, action);
+        }
+    }
+
+    private void ClosePopup() => popupLayer.gameObject.SetActive(false);
+
+    // ============================================================
+    // 08. FILTRO LOCAL DE RECEPÇÃO DE EMOJIS SOCIAIS
+    // ============================================================
+
+    public bool TryShowSocialEmoji(string emoji, WDSocialEmojiSource source)
+    {
+        if (hideSocialEmojis || string.IsNullOrWhiteSpace(emoji))
+            return false;
+
+        if (emojiToastAnimation != null)
+            StopCoroutine(emojiToastAnimation);
+
+        socialEmojiToast.text = source == WDSocialEmojiSource.Spectator
+            ? $"ESPECTADOR  {emoji}"
+            : emoji;
+        socialEmojiToast.gameObject.SetActive(true);
+        emojiToastAnimation = StartCoroutine(HideSocialEmojiToast());
+        return true;
+    }
+
+    private void ToggleSocialEmojiFilter()
+    {
+        hideSocialEmojis = !hideSocialEmojis;
+        PresentSocialEmojiFilter();
+    }
+
+    private void PresentSocialEmojiFilter()
+    {
+        if (socialEmojiFilterButton == null)
+            return;
+
+        socialEmojiFilterButton.SetSelected(hideSocialEmojis);
+        socialEmojiFilterButton.SetLabel(hideSocialEmojis ? "X EMOJI" : "EMOJI");
+    }
+
+    private void SendLocalTestEmoji()
+    {
+        ClosePopup();
+        TryShowSocialEmoji(":)", WDSocialEmojiSource.Player);
+    }
+
+    private void BuildSocialEmojiToast()
+    {
+        socialEmojiToast = WDUIFactory.Text(
+            "SocialEmojiToast", transform, theme, theme.TypeTitle,
+            theme.TextoPrincipal, TextAlignmentOptions.Center);
+        RectTransform rect = socialEmojiToast.rectTransform;
+        rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.82f);
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.sizeDelta = new Vector2(320f, 72f);
+        socialEmojiToast.gameObject.SetActive(false);
+    }
+
+    private IEnumerator HideSocialEmojiToast()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        socialEmojiToast.gameObject.SetActive(false);
+        emojiToastAnimation = null;
+    }
+
+    // ============================================================
+    // 09. COMANDOS LOCAIS E AUTORITATIVOS
+    // ============================================================
+
+    private void ToggleCard(int slot) { selectedCard = selectedCard == slot ? -1 : slot; PresentDeck(); }
+    private void ToggleTransfer()
     {
         if (state == null) return;
-        if (state.AcoesEnviadas) commands?.CancelarEnvio();
-        else commands?.EnviarAcoes();
+        if (state.EmModoTransferencia) commands?.SelecionarModoAcao();
+        else commands?.SelecionarModoTransferencia();
+    }
+    private void ToggleActionsDrawer()
+    {
+        actionsOpen = !actionsOpen;
+        if (drawerAnimation != null) StopCoroutine(drawerAnimation);
+        if (actionsOpen && state != null) RebuildActions();
+        drawerAnimation = StartCoroutine(AnimateActionsDrawer(actionsOpen));
     }
 
-    private void PresentFeedback(MatchUIFeedbackState feedback)
+    private void CloseActionsDrawer()
     {
-        feedbackText.text = feedback.Mensagem;
-        feedbackText.color = feedback.Tipo switch
+        if (!actionsOpen)
+            return;
+
+        actionsOpen = false;
+        if (drawerAnimation != null)
+            StopCoroutine(drawerAnimation);
+        drawerAnimation = StartCoroutine(AnimateActionsDrawer(false));
+    }
+
+    private void CloseActionsDrawerImmediately()
+    {
+        if (!actionsOpen && !actionsDrawer.gameObject.activeSelf) return;
+        if (drawerAnimation != null)
         {
-            MatchUIFeedbackKind.Sucesso => theme.Success,
-            MatchUIFeedbackKind.Aviso => theme.Warning,
-            MatchUIFeedbackKind.Erro => theme.Danger,
-            _ => theme.TextoPrincipal
-        };
-        feedbackText.transform.parent.gameObject.SetActive(
-            !string.IsNullOrWhiteSpace(feedback.Mensagem));
+            StopCoroutine(drawerAnimation);
+            drawerAnimation = null;
+        }
+        actionsOpen = false;
+        actionsDismissLayer.gameObject.SetActive(false);
+        actionsDrawer.anchoredPosition = new Vector2(-90f, 0f);
+        actionsDrawer.gameObject.SetActive(false);
     }
 
-    private static string BuildSelectionText(MatchUIState current)
+    private IEnumerator AnimateActionsDrawer(bool opening)
     {
-        if (!string.IsNullOrEmpty(current.DestinoSelecionadoId))
-            return $"{current.TipoAcaoEsperado}: {current.OrigemSelecionadaId} → " +
-                $"{current.DestinoSelecionadoId}  x{current.QuantidadeAcaoSelecionada}";
-        if (!string.IsNullOrEmpty(current.OrigemSelecionadaId))
-            return $"ORIGEM: {current.OrigemSelecionadaId}";
-        if (!string.IsNullOrEmpty(current.TerritorioTransferenciaId))
-            return $"TRANSFERIR CONTROLE: {current.TerritorioTransferenciaId}";
-        return "SELECIONE UM TERRITÓRIO NO MAPA";
+        actionsDismissLayer.gameObject.SetActive(opening || actionsOpen);
+        actionsDrawer.gameObject.SetActive(true);
+        float start = actionsDrawer.anchoredPosition.x;
+        float target = opening ? 300f : -90f;
+        float elapsed = 0f;
+        const float duration = 0.16f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float progress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+            Vector2 position = actionsDrawer.anchoredPosition;
+            position.x = Mathf.Lerp(start, target, progress);
+            actionsDrawer.anchoredPosition = position;
+            yield return null;
+        }
+        if (!opening)
+        {
+            actionsDrawer.gameObject.SetActive(false);
+            actionsDismissLayer.gameObject.SetActive(false);
+        }
+        drawerAnimation = null;
+    }
+    private void FinishRound()
+    {
+        if (state == null) return;
+        if (state.AcoesEnviadas) commands?.CancelarEnvio(); else commands?.EnviarAcoes();
     }
 
     // ============================================================
-    // 06. UTILITÁRIOS DE LAYOUT
+    // 10. FÁBRICA VISUAL PROVISÓRIA
     // ============================================================
 
-    private RectTransform CreatePanel(
-        string name, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size)
+    private TextMeshProUGUI CreateIndicator(Transform parent, string label, string icon)
     {
-        RectTransform rect = WDUIFactory.Rect(name, transform);
-        rect.anchorMin = rect.anchorMax = anchor;
-        rect.pivot = pivot;
-        rect.anchoredPosition = position;
-        rect.sizeDelta = size;
-        rect.gameObject.AddComponent<WDUIPanel>().Build(theme, true);
-        return rect;
+        RectTransform rect = WDUIFactory.Rect(label, parent);
+        Image background = rect.gameObject.AddComponent<Image>();
+        background.color = new Color(0.025f, 0.025f, 0.03f, 0.95f);
+        TextMeshProUGUI text = WDUIFactory.Text("Value", rect, theme, theme.TypeMicro,
+            theme.TextoPrincipal, TextAlignmentOptions.Center);
+        Stretch(text.rectTransform); text.text = icon + "\n0"; return text;
     }
 
-    private TextMeshProUGUI CreateText(
-        Transform parent, string name, float size, Color color,
-        Vector2 position, Vector2 dimensions)
+    private WDUIPremiumButton CreateCompactControl(Transform parent, string name, string label,
+        Vector2 position, UnityEngine.Events.UnityAction action, float width = 268f)
     {
-        TextMeshProUGUI text = WDUIFactory.Text(name, parent, theme, size, color);
-        RectTransform rect = text.rectTransform;
-        rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);
-        rect.pivot = new Vector2(0f, 1f);
-        rect.anchoredPosition = position;
-        rect.sizeDelta = dimensions;
-        return text;
+        RectTransform rect = WDUIFactory.Rect(name, parent);
+        rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f); rect.pivot = new Vector2(0f, 1f);
+        rect.anchoredPosition = position; rect.sizeDelta = new Vector2(width, 46f);
+        WDUIPremiumButton button = rect.gameObject.AddComponent<WDUIPremiumButton>();
+        button.Build(theme, label, action); return button;
+    }
+
+    private void CreateMiniButton(Transform parent, string label, Vector2 position,
+        Color color, UnityEngine.Events.UnityAction action)
+    {
+        RectTransform rect = WDUIFactory.Rect(label, parent);
+        rect.anchorMin = rect.anchorMax = new Vector2(1f, 1f); rect.pivot = new Vector2(1f, 1f);
+        rect.anchoredPosition = position; rect.sizeDelta = new Vector2(label == "X" ? 36f : 78f, 36f);
+        WDUIPremiumButton button = rect.gameObject.AddComponent<WDUIPremiumButton>();
+        button.Build(theme, label, action);
+        button.SetPersistentColors(color, Color.Lerp(color, Color.white, 0.16f));
     }
 
     private WDUIPremiumButton CreateButton(Transform parent, string label, UnityEngine.Events.UnityAction action)
     {
-        RectTransform rect = WDUIFactory.Rect(label, parent);
+        RectTransform rect = WDUIFactory.Rect(label.Replace("\n", "_"), parent);
         WDUIPremiumButton button = rect.gameObject.AddComponent<WDUIPremiumButton>();
-        button.Build(theme, label, action);
-        return button;
+        button.Build(theme, label, action); return button;
     }
 
-    private static void SetStretch(RectTransform rect, float left, float right, float top, float bottom)
+    private RectTransform CreateNeutralPanel(string name, Vector2 anchorMin, Vector2 anchorMax,
+        Vector2 position, Vector2 size, Transform parent = null)
     {
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = new Vector2(left, bottom);
-        rect.offsetMax = new Vector2(-right, -top);
+        RectTransform rect = WDUIFactory.Rect(name, parent ?? transform);
+        rect.anchorMin = anchorMin; rect.anchorMax = anchorMax;
+        rect.pivot = new Vector2(anchorMin.x, anchorMax.y); rect.anchoredPosition = position; rect.sizeDelta = size;
+        Image image = rect.gameObject.AddComponent<Image>();
+        image.color = new Color(0.006f, 0.006f, 0.009f, 0.95f); image.raycastTarget = false;
+        return rect;
+    }
+
+    private TextMeshProUGUI CreateText(Transform parent, string name, float size, Color color,
+        Vector2 position, Vector2 dimensions)
+    {
+        TextMeshProUGUI text = WDUIFactory.Text(name, parent, theme, size, color);
+        RectTransform rect = text.rectTransform;
+        rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f); rect.pivot = new Vector2(0f, 1f);
+        rect.anchoredPosition = position; rect.sizeDelta = dimensions; return text;
+    }
+
+    private static void AnchorTop(RectTransform rect, float x, float y, float width, float height)
+    {
+        rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f); rect.pivot = new Vector2(0f, 1f);
+        rect.anchoredPosition = new Vector2(x, -y); rect.sizeDelta = new Vector2(width, height);
+    }
+
+    private static void Stretch(RectTransform rect, float left = 0f, float right = 0f,
+        float top = 0f, float bottom = 0f)
+    {
+        rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one;
+        rect.offsetMin = new Vector2(left, bottom); rect.offsetMax = new Vector2(-right, -top);
     }
 
     private static void ClearChildren(Transform parent)
     {
-        for (int index = parent.childCount - 1; index >= 0; index--)
-            Destroy(parent.GetChild(index).gameObject);
+        for (int i = parent.childCount - 1; i >= 0; i--) Destroy(parent.GetChild(i).gameObject);
     }
+}
+
+// ============================================================
+// 11. ORIGENS FUTURAS COMPATÍVEIS DO EMOJI SOCIAL
+// ============================================================
+
+public enum WDSocialEmojiSource
+{
+    Player,
+    Spectator
 }

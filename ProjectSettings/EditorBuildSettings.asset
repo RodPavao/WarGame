@@ -6,7 +6,22 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Home.unity
+    guid: e0acdb84f56340349be8ef573fbb04c1
+  - enabled: 1
     path: Assets/WarGame.unity
     guid: 6cbfd99a172aaa346bd82db9c96bcf08
+  - enabled: 1
+    path: Assets/Mapas/Pearl Harbor/PearlHarbor.unity
+    guid: 2429d1e7f7723dd4a828fce2228525ec
+  - enabled: 1
+    path: Assets/Mapas/Batalha do Riachuelo/Riachuelo.unity
+    guid: 369fd9dcf27722543a7bdc9b9c939851
+  - enabled: 1
+    path: Assets/Mapas/Dark World/DarkWorld.unity
+    guid: eb75e339d9958964fb5a949cb8322ccc
+  - enabled: 1
+    path: Assets/Mapas/Peloponeso/Peloponeso.unity
+    guid: 093f12f9aa25ec74aa634f0d9bf74a2f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

@@ -367,6 +367,24 @@ Quando houver somente um mapa elegível com peso positivo, a votação apresenta
 
 No teste local, apenas o voto do jogador atual é fornecido. A API aceita votos identificados de múltiplos jogadores para futura integração de rede, mas não inventa participantes online.
 
+### [DEFINITIVO] Match Setup e partida pronta
+
+Ao concluir o pré-jogo, um único contrato independente da UI reúne modo, submodo, mapa e cena selecionados, participantes, equipes, slots, cores, skins, decks, regra de cartas, limite de rounds, morte súbita e seed determinística futura. Esse contrato sobrevive à troca de cena e fica disponível ao bootstrap da partida sem duplicar o estado na interface.
+
+- Cor e skin são preferências do perfil usadas ao entrar na partida.
+- Conflitos de cor são resolvidos somente na cor efetiva daquela partida; a preferência salva no perfil nunca é alterada.
+- Cada perfil possui três slots de deck, cada um com oito slots principais, e exatamente um deck padrão.
+- Em modos com votação, os mesmos 15 segundos também permitem selecionar um dos três decks. A última seleção válida vale apenas para aquela partida e não altera o deck padrão.
+- FFA não possui votação nem tela de troca de deck: utiliza Classic e o deck padrão automaticamente.
+- O limite normal é de 10 rounds. Empate ao final desse limite inicia morte súbita, exceto em modos cuja configuração a desabilita.
+- FFA não possui morte súbita.
+- Battle Royale possui cinco rounds.
+- Random Cards e Deckbuilder são identificados pela regra do submodo no Match Setup, sem antecipar seus sistemas de cartas.
+
+### [PROVISÓRIO] Dados locais de partida pronta
+
+A Passada 1 cria participantes remotos anônimos apenas no contrato interno necessário para validar slots e equipes. Nenhuma identidade adversária é mostrada no pré-jogo. O botão provisório PARTIDA PRONTA carrega a cena registrada nos metadados da definição do mapa; rede, servidor e bootstrap completo do GameManager permanecem fora desta etapa.
+
 ### [DEFINITIVO] Contrato unificado de matchmaking
 
 O matchmaking futuro será um serviço unificado e parametrizado, não uma arquitetura independente para cada modo. Seu contrato pode receber:
@@ -414,6 +432,8 @@ O bot não pode trapacear. Só pode reagir a informações que um jogador legít
 Pode existir um sistema de dois slots externos ao deck. Durante uma partida, o jogador poderia usar uma única vez uma das duas cartas externas, trocando-a por uma carta do deck.
 
 Inicialmente, seriam consideradas elegíveis apenas cartas comuns. Um sistema futuro de raridades/grupos poderá incluir cartas comuns, especiais, lendárias e outras categorias futuras.
+
+O sistema completo de cartas, o sorteio real de Random Cards, o fluxo real de Deckbuilder e os dois slots externos de cartas de uso único permanecem futuros e não fazem parte do Match Setup funcional desta passada.
 
 ## 9. HUD de partida
 

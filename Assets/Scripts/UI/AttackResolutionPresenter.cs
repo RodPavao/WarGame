@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 [DisallowMultipleComponent]
 public sealed class AttackResolutionPresenter : MonoBehaviour,
@@ -49,75 +47,40 @@ public sealed class AttackResolutionPresenter : MonoBehaviour,
         Color playerColor = context.GetPlayerColor(visualEvent.Player);
         RectTransform root = ResolutionVisualMapUtility.CreateRoot(
             "AttackResolution", context.Overlay);
-        Image route = ResolutionVisualMapUtility.CreateImage(
-            "Route", root, playerColor, 0.28f);
-        Image originPulse = ResolutionVisualMapUtility.CreateImage(
-            "OriginPulse", root, playerColor, 0.35f);
-        Image destinationPulse = ResolutionVisualMapUtility.CreateImage(
-            "DestinationPulse", root, playerColor, 0.28f);
-        RectTransform attacker = CreateAttacker(root, playerColor, visualEvent.Amount);
-        Image impact = ResolutionVisualMapUtility.CreateImage(
-            "Impact", root, playerColor, 0f);
-        TextMeshProUGUI result = CreateResult(root, playerColor);
-
-        ResolutionVisualMapUtility.LayoutLine(
-            (RectTransform)route.transform, originPosition, destinationPosition,
-            theme.AttackRouteThickness);
-        ConfigurePulse((RectTransform)originPulse.transform, originPosition);
-        ConfigurePulse((RectTransform)destinationPulse.transform, destinationPosition);
-        attacker.anchoredPosition = originPosition;
-        RectTransform impactRect = (RectTransform)impact.transform;
-        impactRect.anchoredPosition = destinationPosition;
-        impactRect.sizeDelta = Vector2.one * theme.AttackPulseSize;
-        result.rectTransform.anchoredPosition =
-            destinationPosition + Vector2.up * theme.AttackResultOffset;
-
+        PreparedActionArrowView route = root.gameObject.AddComponent<PreparedActionArrowView>();
+        route.Build(theme);
+        route.SetColorAndAmount(playerColor, 0);
+        route.SetPlanning(false);
+        GameObject attacker = CreateCounterCopy(origin, visualEvent.OriginBefore, visualEvent.Player);
+        route.SetGeometry(originPosition, destinationPosition);
+        Vector3 originWorld = GetCounterWorldPosition(origin);
+        Vector3 destinationWorld = GetCounterWorldPosition(destination);
+        Vector3 controlWorld = CreateWorldControl(originWorld, destinationWorld);
+        attacker.transform.position = originWorld;
+        origin.DestacarReforco();
         float elapsed = 0f;
         while (elapsed < theme.AttackTravelDuration)
         {
             elapsed += context.PlaybackDeltaTime;
             float progress = Mathf.Clamp01(elapsed / theme.AttackTravelDuration);
             float smooth = progress * progress * (3f - 2f * progress);
-            attacker.anchoredPosition = Vector2.Lerp(originPosition, destinationPosition, smooth);
-            float pulse = (Mathf.Sin(progress * Mathf.PI * 4f) + 1f) * 0.5f;
-            originPulse.transform.localScale = Vector3.one * Mathf.Lerp(0.85f, 1.12f, pulse);
+            attacker.transform.position = Bezier(
+                originWorld, controlWorld, destinationWorld, smooth);
             yield return null;
         }
 
-        attacker.gameObject.SetActive(false);
-        yield return AnimateImpact(impact, context);
+        Destroy(attacker);
         ApplyFinalVisualState(visualEvent);
-
-        result.text = visualEvent.Conquered
-            ? $"CONQUISTA  •  {visualEvent.DestinationAfter}"
-            : $"DEFESA  •  {visualEvent.DestinationAfter}";
-        result.alpha = 1f;
+        destination.DestacarReforco();
+        yield return context.Wait(theme.AttackImpactDuration);
         yield return context.Wait(theme.AttackResultDuration);
 
         Destroy(root.gameObject);
     }
 
     // ============================================================
-    // 04. IMPACTO E RESULTADO PROVISÓRIOS
+    // 04. APLICAÇÃO DO RESULTADO AUTORITATIVO
     // ============================================================
-
-    private IEnumerator AnimateImpact(
-        Image impact,
-        ResolutionVisualPresentationContext context)
-    {
-        RectTransform rect = (RectTransform)impact.transform;
-        float elapsed = 0f;
-        while (elapsed < theme.AttackImpactDuration)
-        {
-            elapsed += context.PlaybackDeltaTime;
-            float progress = Mathf.Clamp01(elapsed / theme.AttackImpactDuration);
-            rect.localScale = Vector3.one * Mathf.Lerp(0.35f, 1.65f, progress);
-            Color color = impact.color;
-            color.a = Mathf.Sin(progress * Mathf.PI) * theme.AttackImpactIntensity;
-            impact.color = color;
-            yield return null;
-        }
-    }
 
     private static void ApplyFinalVisualState(ResolutionVisualEvent visualEvent)
     {
@@ -135,50 +98,46 @@ public sealed class AttackResolutionPresenter : MonoBehaviour,
     // 05. ELEMENTOS ESPECÍFICOS DO ATAQUE
     // ============================================================
 
-    private RectTransform CreateAttacker(
-        Transform parent,
-        Color color,
-        int amount)
+    private static GameObject CreateCounterCopy(
+        TerritorioClique origin,
+        int amount,
+        TerritorioClique.Dono owner)
     {
-        Image image = ResolutionVisualMapUtility.CreateImage(
-            "Attacker", parent, color, 0.95f);
-        RectTransform rect = (RectTransform)image.transform;
-        rect.sizeDelta = Vector2.one * theme.AttackIndicatorSize;
-        rect.localEulerAngles = new Vector3(0f, 0f, 45f);
+        ContadorTropas source = origin.GetComponentInChildren<ContadorTropas>(true);
+        if (source == null)
+            return new GameObject("AnimatedCounterCopy");
 
-        var textObject = new GameObject("Amount", typeof(RectTransform), typeof(TextMeshProUGUI));
-        RectTransform textRect = textObject.GetComponent<RectTransform>();
-        textRect.SetParent(rect, false);
-        textRect.anchorMin = Vector2.zero;
-        textRect.anchorMax = Vector2.one;
-        textRect.offsetMin = textRect.offsetMax = Vector2.zero;
-        textRect.localEulerAngles = new Vector3(0f, 0f, -45f);
-        TextMeshProUGUI text = textObject.GetComponent<TextMeshProUGUI>();
-        text.font = theme.FonteInterface;
-        text.fontSize = theme.AttackIndicatorTextSize;
-        text.fontStyle = FontStyles.Bold;
-        text.alignment = TextAlignmentOptions.Center;
-        text.color = Color.white;
-        text.text = amount.ToString();
-        text.raycastTarget = false;
-        return rect;
+        GameObject copy = Instantiate(source.gameObject);
+        copy.name = "AnimatedCounterCopy";
+        copy.transform.SetParent(null, true);
+        foreach (Collider2D collider in copy.GetComponentsInChildren<Collider2D>(true))
+            collider.enabled = false;
+        foreach (Renderer renderer in copy.GetComponentsInChildren<Renderer>(true))
+            renderer.sortingOrder += 100;
+        ContadorTropas controller = copy.GetComponent<ContadorTropas>();
+        controller.AtualizarVisual(amount, owner);
+        controller.enabled = false;
+        return copy;
     }
 
-    private TextMeshProUGUI CreateResult(Transform parent, Color color)
+    private static Vector3 GetCounterWorldPosition(TerritorioClique territory)
     {
-        TextMeshProUGUI text = ResolutionVisualMapUtility.CreateText(
-            "Result", parent, theme.FonteInterface,
-            theme.AttackResultTextSize, color);
-        RectTransform rect = text.rectTransform;
-        rect.sizeDelta = new Vector2(260f, 38f);
-        text.alpha = 0f;
-        return text;
+        ContadorTropas counter = territory.GetComponentInChildren<ContadorTropas>(true);
+        return counter != null ? counter.transform.position : territory.transform.position;
     }
 
-    private void ConfigurePulse(RectTransform rect, Vector2 position)
+    private Vector3 CreateWorldControl(Vector3 origin, Vector3 destination)
     {
-        rect.anchoredPosition = position;
-        rect.sizeDelta = Vector2.one * theme.AttackPulseSize;
-        rect.localEulerAngles = new Vector3(0f, 0f, 45f);
+        Vector3 delta = destination - origin;
+        Vector3 normal = new Vector3(-delta.y, delta.x, 0f).normalized;
+        return (origin + destination) * 0.5f + normal * Mathf.Min(
+            theme.AttackMaxCurveHeight,
+            delta.magnitude * theme.AttackCurveFactor);
+    }
+
+    private static Vector3 Bezier(Vector3 start, Vector3 control, Vector3 end, float t)
+    {
+        float inverse = 1f - t;
+        return inverse * inverse * start + 2f * inverse * t * control + t * t * end;
     }
 }

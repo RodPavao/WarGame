@@ -282,4 +282,12 @@ public class TerritorioClique : MonoBehaviour
                 .RemoverDestaqueSelecao();
         }
     }
+
+    public void DestacarReforco()
+    {
+        if (territorioVisual == null)
+            territorioVisual = GetComponent<TerritorioVisual>();
+
+        territorioVisual?.DestacarReforcoBreve();
+    }
 }

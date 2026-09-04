@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     // 1. SELEÇÃO E JOGADOR LOCAL
     // =====================================================
 
+    public WDMatchSetup MatchSetupAtual => WDMatchSetupContext.Current;
+
     public TerritorioClique territorioSelecionado;
     public TerritorioClique territorioDestinoSelecionado;
 
@@ -164,6 +166,26 @@ public class GameManager : MonoBehaviour
 
     public bool LimiteTransferenciaAtingido =>
         TransferenciaPreparada != null;
+
+    public bool TransferenciaDisponivelParaJogadorLocal =>
+        ObterDestinatariosTransferencia().Count > 0;
+
+    public bool MatchSetupUsaEquipes
+    {
+        get
+        {
+            WDMatchSetup setup = MatchSetupAtual;
+            if (setup == null)
+                return true;
+
+            for (int i = 0; i < setup.Participants.Count; i++)
+                for (int j = i + 1; j < setup.Participants.Count; j++)
+                    if (setup.Participants[i].TeamIndex == setup.Participants[j].TeamIndex)
+                        return true;
+
+            return false;
+        }
+    }
 
     public bool PossuiPreparacaoParaEnviar =>
         QuantidadeOrdensPreparadas > 0 ||
@@ -452,6 +474,14 @@ public class GameManager : MonoBehaviour
         if (!PodeEditarPreparacao)
             return;
 
+        if (!TransferenciaDisponivelParaJogadorLocal)
+        {
+            feedbackTransferencia = "Transferência indisponível: não há aliado nesta partida.";
+            modoAcao = ModoAcao.AcaoTerrestre;
+            CancelarSelecaoTransferencia();
+            return;
+        }
+
         if (LimiteTransferenciaAtingido)
         {
             feedbackTransferencia = "Limite de 1 transferência atingido.";
@@ -535,6 +565,9 @@ public class GameManager : MonoBehaviour
 
         if (modoAcao !=
             ModoAcao.AcaoTerrestre)
+            return;
+
+        if (reforcosDisponiveis > 0)
             return;
 
         if (LimiteAcoesAtingido)
@@ -688,6 +721,9 @@ public class GameManager : MonoBehaviour
         if (!PodeEditarPreparacao)
             return;
 
+        if (reforcosDisponiveis > 0)
+            return;
+
         if (territorioSelecionado == null ||
             territorioDestinoSelecionado == null)
             return;
@@ -785,7 +821,16 @@ public class GameManager : MonoBehaviour
         }
 
         territorioTransferenciaSelecionado = territorio;
-        feedbackTransferencia = "Agora selecione o slot do seu aliado.";
+        IReadOnlyList<TerritorioClique.Dono> destinatarios =
+            ObterDestinatariosTransferencia();
+
+        if (destinatarios.Count == 1)
+        {
+            TentarPrepararTransferenciaPara(destinatarios[0]);
+            return;
+        }
+
+        feedbackTransferencia = "Selecione o aliado que receberá o território.";
         AtualizarHighlightsPreparacao();
     }
 
@@ -822,6 +867,55 @@ public class GameManager : MonoBehaviour
         return gerenciadorRodada != null
             ? gerenciadorRodada.ObterJogadoresNoTabuleiro()
             : new List<TerritorioClique.Dono>();
+    }
+
+    // =====================================================
+    // 18. DESTINATÁRIOS VÁLIDOS DO MATCH SETUP
+    // =====================================================
+
+    public IReadOnlyList<TerritorioClique.Dono> ObterDestinatariosTransferencia()
+    {
+        var destinatarios = new List<TerritorioClique.Dono>();
+        WDMatchSetup setup = MatchSetupAtual;
+
+        if (setup != null)
+        {
+            WDMatchParticipant local = null;
+            foreach (WDMatchParticipant participante in setup.Participants)
+            {
+                if (participante.Kind == WDMatchParticipantKind.Local)
+                {
+                    local = participante;
+                    break;
+                }
+            }
+
+            if (local == null)
+                return destinatarios;
+
+            foreach (WDMatchParticipant participante in setup.Participants)
+            {
+                if (participante == local || participante.TeamIndex != local.TeamIndex)
+                    continue;
+
+                int valorDono = participante.SlotIndex + 1;
+                if (System.Enum.IsDefined(typeof(TerritorioClique.Dono), valorDono))
+                    destinatarios.Add((TerritorioClique.Dono)valorDono);
+            }
+
+            return destinatarios;
+        }
+
+        foreach (TerritorioClique.Dono jogador in ObterJogadoresTransferencia())
+        {
+            if (jogador != jogadorLocal &&
+                EquipesJogadores.SaoAliados(jogadorLocal, jogador))
+            {
+                destinatarios.Add(jogador);
+            }
+        }
+
+        return destinatarios;
     }
 
     public void RemoverTransferencia()

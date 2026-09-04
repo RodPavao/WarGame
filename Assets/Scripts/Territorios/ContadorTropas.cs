@@ -17,6 +17,7 @@ public class ContadorTropas : MonoBehaviour
 
     private Vector3 escalaOriginal;
     private Coroutine animacaoAtual;
+    private GameObject feedbackReforcoAtual;
 
     // =====================================================
     // 1. TAMANHO VISUAL E ÁREA CLICÁVEL
@@ -585,7 +586,7 @@ public class ContadorTropas : MonoBehaviour
             if (territorio.Tropas >
                 tropasAntes)
             {
-                AnimarAdicao();
+                AnimarAdicao(territorio.Tropas - tropasAntes);
             }
 
             return;
@@ -639,15 +640,17 @@ public class ContadorTropas : MonoBehaviour
 
         Atualizar();
 
-        AnimarAdicao();
+        AnimarAdicao(quantidadeAplicada);
     }
 
     // =====================================================
     // 14. ANIMAÇÃO
     // =====================================================
 
-    private void AnimarAdicao()
+    private void AnimarAdicao(int quantidade = 1)
     {
+        territorio?.DestacarReforco();
+
         if (animacaoAtual != null)
         {
             StopCoroutine(
@@ -655,15 +658,36 @@ public class ContadorTropas : MonoBehaviour
             );
         }
 
+        if (feedbackReforcoAtual != null)
+            Destroy(feedbackReforcoAtual);
+
         animacaoAtual =
             StartCoroutine(
-                AnimacaoAdicao()
+                AnimacaoAdicao(quantidade)
             );
     }
 
-    private IEnumerator AnimacaoAdicao()
+    private IEnumerator AnimacaoAdicao(int quantidade)
     {
-        float duracao = 0.16f;
+        GameObject feedbackObjeto =
+            new GameObject("FeedbackReforco");
+
+        feedbackReforcoAtual = feedbackObjeto;
+
+        feedbackObjeto.transform.SetParent(transform, false);
+        feedbackObjeto.transform.localPosition =
+            new Vector3(0f, 0.35f, -0.1f);
+
+        TextMeshPro feedback =
+            feedbackObjeto.AddComponent<TextMeshPro>();
+
+        feedback.text = "+" + Mathf.Max(1, quantidade);
+        feedback.fontSize = 2.5f;
+        feedback.alignment = TextAlignmentOptions.Center;
+        feedback.color = Color.white;
+        feedback.sortingOrder = 40;
+
+        float duracao = 1.5f;
         float tempo = 0f;
 
         Vector3 escalaMaior =
@@ -688,11 +712,25 @@ public class ContadorTropas : MonoBehaviour
                     curva
                 );
 
+            feedbackObjeto.transform.localPosition =
+                new Vector3(
+                    0f,
+                    Mathf.Lerp(0.35f, 0.95f, progresso),
+                    -0.1f
+                );
+
+            Color corFeedback = feedback.color;
+            corFeedback.a = 1f - progresso;
+            feedback.color = corFeedback;
+
             yield return null;
         }
 
         transform.localScale =
             escalaOriginal;
+
+        Destroy(feedbackObjeto);
+        feedbackReforcoAtual = null;
 
         animacaoAtual = null;
     }

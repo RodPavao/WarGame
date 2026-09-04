@@ -1,4 +1,7 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 [DisallowMultipleComponent]
@@ -29,6 +32,7 @@ public sealed class UICompositionRoot : MonoBehaviour
 
     private void Awake()
     {
+        GarantirSistemaInputUI();
         GarantirEstrutura();
         Inicializar(GetComponent<MatchUIPresenter>());
     }
@@ -41,6 +45,7 @@ public sealed class UICompositionRoot : MonoBehaviour
     public void Inicializar(MatchUIPresenter novoPresenter)
     {
         GarantirEstrutura();
+        matchHUD?.BindCommands(novoPresenter?.Comandos);
 
         if (presenter == novoPresenter)
         {
@@ -67,7 +72,43 @@ public sealed class UICompositionRoot : MonoBehaviour
     }
 
     // ============================================================
-    // 02. CANVAS E HIERARQUIA REUTILIZÁVEL
+    // 02. EVENTSYSTEM ÚNICO PARA A INTERFACE DA PARTIDA
+    // ============================================================
+
+    private static void GarantirSistemaInputUI()
+    {
+        EventSystem[] sistemas = FindObjectsByType<EventSystem>(
+            FindObjectsInactive.Exclude);
+
+        EventSystem principal = EventSystem.current;
+        if (principal == null && sistemas.Length > 0)
+            principal = sistemas[0];
+
+        if (principal == null)
+        {
+            var objeto = new GameObject("EventSystem", typeof(EventSystem));
+            principal = objeto.GetComponent<EventSystem>();
+            objeto.AddComponent<InputSystemUIInputModule>();
+            return;
+        }
+
+        if (principal.GetComponent<BaseInputModule>() == null)
+            principal.gameObject.AddComponent<InputSystemUIInputModule>();
+
+        foreach (EventSystem sistema in sistemas)
+        {
+            if (sistema != null && sistema != principal)
+            {
+                sistema.enabled = false;
+                Debug.LogWarning(
+                    "UI | EventSystem duplicado desativado durante a partida.",
+                    sistema);
+            }
+        }
+    }
+
+    // ============================================================
+    // 03. CANVAS E HIERARQUIA REUTILIZÁVEL
     // ============================================================
 
     private void GarantirEstrutura()
@@ -209,6 +250,8 @@ public sealed class UICompositionRoot : MonoBehaviour
         if (state == null)
             return;
 
+        matchHUD?.BindCommands(presenter?.Comandos);
+
         matchHUD?.Present(state);
 
         bool entrouEmResolucao =
@@ -247,4 +290,84 @@ public sealed class UICompositionRoot : MonoBehaviour
         if (legado != null)
             legado.enabled = !ativo;
     }
+}
+
+public sealed class WDMatchExitView : MonoBehaviour
+{
+    // ============================================================
+    // 06. SAÍDA PROVISÓRIA COM CONFIRMAÇÃO
+    // ============================================================
+
+    private WarDominionUITheme theme;
+    private GameObject confirmation;
+
+    public void Build(WarDominionUITheme newTheme)
+    {
+        theme = newTheme;
+
+        RectTransform exitRect = WDUIFactory.Rect("ExitMatch", transform);
+        exitRect.anchorMin = exitRect.anchorMax = new Vector2(1f, 0f);
+        exitRect.pivot = new Vector2(1f, 0f);
+        exitRect.anchoredPosition = new Vector2(-24f, 24f);
+        exitRect.sizeDelta = new Vector2(170f, 48f);
+        WDUIPremiumButton exit = exitRect.gameObject.AddComponent<WDUIPremiumButton>();
+        exit.Build(theme, "SAIR DA PARTIDA", ShowConfirmation);
+
+        BuildConfirmation();
+    }
+
+    private void BuildConfirmation()
+    {
+        RectTransform blocker = WDUIFactory.Rect("ExitConfirmation", transform);
+        blocker.anchorMin = Vector2.zero;
+        blocker.anchorMax = Vector2.one;
+        blocker.offsetMin = blocker.offsetMax = Vector2.zero;
+        Image blockerImage = blocker.gameObject.AddComponent<Image>();
+        blockerImage.color = new Color(0f, 0f, 0f, 0.82f);
+        blockerImage.raycastTarget = true;
+        confirmation = blocker.gameObject;
+
+        RectTransform panel = WDUIFactory.Rect("Panel", blocker);
+        panel.anchorMin = panel.anchorMax = new Vector2(0.5f, 0.5f);
+        panel.pivot = new Vector2(0.5f, 0.5f);
+        panel.sizeDelta = new Vector2(480f, 220f);
+        panel.gameObject.AddComponent<WDUIPanel>().Build(theme, true);
+
+        TextMeshProUGUI title = WDUIFactory.Text(
+            "Title", panel, theme, theme.TypeTitle,
+            theme.TextoPrincipal, TextAlignmentOptions.Center);
+        title.text = "SAIR DA PARTIDA?";
+        title.rectTransform.anchorMin = new Vector2(0.08f, 0.62f);
+        title.rectTransform.anchorMax = new Vector2(0.92f, 0.90f);
+        title.rectTransform.offsetMin = title.rectTransform.offsetMax = Vector2.zero;
+
+        TextMeshProUGUI body = WDUIFactory.Text(
+            "Body", panel, theme, theme.TypeBody,
+            theme.TextoSecundario, TextAlignmentOptions.Center);
+        body.text = "Retornar à Home? Não há penalidade nesta etapa local.";
+        body.rectTransform.anchorMin = new Vector2(0.08f, 0.42f);
+        body.rectTransform.anchorMax = new Vector2(0.92f, 0.62f);
+        body.rectTransform.offsetMin = body.rectTransform.offsetMax = Vector2.zero;
+
+        BuildAction(panel, "CONFIRMAR", new Vector2(0.08f, 0.10f),
+            WDMatchSetupContext.ExitToHome);
+        BuildAction(panel, "CANCELAR", new Vector2(0.52f, 0.10f),
+            HideConfirmation);
+        confirmation.SetActive(false);
+    }
+
+    private void BuildAction(
+        Transform parent, string label, Vector2 anchor,
+        UnityEngine.Events.UnityAction action)
+    {
+        RectTransform rect = WDUIFactory.Rect(label, parent);
+        rect.anchorMin = anchor;
+        rect.anchorMax = new Vector2(anchor.x + 0.40f, anchor.y + 0.22f);
+        rect.offsetMin = rect.offsetMax = Vector2.zero;
+        WDUIPremiumButton button = rect.gameObject.AddComponent<WDUIPremiumButton>();
+        button.Build(theme, label, action);
+    }
+
+    private void ShowConfirmation() => confirmation.SetActive(true);
+    private void HideConfirmation() => confirmation.SetActive(false);
 }

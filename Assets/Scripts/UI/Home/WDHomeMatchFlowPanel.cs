@@ -52,6 +52,7 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
     private WDMatchmakingRequest voteRequest;
     private float voteTimeRemaining;
     private bool voteActive;
+    private int selectedDeckIndex;
     private WDPreMatchFlowController preMatchFlow;
     private WDMatchmakingRequest matchmakingRequest;
     private Action returnBeforeMatchmaking;
@@ -171,6 +172,7 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         preMatchFlow = null;
         matchmakingRequest = null;
         returnBeforeMatchmaking = null;
+        selectedDeckIndex = 0;
         backAction = null;
         gameObject.SetActive(false);
     }
@@ -370,11 +372,8 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
 
     private void ShowFixedMapResult(WDMatchmakingRequest request)
     {
-        string mapId = request.FixedMapId;
-        ShowStatus(
-            $"MAPA DEFINIDO · {GetMapName(mapId)}",
-            "Este modo usa um mapa fixo e não abre votação. Entrada real na partida será integrada futuramente.",
-            returnBeforeMatchmaking);
+        selectedDeckIndex = homeData.DefaultDeckIndex;
+        CompleteMatchSetup(request, request.FixedMapId);
     }
 
     private static string FormatElapsed(float seconds)
@@ -393,6 +392,7 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         mapVote.SelectCandidates(request.EligibleMaps);
         voteRequest = request;
         returnAfterVoting = onBack;
+        selectedDeckIndex = homeData.DefaultDeckIndex;
 
         if (mapVote.Candidates.Count == 0)
         {
@@ -424,6 +424,18 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
                 () => ToggleLocalVote(mapId), GetMapThumbnail(mapId), isSelected));
         }
 
+        for (int i = 0; i < homeData.Decks.Count; i++)
+        {
+            int deckIndex = i;
+            WDDeckProfile deck = homeData.Decks[i];
+            bool isSelected = deckIndex == selectedDeckIndex;
+            options.Add(new Option(
+                deck.DisplayName,
+                isSelected ? "DECK SELECIONADO" : "Usar nesta partida",
+                WDContentAvailability.Enabled,
+                () => SelectDeck(deckIndex), null, isSelected));
+        }
+
         string availabilityNote = mapVote.Candidates.Count < WDMapVoteController.CandidateLimit
             ? $"Somente {mapVote.Candidates.Count} mapa(s) elegível(is) disponível(is)."
             : "Escolha um dos dois candidatos.";
@@ -445,6 +457,15 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         ShowVotingOptions();
     }
 
+    private void SelectDeck(int deckIndex)
+    {
+        if (!voteActive || deckIndex < 0 || deckIndex >= homeData.Decks.Count)
+            return;
+
+        selectedDeckIndex = deckIndex;
+        ShowVotingOptions();
+    }
+
     private void FinishVoting()
     {
         if (!voteActive)
@@ -452,57 +473,37 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
 
         voteActive = false;
         WDMapVoteResult result = mapVote.Resolve();
-        string tie = result.TiedMapIds.Count > 1
-            ? "Empate resolvido aleatoriamente somente entre os empatados.\n"
-            : string.Empty;
-        var continueOption = new List<Option>
+        CompleteMatchSetup(voteRequest, result.WinningMapId);
+    }
+
+    // ============================================================
+    // 06. MATCH SETUP E TRANSIÇÃO PARA A CENA DO MAPA
+    // ============================================================
+
+    private void CompleteMatchSetup(WDMatchmakingRequest request, string mapId)
+    {
+        DefinicaoMapa map = GetMapDefinition(mapId);
+        if (map == null)
         {
-            new("CONTINUAR", "Entrada real na partida será integrada futuramente",
-                WDContentAvailability.Enabled, () => ShowReadyForMatch(voteRequest))
-        };
+            ShowStatus(
+                "PARTIDA INDISPONÍVEL",
+                $"O mapa '{mapId}' não foi encontrado no catálogo.",
+                returnBeforeMatchmaking);
+            return;
+        }
 
-        ShowOptions(
-            $"MAPA ESCOLHIDO · {GetMapName(result.WinningMapId)}",
-            $"{tie}{FormatVoteCounts(result.VoteCounts)}", continueOption,
-            returnAfterVoting, string.Empty);
-    }
-
-    private string FormatVoteCounts(IReadOnlyDictionary<string, int> counts)
-    {
-        var values = new List<string>();
-        foreach (KeyValuePair<string, int> entry in counts)
-            values.Add($"{GetMapName(entry.Key)}: {entry.Value}");
-        return string.Join("  |  ", values);
-    }
-
-    // ============================================================
-    // 06. RESULTADO PROVISÓRIO PRONTO PARA A PARTIDA
-    // ============================================================
-
-    private void ShowReadyForMatch(WDMatchmakingRequest request)
-    {
-        string maps = FormatMaps(request.EligibleMaps);
-        string submode = string.IsNullOrEmpty(request.SubmodeId) ? "padrão" : request.SubmodeId;
-        string formation = string.IsNullOrEmpty(request.TeamFormation) ? "individual" : request.TeamFormation;
-        string matchSize = request.MatchSize > 0 ? request.MatchSize.ToString() : "a definir";
-        string body =
-            $"Modo: {request.ModeId}\nSubmodo: {submode}\nGrupo: {request.GroupSize}\nPartida: {matchSize}\n" +
-            $"Formação: {formation}\nCartas: {request.CardRuleId}\nBots permitidos: {(request.BotsAllowed ? "sim" : "não")}\n" +
-            $"Mapas elegíveis: {maps}\n\nAdversário confirmado e mapa resolvido. A entrada real na partida ainda não é executada nesta Passada 1.";
-
-        ShowStatus("PARTIDA PRONTA · PROVISÓRIO", body,
-            selectedSubmode != null ? ShowSubmodes : ShowModes);
-    }
-
-    private static string FormatMaps(IReadOnlyList<WDMapModeRule> maps)
-    {
-        if (maps == null || maps.Count == 0)
-            return "configuração pendente";
-
-        var values = new string[maps.Count];
-        for (int i = 0; i < maps.Count; i++)
-            values[i] = $"{maps[i].MapId} (peso {maps[i].VotingWeight:0.##})";
-        return string.Join(", ", values);
+        WDMatchSetup setup = WDMatchSetupFactory.Create(
+            request, map, homeData, selectedDeckIndex);
+        WDMatchSetupContext.Store(setup);
+        GetComponentInParent<WarDominionHomeController>()?
+            .PrepareForSceneTransition();
+        if (!WDMatchSetupContext.TryLoadCurrentScene())
+        {
+            ShowStatus(
+                "PARTIDA INDISPONÍVEL",
+                "A cena do mapa não está configurada para carregamento.",
+                selectedSubmode != null ? ShowSubmodes : ShowModes);
+        }
     }
 
     private void ShowStatus(string title, string body, Action onBack)
@@ -556,6 +557,12 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         return mapDefinitions.TryGetValue(mapId ?? string.Empty, out DefinicaoMapa map)
             ? map.ArteBase
             : null;
+    }
+
+    private DefinicaoMapa GetMapDefinition(string mapId)
+    {
+        mapDefinitions.TryGetValue(mapId ?? string.Empty, out DefinicaoMapa map);
+        return map;
     }
 
     private string GetMapName(string mapId)

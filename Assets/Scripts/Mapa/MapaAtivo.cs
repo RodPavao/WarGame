@@ -96,13 +96,12 @@ public sealed class MapaAtivo : MonoBehaviour
 
     public void AtualizarReferenciasDaCena()
     {
-        SincronizarDefinicaoComCena();
         territoriosRuntime.Clear();
         territorioPorId.Clear();
         regiaoPorId.Clear();
         visualMapa = null;
 
-        if (definicao == null)
+        if (!SincronizarDefinicaoComCena() || definicao == null)
             return;
 
         foreach (DefinicaoRegiaoMapa regiao in definicao.Regioes)
@@ -139,11 +138,11 @@ public sealed class MapaAtivo : MonoBehaviour
             Debug.LogError($"Mapa {definicao.MapaId}: esperados {definicao.Territorios.Count} territórios, encontrados {territoriosRuntime.Count} na cena.");
     }
 
-    private void SincronizarDefinicaoComCena()
+    private bool SincronizarDefinicaoComCena()
     {
         CatalogoMapas catalogo = Resources.Load<CatalogoMapas>(CaminhoCatalogo);
         if (catalogo == null)
-            return;
+            return false;
 
         SpriteRenderer[] visuais = FindObjectsByType<SpriteRenderer>();
         foreach (DefinicaoMapa mapa in catalogo.Mapas)
@@ -158,8 +157,10 @@ public sealed class MapaAtivo : MonoBehaviour
                 definicao = mapa;
                 Debug.Log($"[MapaAtivo] Definição sincronizada com a cena: {mapa.MapaId} | {mapa.Territorios.Count} territórios | {mapa.Conexoes.Count} conexões.");
             }
-            return;
+            return true;
         }
+
+        return false;
     }
 
     // ============================================================

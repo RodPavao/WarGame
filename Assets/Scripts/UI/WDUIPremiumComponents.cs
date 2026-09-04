@@ -74,6 +74,9 @@ public sealed class WDUIPremiumButton : MonoBehaviour,
     private bool selected;
     private bool hovered;
     private bool pressed;
+    private bool useCustomColors;
+    private Color customNormal;
+    private Color customHover;
 
     public void Build(WarDominionUITheme newTheme, string text, UnityAction action)
     {
@@ -105,6 +108,13 @@ public sealed class WDUIPremiumButton : MonoBehaviour,
         AtualizarVisual();
     }
     public void SetSelected(bool value) { selected = value; AtualizarVisual(); }
+    public void SetPersistentColors(Color normal, Color hover)
+    {
+        useCustomColors = true;
+        customNormal = normal;
+        customHover = hover;
+        AtualizarVisual();
+    }
 
     public void OnPointerEnter(PointerEventData eventData) { hovered = true; AtualizarVisual(); }
     public void OnPointerExit(PointerEventData eventData) { hovered = false; pressed = false; AtualizarVisual(); }
@@ -115,8 +125,9 @@ public sealed class WDUIPremiumButton : MonoBehaviour,
     {
         if (background == null || theme == null) return;
         bool enabled = button == null || button.interactable;
-        Color color = !enabled ? theme.Disabled :
-            selected ? theme.Acento : hovered ? theme.BackgroundElevated : theme.SurfaceGlass;
+        Color color = !enabled ? theme.Disabled : useCustomColors
+            ? (hovered ? customHover : customNormal)
+            : selected ? theme.Acento : hovered ? theme.BackgroundElevated : theme.SurfaceGlass;
         if (pressed && enabled) color = Color.Lerp(color, Color.black, 0.18f);
         background.color = color;
         transform.localScale = Vector3.one * (pressed && enabled ? 0.975f : 1f);

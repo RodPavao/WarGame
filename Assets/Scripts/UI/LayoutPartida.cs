@@ -34,6 +34,8 @@ public class LayoutPartida : MonoBehaviour
     private float sizeOriginal;
     private Vector3 posicaoOriginal;
     private Color corOriginal;
+    private float larguraEsquerdaEfetiva;
+    private float larguraDireitaEfetiva;
 
     private bool configurado = false;
 
@@ -126,10 +128,24 @@ public class LayoutPartida : MonoBehaviour
         }
 
 
+        float escalaCanvas = Screen.width > 0 && Screen.height > 0
+            ? Mathf.Sqrt((Screen.width / 1920f) * (Screen.height / 1080f))
+            : 1f;
+
+        float larguraMinimaHUD = Screen.width > 0
+            ? Mathf.Clamp((300f * escalaCanvas) / Screen.width, 0.06f, 0.20f)
+            : 0.15f;
+
+        larguraEsquerdaEfetiva =
+            Mathf.Max(larguraPainelEsquerdo, larguraMinimaHUD);
+
+        larguraDireitaEfetiva =
+            Mathf.Max(larguraPainelDireito, larguraMinimaHUD);
+
         float larguraCentral =
             1f
-            - larguraPainelEsquerdo
-            - larguraPainelDireito;
+            - larguraEsquerdaEfetiva
+            - larguraDireitaEfetiva;
 
 
         larguraCentral =
@@ -143,7 +159,7 @@ public class LayoutPartida : MonoBehaviour
         // Área exclusiva do mapa.
         cameraPrincipal.rect =
             new Rect(
-                larguraPainelEsquerdo,
+                larguraEsquerdaEfetiva,
                 0f,
                 larguraCentral,
                 1f
@@ -183,16 +199,28 @@ public class LayoutPartida : MonoBehaviour
         // =================================================
         // REGRA PRINCIPAL
         //
-        // A altura do sprite ocupa toda a altura disponível.
-        // Não usamos mais a largura para afastar a câmera.
+        // O mapa ocupa o maior tamanho possível sem recorte, considerando
+        // o aspect ratio real do viewport reservado entre os painéis.
         // =================================================
 
         float alturaMapa =
             limitesMapa.size.y;
 
 
-        float tamanhoCamera =
+        float aspectoViewport =
+            Screen.height > 0
+                ? (Screen.width * cameraPrincipal.rect.width) / Screen.height
+                : cameraPrincipal.aspect;
+
+        float tamanhoPelaAltura =
             alturaMapa / 2f;
+
+        float tamanhoPelaLargura =
+            limitesMapa.size.x /
+            (2f * Mathf.Max(aspectoViewport, 0.01f));
+
+        float tamanhoCamera =
+            Mathf.Max(tamanhoPelaAltura, tamanhoPelaLargura);
 
 
         tamanhoCamera /=
@@ -232,18 +260,18 @@ public class LayoutPartida : MonoBehaviour
 
 
         Debug.Log(
-            "LAYOUT | Mapa preenchendo altura | " +
+            "LAYOUT | Mapa maximizado sem recorte | " +
             "Orthographic Size: " +
             tamanhoCamera.ToString("0.00") +
             " | Offset: " +
             deslocamentoEnquadramento.ToString("F2") +
             " | Painéis: " +
             Mathf.RoundToInt(
-                larguraPainelEsquerdo * 100f
+                larguraEsquerdaEfetiva * 100f
             ) +
             "% / " +
             Mathf.RoundToInt(
-                larguraPainelDireito * 100f
+                larguraDireitaEfetiva * 100f
             ) +
             "%"
         );

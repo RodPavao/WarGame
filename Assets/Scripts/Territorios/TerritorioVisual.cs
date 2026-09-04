@@ -22,6 +22,8 @@ public class TerritorioVisual : MonoBehaviour
     private float intensidadePulso = 0.30f;
 
     private Color corBase;
+    private float fimDestaqueReforco;
+    private bool destaqueReforcoAtivo;
 
     private void Awake()
     {
@@ -33,9 +35,19 @@ public class TerritorioVisual : MonoBehaviour
 
     private void Update()
     {
-        if (!selecionado ||
-            sr == null)
+        if (sr == null)
             return;
+
+        bool reforcoAtivo = Time.unscaledTime < fimDestaqueReforco;
+        if (!selecionado && !reforcoAtivo)
+        {
+            if (destaqueReforcoAtivo)
+            {
+                destaqueReforcoAtivo = false;
+                sr.color = corBase;
+            }
+            return;
+        }
 
         // Pulso muito lento:
         // 0 -> 1 -> 0.
@@ -56,12 +68,18 @@ public class TerritorioVisual : MonoBehaviour
                 intensidadePulso
             );
 
-        sr.color =
-            Color.Lerp(
-                corBase,
-                corClara,
-                pulso
-            );
+        Color corAtual = selecionado
+            ? Color.Lerp(corBase, corClara, pulso)
+            : corBase;
+
+        if (reforcoAtivo)
+        {
+            float brilho = Mathf.Sin(
+                Mathf.Clamp01((fimDestaqueReforco - Time.unscaledTime) / 1.5f) * Mathf.PI);
+            corAtual = Color.Lerp(corAtual, Color.white, 0.42f * brilho);
+        }
+
+        sr.color = corAtual;
     }
 
     private void GarantirMaterialSemLuz()
@@ -185,5 +203,20 @@ public class TerritorioVisual : MonoBehaviour
         selecionado = false;
 
         AtualizarCor();
+    }
+
+    public void DestacarReforcoBreve()
+    {
+        if (sr == null)
+            sr = GetComponent<SpriteRenderer>();
+        if (territorio == null)
+            territorio = GetComponent<TerritorioClique>();
+        if (sr == null || territorio == null)
+            return;
+
+        corBase = PaletaJogadores.ObterCorAtiva(territorio.dono);
+        corBase.a = 1f;
+        destaqueReforcoAtivo = true;
+        fimDestaqueReforco = Time.unscaledTime + 1.5f;
     }
 }

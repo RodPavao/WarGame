@@ -19,10 +19,12 @@ MonoBehaviour:
     availability: 0
     destination: 0
     groupSize: 1
-    matchSize: 0
+    matchSize: 4
     botsAllowed: 1
     mapSelectionPolicy: 1
     fixedMapId: classic
+    roundLimit: 10
+    suddenDeathEnabled: 0
     eligibleMaps:
     - mapId: classic
       votingWeight: 1
@@ -45,6 +47,8 @@ MonoBehaviour:
     botsAllowed: 1
     mapSelectionPolicy: 0
     fixedMapId:
+    roundLimit: 10
+    suddenDeathEnabled: 1
     eligibleMaps: []
     submodes:
     - id: normal
@@ -90,6 +94,8 @@ MonoBehaviour:
     botsAllowed: 1
     mapSelectionPolicy: 0
     fixedMapId:
+    roundLimit: 10
+    suddenDeathEnabled: 1
     eligibleMaps: []
     submodes:
     - id: normal
@@ -136,6 +142,8 @@ MonoBehaviour:
     botsAllowed: 1
     mapSelectionPolicy: 0
     fixedMapId:
+    roundLimit: 10
+    suddenDeathEnabled: 1
     eligibleMaps: []
     submodes: []
   - id: battle_royale
@@ -148,5 +156,7 @@ MonoBehaviour:
     botsAllowed: 1
     mapSelectionPolicy: 0
     fixedMapId:
+    roundLimit: 5
+    suddenDeathEnabled: 1
     eligibleMaps: []
     submodes: []
