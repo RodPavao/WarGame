@@ -21,6 +21,8 @@ MonoBehaviour:
     groupSize: 1
     matchSize: 0
     botsAllowed: 1
+    mapSelectionPolicy: 1
+    fixedMapId: classic
     eligibleMaps:
     - mapId: classic
       votingWeight: 1
@@ -41,6 +43,8 @@ MonoBehaviour:
     groupSize: 1
     matchSize: 2
     botsAllowed: 1
+    mapSelectionPolicy: 0
+    fixedMapId:
     eligibleMaps: []
     submodes:
     - id: normal
@@ -84,6 +88,8 @@ MonoBehaviour:
     groupSize: 2
     matchSize: 4
     botsAllowed: 1
+    mapSelectionPolicy: 0
+    fixedMapId:
     eligibleMaps: []
     submodes:
     - id: normal
@@ -128,6 +134,8 @@ MonoBehaviour:
     groupSize: 3
     matchSize: 6
     botsAllowed: 1
+    mapSelectionPolicy: 0
+    fixedMapId:
     eligibleMaps: []
     submodes: []
   - id: battle_royale
@@ -138,5 +146,7 @@ MonoBehaviour:
     groupSize: 1
     matchSize: 6
     botsAllowed: 1
+    mapSelectionPolicy: 0
+    fixedMapId:
     eligibleMaps: []
     submodes: []

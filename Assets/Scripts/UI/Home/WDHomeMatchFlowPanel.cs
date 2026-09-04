@@ -14,13 +14,19 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         public string Description { get; }
         public WDContentAvailability Availability { get; }
         public UnityAction Action { get; }
+        public Sprite Thumbnail { get; }
+        public bool Selected { get; }
 
-        public Option(string title, string description, WDContentAvailability availability, UnityAction action)
+        public Option(
+            string title, string description, WDContentAvailability availability,
+            UnityAction action, Sprite thumbnail = null, bool selected = false)
         {
             Title = title;
             Description = description;
             Availability = availability;
             Action = action;
+            Thumbnail = thumbnail;
+            Selected = selected;
         }
     }
 
@@ -31,6 +37,8 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
     private WarDominionUITheme theme;
     private WarDominionMatchFlowConfig config;
     private WarDominionHomeData homeData;
+    private readonly Dictionary<string, string> mapNames = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, DefinicaoMapa> mapDefinitions = new(StringComparer.Ordinal);
     private RectTransform optionsRoot;
     private TextMeshProUGUI titleLabel;
     private TextMeshProUGUI subtitleLabel;
@@ -39,6 +47,17 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
     private WDMatchModeDefinition selectedMode;
     private WDMatchSubmodeDefinition selectedSubmode;
     private Action backAction;
+    private Action returnAfterVoting;
+    private WDMapVoteController mapVote;
+    private WDMatchmakingRequest voteRequest;
+    private float voteTimeRemaining;
+    private bool voteActive;
+    private WDPreMatchFlowController preMatchFlow;
+    private WDMatchmakingRequest matchmakingRequest;
+    private Action returnBeforeMatchmaking;
+
+    private const float VoteDurationSeconds = 15f;
+    private const string LocalPlayerId = "local_player";
 
     public bool IsOpen => gameObject.activeSelf;
 
@@ -49,6 +68,7 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         theme = newTheme;
         config = newConfig;
         homeData = newHomeData;
+        LoadMapNames();
 
         Image blocker = gameObject.AddComponent<Image>();
         blocker.color = new Color(0f, 0f, 0f, 0.82f);
@@ -105,6 +125,23 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (preMatchFlow != null && preMatchFlow.State == WDPreMatchState.Searching)
+        {
+            preMatchFlow.Tick(Time.unscaledDeltaTime);
+            feedbackLabel.text = $"TEMPO DE ESPERA: {FormatElapsed(preMatchFlow.WaitSeconds)}";
+        }
+
+        if (voteActive)
+        {
+            voteTimeRemaining = Mathf.Max(0f, voteTimeRemaining - Time.unscaledDeltaTime);
+            feedbackLabel.text = $"TEMPO: {Mathf.CeilToInt(voteTimeRemaining):00}s";
+            if (voteTimeRemaining <= 0f)
+                FinishVoting();
+        }
+    }
+
     // ============================================================
     // 02. TELAS DATA-DRIVEN DE MODO E SUBMODO
     // ============================================================
@@ -127,6 +164,13 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
     {
         selectedMode = null;
         selectedSubmode = null;
+        voteActive = false;
+        mapVote = null;
+        voteRequest = null;
+        returnAfterVoting = null;
+        preMatchFlow = null;
+        matchmakingRequest = null;
+        returnBeforeMatchmaking = null;
         backAction = null;
         gameObject.SetActive(false);
     }
@@ -174,7 +218,9 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
                 ShowTeamFormation();
                 break;
             default:
-                ShowMatchmaking(new WDMatchmakingRequest(mode, null, string.Empty));
+                BeginMatchmaking(
+                    new WDMatchmakingRequest(mode, null, string.Empty),
+                    ShowModes);
                 break;
         }
     }
@@ -206,7 +252,9 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         if (submode.Destination == WDMatchFlowDestination.TeamFormation)
             ShowTeamFormation();
         else
-            ShowMatchmaking(new WDMatchmakingRequest(selectedMode, submode, string.Empty));
+            BeginMatchmaking(
+                new WDMatchmakingRequest(selectedMode, submode, string.Empty),
+                ShowSubmodes);
     }
 
     // ============================================================
@@ -218,7 +266,9 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         var options = new List<Option>
         {
             new("COMPANHEIRO ALEATÓRIO", "Entrar com uma vaga aberta", WDContentAvailability.Enabled,
-                () => ShowMatchmaking(new WDMatchmakingRequest(selectedMode, selectedSubmode, "random_teammate"))),
+                () => ShowTeammateConfirmed(
+                    new WDMatchmakingRequest(selectedMode, selectedSubmode, "random_teammate"),
+                    ShowTeamFormation)),
             new("COMPANHEIRO DE CLÃ", "Convite futuro ao clã inteiro", WDContentAvailability.Enabled, SelectClanTeammate),
             new("JOGAR COM AMIGO", "Convite e aceite antes do matchmaking", WDContentAvailability.Enabled, ShowFriendInvite)
         };
@@ -237,25 +287,219 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
             return;
         }
 
-        ShowStatus(
+        ShowConfirmation(
             "CONVITE AO CLÃ",
             "Convite provisório enviado ao clã. A primeira aceitação válida preencherá a vaga; aceitações posteriores receberão ‘Vaga já preenchida.’",
+            "SIMULAR ACEITE",
+            () => ShowTeammateConfirmed(
+                new WDMatchmakingRequest(selectedMode, selectedSubmode, "clan_teammate"),
+                ShowTeamFormation),
             ShowTeamFormation);
     }
 
     private void ShowFriendInvite()
     {
-        ShowStatus(
+        ShowConfirmation(
             "CONVIDAR AMIGO",
             "Fluxo provisório de convite. O grupo só entrará no matchmaking depois do aceite do amigo.",
+            "SIMULAR ACEITE",
+            () => ShowTeammateConfirmed(
+                new WDMatchmakingRequest(selectedMode, selectedSubmode, "friend_invite"),
+                ShowTeamFormation),
             ShowTeamFormation);
     }
 
     // ============================================================
-    // 04. CONTRATO PROVISÓRIO DE MATCHMAKING
+    // 04. MATCHMAKING LOCAL, CONTADOR E IDENTIDADE PROTEGIDA
     // ============================================================
 
-    private void ShowMatchmaking(WDMatchmakingRequest request)
+    private void ShowTeammateConfirmed(WDMatchmakingRequest request, Action onBack)
+    {
+        ShowConfirmation(
+            "EQUIPE CONFIRMADA",
+            "Parceiro(s) confirmado(s). Nenhum adversário foi procurado ainda.",
+            "PROCURAR ADVERSÁRIOS",
+            () => BeginMatchmaking(request, onBack),
+            onBack);
+    }
+
+    private void BeginMatchmaking(WDMatchmakingRequest request, Action onCancel)
+    {
+        matchmakingRequest = request;
+        returnBeforeMatchmaking = onCancel;
+        preMatchFlow = new WDPreMatchFlowController();
+        preMatchFlow.BeginSearch();
+
+        string target = request.GroupSize > 1 ? "equipe adversária" : "adversário";
+        var options = new List<Option>
+        {
+            new($"SIMULAR {target.ToUpperInvariant()} ENCONTRADO(A)",
+                "Transição local provisória para validar o fluxo",
+                WDContentAvailability.Enabled, MarkOpponentFound)
+        };
+        ShowOptions(
+            $"PROCURANDO {target.ToUpperInvariant()}...",
+            "A identidade dos oponentes permanece oculta até o início da partida.",
+            options, CancelMatchmaking, "TEMPO DE ESPERA: 00:00");
+    }
+
+    private void CancelMatchmaking()
+    {
+        if (preMatchFlow == null || !preMatchFlow.Cancel())
+            return;
+
+        Action destination = returnBeforeMatchmaking;
+        preMatchFlow = null;
+        matchmakingRequest = null;
+        returnBeforeMatchmaking = null;
+        destination?.Invoke();
+    }
+
+    private void MarkOpponentFound()
+    {
+        if (preMatchFlow == null || !preMatchFlow.MarkOpponentFound())
+            return;
+
+        string found = matchmakingRequest.GroupSize > 1
+            ? "EQUIPE ADVERSÁRIA ENCONTRADA"
+            : "ADVERSÁRIO ENCONTRADO";
+        ShowConfirmation(
+            found,
+            "Identidade protegida. O cancelamento não está mais disponível.",
+            matchmakingRequest.MapSelectionPolicy == WDMapSelectionPolicy.Fixed
+                ? "CONTINUAR"
+                : "IR PARA VOTAÇÃO",
+            ContinueAfterOpponentFound,
+            null);
+    }
+
+    private void ContinueAfterOpponentFound()
+    {
+        WDMatchmakingRequest request = matchmakingRequest;
+        preMatchFlow = null;
+        matchmakingRequest = null;
+
+        if (request.MapSelectionPolicy == WDMapSelectionPolicy.Fixed)
+        {
+            ShowFixedMapResult(request);
+            return;
+        }
+
+        BeginVoting(request, null);
+    }
+
+    private void ShowFixedMapResult(WDMatchmakingRequest request)
+    {
+        string mapId = request.FixedMapId;
+        ShowStatus(
+            $"MAPA DEFINIDO · {GetMapName(mapId)}",
+            "Este modo usa um mapa fixo e não abre votação. Entrada real na partida será integrada futuramente.",
+            returnBeforeMatchmaking);
+    }
+
+    private static string FormatElapsed(float seconds)
+    {
+        int totalSeconds = Mathf.Max(0, Mathf.FloorToInt(seconds));
+        return $"{totalSeconds / 60:00}:{totalSeconds % 60:00}";
+    }
+
+    // ============================================================
+    // 05. VOTAÇÃO LOCAL DE MAPAS APÓS ADVERSÁRIO ENCONTRADO
+    // ============================================================
+
+    private void BeginVoting(WDMatchmakingRequest request, Action onBack)
+    {
+        mapVote = new WDMapVoteController();
+        mapVote.SelectCandidates(request.EligibleMaps);
+        voteRequest = request;
+        returnAfterVoting = onBack;
+
+        if (mapVote.Candidates.Count == 0)
+        {
+            ShowStatus(
+                "VOTAÇÃO INDISPONÍVEL",
+                "Nenhum mapa elegível com peso válido foi configurado para este fluxo.",
+                onBack);
+            return;
+        }
+
+        voteTimeRemaining = VoteDurationSeconds;
+        voteActive = true;
+        ShowVotingOptions();
+    }
+
+    private void ShowVotingOptions()
+    {
+        string currentVote = mapVote.GetVote(LocalPlayerId);
+        var options = new List<Option>();
+        foreach (WDMapVoteCandidate candidate in mapVote.Candidates)
+        {
+            string mapId = candidate.MapId;
+            bool isSelected = mapId == currentVote;
+            string selected = isSelected ? "\nSELECIONADO" : string.Empty;
+            options.Add(new Option(
+                GetMapName(mapId),
+                $"Peso {candidate.Weight:0.##}{selected}",
+                WDContentAvailability.Enabled,
+                () => ToggleLocalVote(mapId), GetMapThumbnail(mapId), isSelected));
+        }
+
+        string availabilityNote = mapVote.Candidates.Count < WDMapVoteController.CandidateLimit
+            ? $"Somente {mapVote.Candidates.Count} mapa(s) elegível(is) disponível(is)."
+            : "Escolha um dos dois candidatos.";
+        ShowOptions(
+            "VOTAÇÃO DE MAPA", availabilityNote, options,
+            null, $"TEMPO: {Mathf.CeilToInt(voteTimeRemaining):00}s");
+    }
+
+    private void ToggleLocalVote(string mapId)
+    {
+        if (!voteActive)
+            return;
+
+        if (mapVote.GetVote(LocalPlayerId) == mapId)
+            mapVote.Abstain(LocalPlayerId);
+        else if (!mapVote.SubmitVote(LocalPlayerId, mapId))
+            return;
+
+        ShowVotingOptions();
+    }
+
+    private void FinishVoting()
+    {
+        if (!voteActive)
+            return;
+
+        voteActive = false;
+        WDMapVoteResult result = mapVote.Resolve();
+        string tie = result.TiedMapIds.Count > 1
+            ? "Empate resolvido aleatoriamente somente entre os empatados.\n"
+            : string.Empty;
+        var continueOption = new List<Option>
+        {
+            new("CONTINUAR", "Entrada real na partida será integrada futuramente",
+                WDContentAvailability.Enabled, () => ShowReadyForMatch(voteRequest))
+        };
+
+        ShowOptions(
+            $"MAPA ESCOLHIDO · {GetMapName(result.WinningMapId)}",
+            $"{tie}{FormatVoteCounts(result.VoteCounts)}", continueOption,
+            returnAfterVoting, string.Empty);
+    }
+
+    private string FormatVoteCounts(IReadOnlyDictionary<string, int> counts)
+    {
+        var values = new List<string>();
+        foreach (KeyValuePair<string, int> entry in counts)
+            values.Add($"{GetMapName(entry.Key)}: {entry.Value}");
+        return string.Join("  |  ", values);
+    }
+
+    // ============================================================
+    // 06. RESULTADO PROVISÓRIO PRONTO PARA A PARTIDA
+    // ============================================================
+
+    private void ShowReadyForMatch(WDMatchmakingRequest request)
     {
         string maps = FormatMaps(request.EligibleMaps);
         string submode = string.IsNullOrEmpty(request.SubmodeId) ? "padrão" : request.SubmodeId;
@@ -264,9 +508,9 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         string body =
             $"Modo: {request.ModeId}\nSubmodo: {submode}\nGrupo: {request.GroupSize}\nPartida: {matchSize}\n" +
             $"Formação: {formation}\nCartas: {request.CardRuleId}\nBots permitidos: {(request.BotsAllowed ? "sim" : "não")}\n" +
-            $"Mapas elegíveis: {maps}\n\nMatchmaking real, rede e servidor não são executados nesta Passada 1.";
+            $"Mapas elegíveis: {maps}\n\nAdversário confirmado e mapa resolvido. A entrada real na partida ainda não é executada nesta Passada 1.";
 
-        ShowStatus("BUSCANDO PARTIDA · PROVISÓRIO", body,
+        ShowStatus("PARTIDA PRONTA · PROVISÓRIO", body,
             selectedSubmode != null ? ShowSubmodes : ShowModes);
     }
 
@@ -283,6 +527,7 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
 
     private void ShowStatus(string title, string body, Action onBack)
     {
+        voteActive = false;
         ClearOptions();
         titleLabel.text = title;
         subtitleLabel.text = body;
@@ -293,9 +538,53 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
         backButton.gameObject.SetActive(true);
     }
 
+    private void ShowConfirmation(
+        string title, string body, string actionLabel, UnityAction action,
+        Action onBack)
+    {
+        var options = new List<Option>
+        {
+            new(actionLabel, string.Empty, WDContentAvailability.Enabled, action)
+        };
+        ShowOptions(title, body, options, onBack, string.Empty);
+    }
+
     // ============================================================
-    // 05. CONSTRUÇÃO REUTILIZÁVEL DOS CARDS
+    // 07. NOMES, THUMBNAILS E CONSTRUÇÃO REUTILIZÁVEL
     // ============================================================
+
+    private void LoadMapNames()
+    {
+        mapNames.Clear();
+        mapDefinitions.Clear();
+        CatalogoMapas catalog = Resources.Load<CatalogoMapas>("Mapas/CatalogoMapas");
+        if (catalog == null)
+            return;
+
+        foreach (DefinicaoMapa map in catalog.Mapas)
+        {
+            if (map != null && !string.IsNullOrWhiteSpace(map.MapaId))
+            {
+                mapNames[map.MapaId] = map.NomeExibido;
+                mapDefinitions[map.MapaId] = map;
+            }
+        }
+    }
+
+    private Sprite GetMapThumbnail(string mapId)
+    {
+        return mapDefinitions.TryGetValue(mapId ?? string.Empty, out DefinicaoMapa map)
+            ? map.ArteBase
+            : null;
+    }
+
+    private string GetMapName(string mapId)
+    {
+        return mapNames.TryGetValue(mapId ?? string.Empty, out string name) &&
+            !string.IsNullOrWhiteSpace(name)
+            ? name
+            : mapId;
+    }
 
     private void ShowOptions(
         string title, string subtitle, IReadOnlyList<Option> options,
@@ -323,8 +612,9 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
             : Color.Lerp(theme.SurfaceGlass, theme.Disabled, 0.62f);
         Outline outline = rect.gameObject.AddComponent<Outline>();
         outline.effectColor = option.Availability == WDContentAvailability.Enabled
-            ? theme.BorderNeutral
+            ? option.Selected ? theme.Acento : theme.BorderNeutral
             : theme.Disabled;
+        outline.effectDistance = option.Selected ? new Vector2(3f, -3f) : new Vector2(1f, -1f);
 
         Button button = rect.gameObject.AddComponent<Button>();
         button.transition = Selectable.Transition.ColorTint;
@@ -337,16 +627,29 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
             button.interactable ? theme.TextoPrincipal : theme.TextoSecundario,
             TextAlignmentOptions.Center);
         title.fontStyle = FontStyles.Bold;
-        title.rectTransform.anchorMin = new Vector2(0.06f, 0.50f);
-        title.rectTransform.anchorMax = new Vector2(0.94f, 0.86f);
+        title.rectTransform.anchorMin = new Vector2(0.06f, option.Thumbnail != null ? 0.15f : 0.50f);
+        title.rectTransform.anchorMax = new Vector2(0.94f, option.Thumbnail != null ? 0.28f : 0.86f);
         title.rectTransform.offsetMin = title.rectTransform.offsetMax = Vector2.zero;
 
         TextMeshProUGUI description = WDHomeUIFactory.Text(
             "Description", rect, theme, option.Description, theme.TypeMicro,
             theme.TextoSecundario, TextAlignmentOptions.Center);
-        description.rectTransform.anchorMin = new Vector2(0.08f, 0.14f);
-        description.rectTransform.anchorMax = new Vector2(0.92f, 0.52f);
+        description.rectTransform.anchorMin = new Vector2(0.08f, 0.04f);
+        description.rectTransform.anchorMax = new Vector2(0.92f, option.Thumbnail != null ? 0.20f : 0.52f);
         description.rectTransform.offsetMin = description.rectTransform.offsetMax = Vector2.zero;
+
+        if (option.Thumbnail != null)
+        {
+            RectTransform thumbnailRect = WDHomeUIFactory.Rect("Thumbnail", rect);
+            thumbnailRect.SetAsFirstSibling();
+            thumbnailRect.anchorMin = new Vector2(0.05f, 0.30f);
+            thumbnailRect.anchorMax = new Vector2(0.95f, 0.94f);
+            thumbnailRect.offsetMin = thumbnailRect.offsetMax = Vector2.zero;
+            Image thumbnail = thumbnailRect.gameObject.AddComponent<Image>();
+            thumbnail.sprite = option.Thumbnail;
+            thumbnail.preserveAspect = true;
+            thumbnail.raycastTarget = false;
+        }
 
         if (option.Availability == WDContentAvailability.ComingSoon)
         {

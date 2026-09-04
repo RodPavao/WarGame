@@ -16,6 +16,12 @@ public enum WDMatchFlowDestination
     TeamFormation
 }
 
+public enum WDMapSelectionPolicy
+{
+    Vote,
+    Fixed
+}
+
 [Serializable]
 public sealed class WDMapModeRule
 {
@@ -24,6 +30,14 @@ public sealed class WDMapModeRule
 
     public string MapId => mapId;
     public float VotingWeight => votingWeight;
+
+    public WDMapModeRule() { }
+
+    public WDMapModeRule(string newMapId, float newVotingWeight)
+    {
+        mapId = newMapId;
+        votingWeight = newVotingWeight;
+    }
 }
 
 [Serializable]
@@ -57,6 +71,8 @@ public sealed class WDMatchModeDefinition
     [SerializeField, Min(1)] private int groupSize = 1;
     [SerializeField, Min(0)] private int matchSize;
     [SerializeField] private bool botsAllowed = true;
+    [SerializeField] private WDMapSelectionPolicy mapSelectionPolicy;
+    [SerializeField] private string fixedMapId;
     [SerializeField] private List<WDMapModeRule> eligibleMaps = new();
     [SerializeField] private List<WDMatchSubmodeDefinition> submodes = new();
 
@@ -68,6 +84,8 @@ public sealed class WDMatchModeDefinition
     public int GroupSize => groupSize;
     public int MatchSize => matchSize;
     public bool BotsAllowed => botsAllowed;
+    public WDMapSelectionPolicy MapSelectionPolicy => mapSelectionPolicy;
+    public string FixedMapId => fixedMapId;
     public IReadOnlyList<WDMapModeRule> EligibleMaps => eligibleMaps;
     public IReadOnlyList<WDMatchSubmodeDefinition> Submodes => submodes;
 }
@@ -85,6 +103,8 @@ public sealed class WDMatchmakingRequest
     public string TeamFormation { get; }
     public string CardRuleId { get; }
     public bool BotsAllowed { get; }
+    public WDMapSelectionPolicy MapSelectionPolicy { get; }
+    public string FixedMapId { get; }
     public IReadOnlyList<WDMapModeRule> EligibleMaps { get; }
 
     public WDMatchmakingRequest(
@@ -98,6 +118,8 @@ public sealed class WDMatchmakingRequest
         TeamFormation = teamFormation ?? string.Empty;
         CardRuleId = submode?.CardRuleId ?? "standard";
         BotsAllowed = mode?.BotsAllowed ?? false;
+        MapSelectionPolicy = mode?.MapSelectionPolicy ?? WDMapSelectionPolicy.Vote;
+        FixedMapId = mode?.FixedMapId ?? string.Empty;
         EligibleMaps = submode != null && submode.EligibleMaps.Count > 0
             ? submode.EligibleMaps
             : mode?.EligibleMaps ?? Array.Empty<WDMapModeRule>();

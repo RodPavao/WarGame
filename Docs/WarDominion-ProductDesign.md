@@ -292,9 +292,13 @@ Inicialmente `ComingSoon`:
 - 3x3;
 - Battle Royale.
 
+### [DEFINITIVO] Acesso direto a JOGAR PARTIDA
+
+PLAY abre diretamente JOGAR PARTIDA e a seleção de FFA, 1x1, 2x2, 3x3 e Battle Royale. Não existe etapa intermediária com as opções JOGAR, MODOS e MAPAS.
+
 ### [PROVISÓRIO] Fluxo JOGAR PARTIDA
 
-Na Passada 1, HOME → PLAY → JOGAR abre uma seleção horizontal de modos. Os fluxos habilitados terminam em estados de matchmaking, convite ou formação de equipe apenas demonstrativos. Não existe conexão com rede, servidor ou matchmaking real.
+Na Passada 1, HOME → PLAY abre diretamente uma seleção horizontal de modos. Os fluxos habilitados respeitam a ordem de formação do grupo, procura de adversários e seleção de mapa, mas usam somente estados locais demonstrativos. Não existe conexão com rede, servidor ou matchmaking real.
 
 ### [DEFINITIVO] Regras conceituais de cartas por submodo
 
@@ -318,6 +322,17 @@ O convite ao clã será oferecido ao clã inteiro. Se o jogador não pertencer a
 
 O fluxo com amigo exige aceite antes de entrar no matchmaking. Duplas formadas por mecanismos diferentes compartilham o mesmo matchmaking.
 
+### [DEFINITIVO] Ordem pré-partida e privacidade dos adversários
+
+Para todos os modos, quando cada etapa for aplicável, a ordem é: modo/submodo → formação de equipe e confirmação de parceiro(s) → matchmaking com contador crescente → adversário(s) encontrado(s) → votação de mapa → partida. O cancelamento é permitido somente durante a procura e fica bloqueado assim que os adversários são encontrados.
+
+- FFA sempre utiliza Classic e não realiza votação de mapa.
+- Em 1x1, o jogador escolhe o submodo, procura o adversário, recebe confirmação neutra do encontro e somente então participa da votação.
+- Em modos de equipe, a formação e confirmação dos parceiros ocorre antes da procura de adversários; a votação só começa depois que a equipe adversária é encontrada.
+- Nickname, avatar, clã, ranking, composição e qualquer outro dado identificável dos oponentes permanecem ocultos durante matchmaking e votação. Essas identidades só podem aparecer com o início efetivo da partida.
+- A fila apresenta um contador crescente de tempo de espera em segundos, não uma contagem regressiva.
+- O ingresso na fila pode ser cancelado somente enquanto adversários ainda estão sendo procurados. Depois da confirmação do encontro, o cancelamento deixa de estar disponível.
+
 ### [FUTURO] 3x3 e Battle Royale
 
 - 3x3 seguirá o modelo de formação do 2x2, adaptado para três jogadores por equipe.
@@ -329,15 +344,27 @@ Elegibilidade e peso/prioridade de votação são configurados explicitamente po
 
 Mapas acima do padrão atual de 42 territórios não são inicialmente elegíveis no 1x1 por decisão de configuração, não por regra codificada. Classic pode receber peso maior em modos como 2x2 por configuração igualmente explícita.
 
-### [FUTURO] Contrato de votação de mapa
+### [DEFINITIVO] Regras de votação de mapa
 
-- apresentar três mapas elegíveis;
+- apresentar dois mapas elegíveis;
+- apresentar os candidatos simultaneamente como thumbnails nomeadas e inteiramente clicáveis;
 - votação com duração de 15 segundos;
 - cada jogador pode votar em um mapa;
+- o jogador pode substituir ou remover seu voto enquanto o tempo estiver ativo;
 - ausência de voto significa abstenção, sem voto automático;
 - vence o mapa com mais votos;
 - em empate, sortear apenas entre os mapas empatados;
 - seleção de candidatos considera elegibilidade e peso configuráveis.
+
+### [PROVISÓRIO] Implementação local da votação
+
+A Passada 1 possui votação funcional local desacoplada da interface. Ela seleciona até dois candidatos ponderados sem repetição, mostra as artes já cadastradas nas definições dos mapas, aceita no máximo um voto por jogador, permite substituir ou remover a escolha anterior, preserva abstenção e resolve empates aleatoriamente apenas entre os mapas empatados.
+
+A simulação local respeita `PROCURANDO ADVERSÁRIO → ADVERSÁRIO ENCONTRADO → VOTAÇÃO`, quando o modo possui votação. A confirmação do encontro não apresenta jogadores fictícios nem dados identificáveis. FFA segue da confirmação diretamente para Classic, sem instanciar votação.
+
+Quando houver somente um mapa elegível com peso positivo, a votação apresenta apenas esse candidato; não inclui mapa inelegível para completar a quantidade e não gera erro. Quando não houver nenhum candidato válido, o fluxo informa a ausência de configuração e não avança silenciosamente.
+
+No teste local, apenas o voto do jogador atual é fornecido. A API aceita votos identificados de múltiplos jogadores para futura integração de rede, mas não inventa participantes online.
 
 ### [DEFINITIVO] Contrato unificado de matchmaking
 
@@ -565,9 +592,11 @@ Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste docu
 | Usar packs externos como matéria-prima | [DEFINITIVO] | Nenhum pack define isoladamente a identidade. |
 | Tornar PLAY protagonista da Home | [DEFINITIVO] | Progressão competitiva e recursos sociais se organizam ao redor desse foco. |
 | Preservar fundo visível e composição não preenchida na Home | [DEFINITIVO] | Cards variam de escala conforme importância; PLAY não deve se tornar um retângulo simples gigantesco. |
+| Abrir JOGAR PARTIDA diretamente por PLAY | [DEFINITIVO] | Não existe etapa intermediária com JOGAR, MODOS e MAPAS. |
 | Administrar disponibilidade de modos por configuração | [DEFINITIVO] | Enabled, ComingSoon e Disabled não dependem de mudanças na UI. |
 | Usar matchmaking futuro unificado e parametrizado | [DEFINITIVO] | Modos não recebem arquiteturas de matchmaking independentes. |
 | Configurar elegibilidade e peso de mapas explicitamente | [DEFINITIVO] | Quantidade de territórios não é critério codificado pela UI. |
+| Votar em mapas por 15 segundos | [DEFINITIVO] | Até dois candidatos elegíveis, abstenção válida e desempate somente entre empatados. |
 | Identificar Guest com quatro dígitos sem presumir bot | [DEFINITIVO] | `GuestXXXX` também pode pertencer a jogador real. |
 | Adotar 10 ligas seguidas de Veteran | [DEFINITIVO] | Veteran tem progressão prática sem limite fechado. |
 | Rejeitar pay-to-win | [DEFINITIVO] | Monetização não concede vantagem competitiva comprável. |
@@ -589,6 +618,7 @@ Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste docu
 | Molduras, botões, tipografia, contadores e feedbacks atuais | [PROVISÓRIO] | Devem ser avaliados no passe de polimento premium. |
 | Dimensionamento dos cards da Home na Passada 1 | [PROVISÓRIO] | Valida arquitetura e fluxo, não a composição visual definitiva. |
 | Fluxos locais de seleção e matchmaking | [PROVISÓRIO] | Validam navegação; não executam rede, servidor, cartas ou matchmaking. |
+| Votação local de mapas | [PROVISÓRIO] | Executa seleção, voto, contagem e resultado sem sincronização multiplayer. |
 
 ### Decisões pendentes
 
@@ -615,7 +645,6 @@ Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste docu
 | 1x1 Deckbuilder | [FUTURO] | Quatro escolhas em pares formam decks de oito cartas. |
 | 3x3 | [FUTURO] | Formação baseada no 2x2, adaptada para três jogadores por equipe. |
 | Battle Royale | [FUTURO] | Seis jogadores, cinco rounds e Deckbuilder. |
-| Votação de três mapas elegíveis | [FUTURO] | Quinze segundos, abstenção válida e desempate apenas entre empatados. |
 | Bots estratégicos e adaptativos | [FUTURO] | Aprendem apenas com informação observável e possuem limites balanceáveis. |
 | Dois slots externos de cartas | [FUTURO] | Uma troca por partida; elegibilidade inicial prevista para cartas comuns. |
 

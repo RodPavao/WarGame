@@ -253,7 +253,7 @@ public sealed class WarDominionHomeController : MonoBehaviour
 
         RectTransform playRect = WDHomeUIFactory.Rect("MainPlayCard", parent);
         playRect.gameObject.AddComponent<WDHomePlayCard>().Build(
-            theme, "▶", "PLAY", "ESCOLHER PARTIDA", OpenPlayModal, 300f);
+            theme, "▶", "PLAY", "JOGAR PARTIDA", OpenMatchFlow, 300f);
 
         RectTransform lower = WDHomeUIFactory.Rect("CenterSecondaryRow", parent);
         LayoutElement lowerElement = lower.gameObject.AddComponent<LayoutElement>();
@@ -315,32 +315,7 @@ public sealed class WarDominionHomeController : MonoBehaviour
     private void OpenModal(string title, string body) => modal.Open(title, body);
     private void CloseModal() => modal.Close();
 
-    private void OpenPlayModal()
-    {
-        modal.OpenChoices(
-            "WAR DOMINION · ESCOLHER PARTIDA",
-            "Escolha uma área para validar o fluxo. Nenhuma opção inicia gameplay nesta etapa.",
-            new[] { "JOGAR", "MODOS", "MAPAS" },
-            OnPlayChoice);
-    }
-
-    private void OnPlayChoice(int choice)
-    {
-        if (choice == 0)
-        {
-            modal.Close();
-            matchFlowPanel.Open();
-            return;
-        }
-
-        string message = choice switch
-        {
-            1 => "MODOS selecionado. Espaço reservado para modos existentes e futuros, sem novas regras inventadas.",
-            2 => "MAPAS selecionado. Espaço reservado para a futura seleção dos cinco mapas oficiais.",
-            _ => "Seleção provisória."
-        };
-        modal.SetBody(message + "\n\nUse outra opção, o botão X ou ESC para continuar navegando.");
-    }
+    private void OpenMatchFlow() => matchFlowPanel.Open();
 
     private string ProfileBody() =>
         $"{mockData.Nickname}\nStatus: {mockData.Status}\nLiga: {mockData.League}\nTroféus: {mockData.Trophies}\n\n" +
