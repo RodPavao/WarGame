@@ -12,6 +12,7 @@ public sealed class WarDominionHomeData : ScriptableObject
     [SerializeField] private string status = "Online";
     [SerializeField] private Color playerColor = new Color(0.12f, 0.75f, 0.82f, 1f);
     [SerializeField, Min(0)] private int notifications = 3;
+    [SerializeField] private bool hasClan;
 
     [Header("Competitivo")]
     [SerializeField] private string league = "Liga 1";
@@ -27,6 +28,7 @@ public sealed class WarDominionHomeData : ScriptableObject
     public string Status => status;
     public Color PlayerColor => playerColor;
     public int Notifications => notifications;
+    public bool HasClan => hasClan;
     public string League => league;
     public int Trophies => trophies;
     public string NextEvent => nextEvent;

@@ -264,7 +264,130 @@ Podem ser avaliados futuramente, sem decisão detalhada atual:
 
 Esses modelos não devem conceder vantagem competitiva comprável.
 
-## 8. HUD de partida
+## 8. Modos, matchmaking e jogadores simulados
+
+### [DEFINITIVO] Disponibilidade administrável
+
+Modos e submodos possuem disponibilidade configurável, sem condicionais específicas espalhadas pela Home:
+
+- `Enabled`: aparece e pode avançar no fluxo;
+- `ComingSoon`: aparece identificado como indisponível e não inicia fluxo;
+- `Disabled`: não aparece para o jogador.
+
+A configuração local por asset/Inspector é a administração da Passada 1. A arquitetura deve aceitar uma fonte remota futura sem exigir que a UI conheça regras de cada modo.
+
+### [DEFINITIVO] Disponibilidade inicial
+
+Inicialmente habilitados:
+
+- FFA;
+- 1x1 Normal;
+- 1x1 Random Cards;
+- 2x2 Normal;
+- 2x2 Random Cards.
+
+Inicialmente `ComingSoon`:
+
+- 1x1 Deckbuilder;
+- 3x3;
+- Battle Royale.
+
+### [PROVISÓRIO] Fluxo JOGAR PARTIDA
+
+Na Passada 1, HOME → PLAY → JOGAR abre uma seleção horizontal de modos. Os fluxos habilitados terminam em estados de matchmaking, convite ou formação de equipe apenas demonstrativos. Não existe conexão com rede, servidor ou matchmaking real.
+
+### [DEFINITIVO] Regras conceituais de cartas por submodo
+
+- **1x1 Normal:** cada jogador utiliza seu deck padrão.
+- **1x1 Random Cards:** cada jogador começa com quatro cartas aleatórias; nos rounds seguintes, ambos recebem a mesma nova carta aleatória, uma por round; não há obrigação de usar as cartas recebidas.
+- **2x2 Random Cards:** aplica distribuição aleatória com simetria e equidade entre os lados.
+
+### [FUTURO] 1x1 Deckbuilder
+
+Antes do Round 1, ambos recebem quatro grupos de duas cartas. Em cada grupo, o jogador escolhe uma carta e envia a rejeitada ao adversário. Ao final, ambos formam decks de oito cartas; depois ocorre a entrada na partida e a animação do Round 1.
+
+### [DEFINITIVO] Formação de equipe 2x2
+
+Depois de selecionar Normal ou Random Cards, o jogador escolhe:
+
+- companheiro aleatório;
+- companheiro de clã;
+- jogar com amigo.
+
+O convite ao clã será oferecido ao clã inteiro. Se o jogador não pertencer a um clã, a interface deve informar essa condição. A primeira aceitação válida preenche a vaga; tentativas posteriores devem receber feedback equivalente a “Vaga já preenchida”.
+
+O fluxo com amigo exige aceite antes de entrar no matchmaking. Duplas formadas por mecanismos diferentes compartilham o mesmo matchmaking.
+
+### [FUTURO] 3x3 e Battle Royale
+
+- 3x3 seguirá o modelo de formação do 2x2, adaptado para três jogadores por equipe.
+- Battle Royale terá seis jogadores, cinco rounds e modelo Deckbuilder.
+
+### [DEFINITIVO] Elegibilidade e peso dos mapas
+
+Elegibilidade e peso/prioridade de votação são configurados explicitamente por combinação de modo e submodo. A UI não pode inferir elegibilidade pela quantidade de territórios.
+
+Mapas acima do padrão atual de 42 territórios não são inicialmente elegíveis no 1x1 por decisão de configuração, não por regra codificada. Classic pode receber peso maior em modos como 2x2 por configuração igualmente explícita.
+
+### [FUTURO] Contrato de votação de mapa
+
+- apresentar três mapas elegíveis;
+- votação com duração de 15 segundos;
+- cada jogador pode votar em um mapa;
+- ausência de voto significa abstenção, sem voto automático;
+- vence o mapa com mais votos;
+- em empate, sortear apenas entre os mapas empatados;
+- seleção de candidatos considera elegibilidade e peso configuráveis.
+
+### [DEFINITIVO] Contrato unificado de matchmaking
+
+O matchmaking futuro será um serviço unificado e parametrizado, não uma arquitetura independente para cada modo. Seu contrato pode receber:
+
+- modo;
+- submodo;
+- tamanho do grupo;
+- tamanho da partida;
+- mapas elegíveis e respectivos pesos;
+- regra de cartas;
+- permissão de bots;
+- formação da equipe.
+
+### [DEFINITIVO] Identidade Guest
+
+Uma identidade automática segue `GuestXXXX`, com exatamente quatro dígitos numéricos. O sistema futuro deverá evitar colisões com nomes Guest atualmente em uso.
+
+O padrão não prova que a entidade seja bot: pode representar bot, jogador que ainda não escolheu nickname ou jogador real que escolheu esse formato.
+
+### [FUTURO] Bots para sustentação do matchmaking
+
+Bots serão necessários para a sustentação inicial do matchmaking e utilizarão identidade `GuestXXXX` dentro das mesmas regras. Ainda assim, o nome isoladamente não prova que uma entidade seja bot. A IA futura não deve ser trivial e poderá considerar territórios, tropas, reforços, ameaças, objetivos, risco, ataques, defesa, cadeias de ataques, cartas, estado do round e comportamento de equipe.
+
+### [FUTURO] Filosofia adaptativa dos bots
+
+Além de jogar estrategicamente, a IA futura deverá observar e se adaptar progressivamente ao comportamento legítimo dos adversários durante a partida. Isso não exige Machine Learning em tempo real: pode ser implementado por memória comportamental, pontuações, perfis dinâmicos, pesos estratégicos e adaptação de decisões.
+
+Entre os sinais observáveis estão:
+
+- agressividade e passividade;
+- frequência de ataques;
+- preferência por expansão ou fortificação;
+- concentração ou dispersão de tropas;
+- proteção recorrente de regiões;
+- padrões de uso de cartas;
+- tipos de movimentos preferidos;
+- comportamento sob pressão;
+- padrões estratégicos repetidos;
+- decisões ofensivas e defensivas que estejam funcionando.
+
+O bot não pode trapacear. Só pode reagir a informações que um jogador legítimo também observaria, sem conhecer cartas ocultas, decisões ainda não reveladas, ações futuras ou estado privado do adversário. A adaptação deve possuir limites configuráveis para não tornar a IA artificialmente perfeita ou impossível de enfrentar.
+
+### [FUTURO] Cartas externas ao deck
+
+Pode existir um sistema de dois slots externos ao deck. Durante uma partida, o jogador poderia usar uma única vez uma das duas cartas externas, trocando-a por uma carta do deck.
+
+Inicialmente, seriam consideradas elegíveis apenas cartas comuns. Um sistema futuro de raridades/grupos poderá incluir cartas comuns, especiais, lendárias e outras categorias futuras.
+
+## 9. HUD de partida
 
 ### [DEFINITIVO] Estrutura desejada
 
@@ -294,7 +417,7 @@ Permanecem funcionais, reutilizáveis e ainda não aprovados visualmente como re
 
 A infraestrutura funcional desses elementos pode ser preservada enquanto a apresentação é substituída ou refinada no passe premium.
 
-## 9. Preparação e Resolução
+## 10. Preparação e Resolução
 
 ### [DEFINITIVO] Separação semântica
 
@@ -335,7 +458,7 @@ A Resolução deve ser mais intensa e pode empregar, quando adequado:
 
 A camada visual nunca decide gameplay. `GameManager` e os resultados lógicos são a autoridade. Presenters e sequências exibem estados e consequências já determinados, podendo usar estado visual temporário sem substituir o estado autoritativo.
 
-## 10. Transferência territorial
+## 11. Transferência territorial
 
 ### [DEFINITIVO] Regra funcional
 
@@ -362,7 +485,7 @@ Ela deve comunicar passagem amigável de controle no próprio território:
 - tropas preservadas conforme o resultado lógico;
 - reação discreta do contador.
 
-## 11. Mapas oficiais e vizinhanças
+## 12. Mapas oficiais e vizinhanças
 
 ### [DEFINITIVO] Mapas oficiais
 
@@ -382,7 +505,7 @@ Os mapas oficiais atuais são:
 - Territórios sem fronteira terrestre compartilhada exigem ponte, linha, caminho ou conector explícito definido pelo mapa.
 - Toda conexão deve ser bidirecional.
 
-## 12. Arte oficial, gabaritos e geometria
+## 13. Arte oficial, gabaritos e geometria
 
 ### [DEFINITIVO] Autoridades por camada
 
@@ -404,7 +527,7 @@ Quando o trabalho for exclusivamente visual, devem ser preservados:
 
 Uma atualização visual não deve exigir máscaras ou colliders novos se a geometria oficial não mudou.
 
-## 13. Remaster futuro de mapas
+## 14. Remaster futuro de mapas
 
 ### [FUTURO] Classic
 
@@ -428,7 +551,7 @@ O Dark World poderá seguir uma de duas direções, a decidir futuramente:
 
 Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste documento.
 
-## 14. Tabela de decisões
+## 15. Tabela de decisões
 
 ### Decisões definitivas
 
@@ -442,6 +565,10 @@ Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste docu
 | Usar packs externos como matéria-prima | [DEFINITIVO] | Nenhum pack define isoladamente a identidade. |
 | Tornar PLAY protagonista da Home | [DEFINITIVO] | Progressão competitiva e recursos sociais se organizam ao redor desse foco. |
 | Preservar fundo visível e composição não preenchida na Home | [DEFINITIVO] | Cards variam de escala conforme importância; PLAY não deve se tornar um retângulo simples gigantesco. |
+| Administrar disponibilidade de modos por configuração | [DEFINITIVO] | Enabled, ComingSoon e Disabled não dependem de mudanças na UI. |
+| Usar matchmaking futuro unificado e parametrizado | [DEFINITIVO] | Modos não recebem arquiteturas de matchmaking independentes. |
+| Configurar elegibilidade e peso de mapas explicitamente | [DEFINITIVO] | Quantidade de territórios não é critério codificado pela UI. |
+| Identificar Guest com quatro dígitos sem presumir bot | [DEFINITIVO] | `GuestXXXX` também pode pertencer a jogador real. |
 | Adotar 10 ligas seguidas de Veteran | [DEFINITIVO] | Veteran tem progressão prática sem limite fechado. |
 | Rejeitar pay-to-win | [DEFINITIVO] | Monetização não concede vantagem competitiva comprável. |
 | Separar intenção de execução | [DEFINITIVO] | Preparação comunica plano; Resolução comunica consequência. |
@@ -461,6 +588,7 @@ Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste docu
 | Presenters da Resolução | [PROVISÓRIO] | Contratos e sequência são reutilizáveis; aparência ainda evoluirá. |
 | Molduras, botões, tipografia, contadores e feedbacks atuais | [PROVISÓRIO] | Devem ser avaliados no passe de polimento premium. |
 | Dimensionamento dos cards da Home na Passada 1 | [PROVISÓRIO] | Valida arquitetura e fluxo, não a composição visual definitiva. |
+| Fluxos locais de seleção e matchmaking | [PROVISÓRIO] | Validam navegação; não executam rede, servidor, cartas ou matchmaking. |
 
 ### Decisões pendentes
 
@@ -473,6 +601,7 @@ Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste docu
 | Catálogo de missões | [PENDENTE] | Não definido. |
 | Limites e faixas das ligas | [PENDENTE] | A estrutura geral existe; os thresholds ainda não. |
 | Regras de matchmaking | [PENDENTE] | Devem impedir confronto inadequado entre veteranos e iniciantes. |
+| Tamanho da partida FFA | [PENDENTE] | Não foi definido e não deve ser inferido pela interface. |
 
 ### Evoluções futuras
 
@@ -483,8 +612,14 @@ Nenhuma dessas opções deve ser iniciada apenas por estar registrada neste docu
 | Outras receitas compatíveis | [FUTURO] | Exigem definição de produto. |
 | Remaster profundo do Classic | [FUTURO] | Pode exigir nova geometria se fronteiras mudarem. |
 | Remaster ou reconstrução do Dark World | [FUTURO] | Direção A ou B ainda será escolhida. |
+| 1x1 Deckbuilder | [FUTURO] | Quatro escolhas em pares formam decks de oito cartas. |
+| 3x3 | [FUTURO] | Formação baseada no 2x2, adaptada para três jogadores por equipe. |
+| Battle Royale | [FUTURO] | Seis jogadores, cinco rounds e Deckbuilder. |
+| Votação de três mapas elegíveis | [FUTURO] | Quinze segundos, abstenção válida e desempate apenas entre empatados. |
+| Bots estratégicos e adaptativos | [FUTURO] | Aprendem apenas com informação observável e possuem limites balanceáveis. |
+| Dois slots externos de cartas | [FUTURO] | Uma troca por partida; elegibilidade inicial prevista para cartas comuns. |
 
-## 15. Manutenção deste documento
+## 16. Manutenção deste documento
 
 ### [DEFINITIVO] Regra de atualização
 

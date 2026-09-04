@@ -1,0 +1,386 @@
+using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+
+[DisallowMultipleComponent]
+public sealed class WDHomeMatchFlowPanel : MonoBehaviour
+{
+    private sealed class Option
+    {
+        public string Title { get; }
+        public string Description { get; }
+        public WDContentAvailability Availability { get; }
+        public UnityAction Action { get; }
+
+        public Option(string title, string description, WDContentAvailability availability, UnityAction action)
+        {
+            Title = title;
+            Description = description;
+            Availability = availability;
+            Action = action;
+        }
+    }
+
+    // ============================================================
+    // 01. REFERÊNCIAS E NAVEGAÇÃO DO FLUXO ÚNICO
+    // ============================================================
+
+    private WarDominionUITheme theme;
+    private WarDominionMatchFlowConfig config;
+    private WarDominionHomeData homeData;
+    private RectTransform optionsRoot;
+    private TextMeshProUGUI titleLabel;
+    private TextMeshProUGUI subtitleLabel;
+    private TextMeshProUGUI feedbackLabel;
+    private WDUIPremiumButton backButton;
+    private WDMatchModeDefinition selectedMode;
+    private WDMatchSubmodeDefinition selectedSubmode;
+    private Action backAction;
+
+    public bool IsOpen => gameObject.activeSelf;
+
+    public void Build(
+        WarDominionUITheme newTheme, WarDominionMatchFlowConfig newConfig,
+        WarDominionHomeData newHomeData)
+    {
+        theme = newTheme;
+        config = newConfig;
+        homeData = newHomeData;
+
+        Image blocker = gameObject.AddComponent<Image>();
+        blocker.color = new Color(0f, 0f, 0f, 0.82f);
+        blocker.raycastTarget = true;
+
+        RectTransform panel = WDHomeUIFactory.Rect("MatchFlowPanel", transform);
+        panel.anchorMin = new Vector2(0.06f, 0.15f);
+        panel.anchorMax = new Vector2(0.94f, 0.85f);
+        panel.offsetMin = panel.offsetMax = Vector2.zero;
+        Image surface = panel.gameObject.AddComponent<Image>();
+        surface.color = theme.BackgroundElevated;
+        surface.raycastTarget = true;
+        Outline outline = panel.gameObject.AddComponent<Outline>();
+        outline.effectColor = theme.Acento;
+        outline.effectDistance = new Vector2(2f, -2f);
+
+        titleLabel = WDHomeUIFactory.Text(
+            "Title", panel, theme, string.Empty, theme.TypeTitle,
+            theme.TextoPrincipal, TextAlignmentOptions.Center);
+        titleLabel.fontStyle = FontStyles.Bold;
+        titleLabel.rectTransform.anchorMin = new Vector2(0f, 0.84f);
+        titleLabel.rectTransform.anchorMax = new Vector2(1f, 0.98f);
+        titleLabel.rectTransform.offsetMin = new Vector2(120f, 0f);
+        titleLabel.rectTransform.offsetMax = new Vector2(-120f, 0f);
+
+        subtitleLabel = WDHomeUIFactory.Text(
+            "Subtitle", panel, theme, string.Empty, theme.TypeBody,
+            theme.TextoSecundario, TextAlignmentOptions.Center);
+        subtitleLabel.rectTransform.anchorMin = new Vector2(0f, 0.75f);
+        subtitleLabel.rectTransform.anchorMax = new Vector2(1f, 0.84f);
+        subtitleLabel.rectTransform.offsetMin = new Vector2(80f, 0f);
+        subtitleLabel.rectTransform.offsetMax = new Vector2(-80f, 0f);
+
+        optionsRoot = WDHomeUIFactory.Rect("Options", panel);
+        optionsRoot.anchorMin = new Vector2(0.035f, 0.24f);
+        optionsRoot.anchorMax = new Vector2(0.965f, 0.73f);
+        optionsRoot.offsetMin = optionsRoot.offsetMax = Vector2.zero;
+        HorizontalLayoutGroup layout = optionsRoot.gameObject.AddComponent<HorizontalLayoutGroup>();
+        layout.spacing = 18f;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = true;
+        layout.childForceExpandHeight = true;
+
+        feedbackLabel = WDHomeUIFactory.Text(
+            "Feedback", panel, theme, string.Empty, theme.TypeBody,
+            theme.Warning, TextAlignmentOptions.Center);
+        feedbackLabel.rectTransform.anchorMin = new Vector2(0.08f, 0.11f);
+        feedbackLabel.rectTransform.anchorMax = new Vector2(0.92f, 0.22f);
+        feedbackLabel.rectTransform.offsetMin = feedbackLabel.rectTransform.offsetMax = Vector2.zero;
+
+        backButton = BuildUtilityButton(panel, "Back", "VOLTAR", new Vector2(0f, 0f), Back);
+        BuildUtilityButton(panel, "Close", "X", new Vector2(1f, 0f), Close);
+        gameObject.SetActive(false);
+    }
+
+    // ============================================================
+    // 02. TELAS DATA-DRIVEN DE MODO E SUBMODO
+    // ============================================================
+
+    public void Open()
+    {
+        gameObject.SetActive(true);
+        if (config == null)
+        {
+            ShowStatus(
+                "CONFIGURAÇÃO INDISPONÍVEL",
+                "O catálogo de modos não foi encontrado. Nenhum fluxo foi iniciado.",
+                Close);
+            return;
+        }
+        ShowModes();
+    }
+
+    public void Close()
+    {
+        selectedMode = null;
+        selectedSubmode = null;
+        backAction = null;
+        gameObject.SetActive(false);
+    }
+
+    public void HandleEscape()
+    {
+        if (backAction != null)
+            Back();
+        else
+            Close();
+    }
+
+    private void ShowModes()
+    {
+        selectedMode = null;
+        selectedSubmode = null;
+        var options = new List<Option>();
+        foreach (WDMatchModeDefinition mode in config.Modes)
+        {
+            if (mode == null || mode.Availability == WDContentAvailability.Disabled)
+                continue;
+            WDMatchModeDefinition captured = mode;
+            options.Add(new Option(
+                mode.DisplayName, mode.Description, mode.Availability,
+                () => SelectMode(captured)));
+        }
+
+        ShowOptions(
+            "JOGAR PARTIDA", "Selecione um modo de jogo", options,
+            null, string.Empty);
+    }
+
+    private void SelectMode(WDMatchModeDefinition mode)
+    {
+        if (mode.Availability != WDContentAvailability.Enabled)
+            return;
+
+        selectedMode = mode;
+        switch (mode.Destination)
+        {
+            case WDMatchFlowDestination.SubmodeSelection:
+                ShowSubmodes();
+                break;
+            case WDMatchFlowDestination.TeamFormation:
+                ShowTeamFormation();
+                break;
+            default:
+                ShowMatchmaking(new WDMatchmakingRequest(mode, null, string.Empty));
+                break;
+        }
+    }
+
+    private void ShowSubmodes()
+    {
+        var options = new List<Option>();
+        foreach (WDMatchSubmodeDefinition submode in selectedMode.Submodes)
+        {
+            if (submode == null || submode.Availability == WDContentAvailability.Disabled)
+                continue;
+            WDMatchSubmodeDefinition captured = submode;
+            options.Add(new Option(
+                submode.DisplayName, submode.Description, submode.Availability,
+                () => SelectSubmode(captured)));
+        }
+
+        ShowOptions(
+            selectedMode.DisplayName, "Selecione o submodo", options,
+            ShowModes, string.Empty);
+    }
+
+    private void SelectSubmode(WDMatchSubmodeDefinition submode)
+    {
+        if (submode.Availability != WDContentAvailability.Enabled)
+            return;
+
+        selectedSubmode = submode;
+        if (submode.Destination == WDMatchFlowDestination.TeamFormation)
+            ShowTeamFormation();
+        else
+            ShowMatchmaking(new WDMatchmakingRequest(selectedMode, submode, string.Empty));
+    }
+
+    // ============================================================
+    // 03. FORMAÇÃO DE EQUIPE E PLACEHOLDERS SOCIAIS
+    // ============================================================
+
+    private void ShowTeamFormation()
+    {
+        var options = new List<Option>
+        {
+            new("COMPANHEIRO ALEATÓRIO", "Entrar com uma vaga aberta", WDContentAvailability.Enabled,
+                () => ShowMatchmaking(new WDMatchmakingRequest(selectedMode, selectedSubmode, "random_teammate"))),
+            new("COMPANHEIRO DE CLÃ", "Convite futuro ao clã inteiro", WDContentAvailability.Enabled, SelectClanTeammate),
+            new("JOGAR COM AMIGO", "Convite e aceite antes do matchmaking", WDContentAvailability.Enabled, ShowFriendInvite)
+        };
+
+        ShowOptions(
+            $"{selectedMode.DisplayName} · {selectedSubmode.DisplayName}",
+            "Como deseja formar seu time?", options,
+            ShowSubmodes, string.Empty);
+    }
+
+    private void SelectClanTeammate()
+    {
+        if (!homeData.HasClan)
+        {
+            feedbackLabel.text = "É necessário participar de um clã para convidar companheiros.";
+            return;
+        }
+
+        ShowStatus(
+            "CONVITE AO CLÃ",
+            "Convite provisório enviado ao clã. A primeira aceitação válida preencherá a vaga; aceitações posteriores receberão ‘Vaga já preenchida.’",
+            ShowTeamFormation);
+    }
+
+    private void ShowFriendInvite()
+    {
+        ShowStatus(
+            "CONVIDAR AMIGO",
+            "Fluxo provisório de convite. O grupo só entrará no matchmaking depois do aceite do amigo.",
+            ShowTeamFormation);
+    }
+
+    // ============================================================
+    // 04. CONTRATO PROVISÓRIO DE MATCHMAKING
+    // ============================================================
+
+    private void ShowMatchmaking(WDMatchmakingRequest request)
+    {
+        string maps = FormatMaps(request.EligibleMaps);
+        string submode = string.IsNullOrEmpty(request.SubmodeId) ? "padrão" : request.SubmodeId;
+        string formation = string.IsNullOrEmpty(request.TeamFormation) ? "individual" : request.TeamFormation;
+        string matchSize = request.MatchSize > 0 ? request.MatchSize.ToString() : "a definir";
+        string body =
+            $"Modo: {request.ModeId}\nSubmodo: {submode}\nGrupo: {request.GroupSize}\nPartida: {matchSize}\n" +
+            $"Formação: {formation}\nCartas: {request.CardRuleId}\nBots permitidos: {(request.BotsAllowed ? "sim" : "não")}\n" +
+            $"Mapas elegíveis: {maps}\n\nMatchmaking real, rede e servidor não são executados nesta Passada 1.";
+
+        ShowStatus("BUSCANDO PARTIDA · PROVISÓRIO", body,
+            selectedSubmode != null ? ShowSubmodes : ShowModes);
+    }
+
+    private static string FormatMaps(IReadOnlyList<WDMapModeRule> maps)
+    {
+        if (maps == null || maps.Count == 0)
+            return "configuração pendente";
+
+        var values = new string[maps.Count];
+        for (int i = 0; i < maps.Count; i++)
+            values[i] = $"{maps[i].MapId} (peso {maps[i].VotingWeight:0.##})";
+        return string.Join(", ", values);
+    }
+
+    private void ShowStatus(string title, string body, Action onBack)
+    {
+        ClearOptions();
+        titleLabel.text = title;
+        subtitleLabel.text = body;
+        subtitleLabel.rectTransform.anchorMin = new Vector2(0.12f, 0.28f);
+        subtitleLabel.rectTransform.anchorMax = new Vector2(0.88f, 0.72f);
+        feedbackLabel.text = string.Empty;
+        backAction = onBack;
+        backButton.gameObject.SetActive(true);
+    }
+
+    // ============================================================
+    // 05. CONSTRUÇÃO REUTILIZÁVEL DOS CARDS
+    // ============================================================
+
+    private void ShowOptions(
+        string title, string subtitle, IReadOnlyList<Option> options,
+        Action onBack, string feedback)
+    {
+        ClearOptions();
+        titleLabel.text = title;
+        subtitleLabel.text = subtitle;
+        subtitleLabel.rectTransform.anchorMin = new Vector2(0f, 0.75f);
+        subtitleLabel.rectTransform.anchorMax = new Vector2(1f, 0.84f);
+        feedbackLabel.text = feedback;
+        backAction = onBack;
+        backButton.gameObject.SetActive(onBack != null);
+
+        foreach (Option option in options)
+            BuildOption(option);
+    }
+
+    private void BuildOption(Option option)
+    {
+        RectTransform rect = WDHomeUIFactory.Rect(option.Title.Replace(" ", string.Empty), optionsRoot);
+        Image image = rect.gameObject.AddComponent<Image>();
+        image.color = option.Availability == WDContentAvailability.Enabled
+            ? theme.SurfaceGlass
+            : Color.Lerp(theme.SurfaceGlass, theme.Disabled, 0.62f);
+        Outline outline = rect.gameObject.AddComponent<Outline>();
+        outline.effectColor = option.Availability == WDContentAvailability.Enabled
+            ? theme.BorderNeutral
+            : theme.Disabled;
+
+        Button button = rect.gameObject.AddComponent<Button>();
+        button.transition = Selectable.Transition.ColorTint;
+        button.interactable = option.Availability == WDContentAvailability.Enabled;
+        if (button.interactable && option.Action != null)
+            button.onClick.AddListener(option.Action);
+
+        TextMeshProUGUI title = WDHomeUIFactory.Text(
+            "Title", rect, theme, option.Title, theme.TypeSection,
+            button.interactable ? theme.TextoPrincipal : theme.TextoSecundario,
+            TextAlignmentOptions.Center);
+        title.fontStyle = FontStyles.Bold;
+        title.rectTransform.anchorMin = new Vector2(0.06f, 0.50f);
+        title.rectTransform.anchorMax = new Vector2(0.94f, 0.86f);
+        title.rectTransform.offsetMin = title.rectTransform.offsetMax = Vector2.zero;
+
+        TextMeshProUGUI description = WDHomeUIFactory.Text(
+            "Description", rect, theme, option.Description, theme.TypeMicro,
+            theme.TextoSecundario, TextAlignmentOptions.Center);
+        description.rectTransform.anchorMin = new Vector2(0.08f, 0.14f);
+        description.rectTransform.anchorMax = new Vector2(0.92f, 0.52f);
+        description.rectTransform.offsetMin = description.rectTransform.offsetMax = Vector2.zero;
+
+        if (option.Availability == WDContentAvailability.ComingSoon)
+        {
+            TextMeshProUGUI status = WDHomeUIFactory.Text(
+                "Status", rect, theme, "COMING SOON", theme.TypeMicro,
+                theme.Warning, TextAlignmentOptions.Center);
+            status.rectTransform.anchorMin = new Vector2(0.05f, 0.87f);
+            status.rectTransform.anchorMax = new Vector2(0.95f, 0.98f);
+            status.rectTransform.offsetMin = status.rectTransform.offsetMax = Vector2.zero;
+        }
+    }
+
+    private WDUIPremiumButton BuildUtilityButton(
+        RectTransform panel, string name, string label, Vector2 anchor, UnityAction action)
+    {
+        RectTransform rect = WDHomeUIFactory.Rect(name, panel);
+        rect.anchorMin = rect.anchorMax = anchor;
+        rect.pivot = anchor;
+        rect.sizeDelta = new Vector2(label == "X" ? 54f : 130f, 48f);
+        rect.anchoredPosition = anchor.x < 0.5f ? new Vector2(28f, 24f) : new Vector2(-28f, 24f);
+        WDUIPremiumButton button = rect.gameObject.AddComponent<WDUIPremiumButton>();
+        button.Build(theme, label, action);
+        return button;
+    }
+
+    private void ClearOptions()
+    {
+        for (int i = optionsRoot.childCount - 1; i >= 0; i--)
+        {
+            GameObject option = optionsRoot.GetChild(i).gameObject;
+            option.SetActive(false);
+            Destroy(option);
+        }
+    }
+
+    private void Back() => backAction?.Invoke();
+}

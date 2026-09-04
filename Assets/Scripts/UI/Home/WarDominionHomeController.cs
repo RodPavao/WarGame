@@ -17,6 +17,7 @@ public sealed class WarDominionHomeController : MonoBehaviour
     [SerializeField] private Texture2D backgroundTexture;
 
     private WDHomeModal modal;
+    private WDHomeMatchFlowPanel matchFlowPanel;
     private RectTransform safeArea;
     private Rect lastSafeArea;
     private Vector2Int lastResolution;
@@ -43,7 +44,12 @@ public sealed class WarDominionHomeController : MonoBehaviour
     private void Update()
     {
         UpdateSafeArea(false);
-        if (modal != null && modal.IsOpen && Keyboard.current?.escapeKey.wasPressedThisFrame == true)
+        if (Keyboard.current?.escapeKey.wasPressedThisFrame != true)
+            return;
+
+        if (matchFlowPanel != null && matchFlowPanel.IsOpen)
+            matchFlowPanel.HandleEscape();
+        else if (modal != null && modal.IsOpen)
             modal.Close();
     }
 
@@ -88,6 +94,13 @@ public sealed class WarDominionHomeController : MonoBehaviour
         WDHomeUIFactory.Stretch(modalLayer);
         modal = modalLayer.gameObject.AddComponent<WDHomeModal>();
         modal.Build(theme, CloseModal);
+
+        WarDominionMatchFlowConfig matchConfig =
+            Resources.Load<WarDominionMatchFlowConfig>("UI/Home/WarDominionMatchFlowConfig");
+        RectTransform matchFlowLayer = WDHomeUIFactory.Rect("MatchFlowLayer", root.transform);
+        WDHomeUIFactory.Stretch(matchFlowLayer);
+        matchFlowPanel = matchFlowLayer.gameObject.AddComponent<WDHomeMatchFlowPanel>();
+        matchFlowPanel.Build(theme, matchConfig, mockData);
     }
 
     private void AddAmbientAccents(Transform parent)
@@ -313,9 +326,15 @@ public sealed class WarDominionHomeController : MonoBehaviour
 
     private void OnPlayChoice(int choice)
     {
+        if (choice == 0)
+        {
+            modal.Close();
+            matchFlowPanel.Open();
+            return;
+        }
+
         string message = choice switch
         {
-            0 => "JOGAR selecionado. A integração com seleção de partida será conectada em etapa futura.",
             1 => "MODOS selecionado. Espaço reservado para modos existentes e futuros, sem novas regras inventadas.",
             2 => "MAPAS selecionado. Espaço reservado para a futura seleção dos cinco mapas oficiais.",
             _ => "Seleção provisória."

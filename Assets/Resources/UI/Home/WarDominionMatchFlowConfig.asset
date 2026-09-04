@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49d26a57b5cf45dfa09c7ea7e83fb8da, type: 3}
+  m_Name: WarDominionMatchFlowConfig
+  m_EditorClassIdentifier:
+  modes:
+  - id: ffa
+    displayName: FFA
+    description: Todos contra todos
+    availability: 0
+    destination: 0
+    groupSize: 1
+    matchSize: 0
+    botsAllowed: 1
+    eligibleMaps:
+    - mapId: classic
+      votingWeight: 1
+    - mapId: pearl_harbor
+      votingWeight: 1
+    - mapId: riachuelo
+      votingWeight: 1
+    - mapId: dark_world
+      votingWeight: 1
+    - mapId: peloponeso
+      votingWeight: 1
+    submodes: []
+  - id: 1x1
+    displayName: 1x1
+    description: Duelo estratégico
+    availability: 0
+    destination: 1
+    groupSize: 1
+    matchSize: 2
+    botsAllowed: 1
+    eligibleMaps: []
+    submodes:
+    - id: normal
+      displayName: NORMAL
+      description: Cada jogador utiliza seu deck padrão
+      availability: 0
+      destination: 0
+      cardRuleId: standard_deck
+      eligibleMaps:
+      - mapId: classic
+        votingWeight: 1
+      - mapId: riachuelo
+        votingWeight: 1
+    - id: random_cards
+      displayName: RANDOM CARDS
+      description: Cartas aleatórias simétricas entre os lados
+      availability: 0
+      destination: 0
+      cardRuleId: symmetric_random_cards
+      eligibleMaps:
+      - mapId: classic
+        votingWeight: 1
+      - mapId: riachuelo
+        votingWeight: 1
+    - id: deckbuilder
+      displayName: DECKBUILDER
+      description: Escolhas em pares antes do Round 1
+      availability: 1
+      destination: 0
+      cardRuleId: paired_deckbuilder
+      eligibleMaps:
+      - mapId: classic
+        votingWeight: 1
+      - mapId: riachuelo
+        votingWeight: 1
+  - id: 2x2
+    displayName: 2x2
+    description: Estratégia em equipes
+    availability: 0
+    destination: 1
+    groupSize: 2
+    matchSize: 4
+    botsAllowed: 1
+    eligibleMaps: []
+    submodes:
+    - id: normal
+      displayName: NORMAL
+      description: Cada jogador utiliza seu deck padrão
+      availability: 0
+      destination: 2
+      cardRuleId: standard_deck
+      eligibleMaps:
+      - mapId: classic
+        votingWeight: 2
+      - mapId: pearl_harbor
+        votingWeight: 1
+      - mapId: riachuelo
+        votingWeight: 1
+      - mapId: dark_world
+        votingWeight: 1
+      - mapId: peloponeso
+        votingWeight: 1
+    - id: random_cards
+      displayName: RANDOM CARDS
+      description: Distribuição aleatória simétrica entre equipes
+      availability: 0
+      destination: 2
+      cardRuleId: symmetric_team_random_cards
+      eligibleMaps:
+      - mapId: classic
+        votingWeight: 2
+      - mapId: pearl_harbor
+        votingWeight: 1
+      - mapId: riachuelo
+        votingWeight: 1
+      - mapId: dark_world
+        votingWeight: 1
+      - mapId: peloponeso
+        votingWeight: 1
+  - id: 3x3
+    displayName: 3x3
+    description: Formação futura para três jogadores por equipe
+    availability: 1
+    destination: 1
+    groupSize: 3
+    matchSize: 6
+    botsAllowed: 1
+    eligibleMaps: []
+    submodes: []
+  - id: battle_royale
+    displayName: BATTLE ROYALE
+    description: 6 jogadores · 5 rounds · Deckbuilder
+    availability: 1
+    destination: 0
+    groupSize: 1
+    matchSize: 6
+    botsAllowed: 1
+    eligibleMaps: []
+    submodes: []
