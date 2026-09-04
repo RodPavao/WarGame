@@ -79,3 +79,25 @@ MonoBehaviour:
   transferPulseOpacity: 0.38
   transferTextSize: 14
   transferTextOffset: 46
+  backgroundPrimary: {r: 0.015, g: 0.025, b: 0.035, a: 0.92}
+  backgroundElevated: {r: 0.035, g: 0.055, b: 0.07, a: 0.94}
+  surfaceGlass: {r: 0.045, g: 0.075, b: 0.095, a: 0.86}
+  borderNeutral: {r: 0.25, g: 0.34, b: 0.38, a: 0.72}
+  success: {r: 0.22, g: 0.72, b: 0.48, a: 1}
+  warning: {r: 0.95, g: 0.67, b: 0.2, a: 1}
+  danger: {r: 0.88, g: 0.28, b: 0.25, a: 1}
+  disabled: {r: 0.31, g: 0.36, b: 0.38, a: 0.72}
+  typeDisplay: 34
+  typeTitle: 24
+  typeSection: 16
+  typeButton: 15
+  typeBody: 14
+  typeNumber: 27
+  typeMicro: 11
+  spacingXs: 4
+  spacingSm: 8
+  spacingMd: 14
+  spacingLg: 22
+  panelBorderWidth: 1
+  buttonHeight: 42
+  microAnimationDuration: 0.14

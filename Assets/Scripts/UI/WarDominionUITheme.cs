@@ -125,6 +125,38 @@ public sealed class WarDominionUITheme : ScriptableObject
     [SerializeField, Min(8f)] private float transferTextSize = 14f;
     [SerializeField, Min(0f)] private float transferTextOffset = 46f;
 
+    // ============================================================
+    // 08. DESIGN SYSTEM SEMÂNTICO DA INTERFACE FINAL
+    // ============================================================
+
+    [Header("Cores Semânticas")]
+    [SerializeField] private Color backgroundPrimary = new Color(0.015f, 0.025f, 0.035f, 0.92f);
+    [SerializeField] private Color backgroundElevated = new Color(0.035f, 0.055f, 0.07f, 0.94f);
+    [SerializeField] private Color surfaceGlass = new Color(0.045f, 0.075f, 0.095f, 0.86f);
+    [SerializeField] private Color borderNeutral = new Color(0.25f, 0.34f, 0.38f, 0.72f);
+    [SerializeField] private Color success = new Color(0.22f, 0.72f, 0.48f, 1f);
+    [SerializeField] private Color warning = new Color(0.95f, 0.67f, 0.20f, 1f);
+    [SerializeField] private Color danger = new Color(0.88f, 0.28f, 0.25f, 1f);
+    [SerializeField] private Color disabled = new Color(0.31f, 0.36f, 0.38f, 0.72f);
+
+    [Header("Hierarquia Tipográfica")]
+    [SerializeField, Min(8f)] private float typeDisplay = 34f;
+    [SerializeField, Min(8f)] private float typeTitle = 24f;
+    [SerializeField, Min(8f)] private float typeSection = 16f;
+    [SerializeField, Min(8f)] private float typeButton = 15f;
+    [SerializeField, Min(8f)] private float typeBody = 14f;
+    [SerializeField, Min(8f)] private float typeNumber = 27f;
+    [SerializeField, Min(8f)] private float typeMicro = 11f;
+
+    [Header("Espaçamento e Componentes")]
+    [SerializeField, Min(1f)] private float spacingXs = 4f;
+    [SerializeField, Min(1f)] private float spacingSm = 8f;
+    [SerializeField, Min(1f)] private float spacingMd = 14f;
+    [SerializeField, Min(1f)] private float spacingLg = 22f;
+    [SerializeField, Min(1f)] private float panelBorderWidth = 1f;
+    [SerializeField, Min(24f)] private float buttonHeight = 42f;
+    [SerializeField, Min(0.01f)] private float microAnimationDuration = 0.14f;
+
     public TMP_FontAsset FonteDisplay => fonteDisplay;
     public TMP_FontAsset FonteInterface => fonteInterface != null ? fonteInterface : fonteDisplay;
     public float TamanhoTitulo => tamanhoTitulo;
@@ -192,4 +224,26 @@ public sealed class WarDominionUITheme : ScriptableObject
     public float TransferPulseOpacity => transferPulseOpacity;
     public float TransferTextSize => transferTextSize;
     public float TransferTextOffset => transferTextOffset;
+    public Color BackgroundPrimary => backgroundPrimary;
+    public Color BackgroundElevated => backgroundElevated;
+    public Color SurfaceGlass => surfaceGlass;
+    public Color BorderNeutral => borderNeutral;
+    public Color Success => success;
+    public Color Warning => warning;
+    public Color Danger => danger;
+    public Color Disabled => disabled;
+    public float TypeDisplay => typeDisplay;
+    public float TypeTitle => typeTitle;
+    public float TypeSection => typeSection;
+    public float TypeButton => typeButton;
+    public float TypeBody => typeBody;
+    public float TypeNumber => typeNumber;
+    public float TypeMicro => typeMicro;
+    public float SpacingXs => spacingXs;
+    public float SpacingSm => spacingSm;
+    public float SpacingMd => spacingMd;
+    public float SpacingLg => spacingLg;
+    public float PanelBorderWidth => panelBorderWidth;
+    public float ButtonHeight => buttonHeight;
+    public float MicroAnimationDuration => microAnimationDuration;
 }

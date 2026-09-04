@@ -10,6 +10,7 @@ public sealed class UICompositionRoot : MonoBehaviour
     // ============================================================
 
     private const string CaminhoTema = "UI/WarDominionUITheme";
+    public const string ChaveHUDNovo = "WarDominion.UI.HUDNovoAtivo";
     private MatchUIPresenter presenter;
     private RectTransform safeArea;
     private RoundAnnouncementView roundAnnouncement;
@@ -19,6 +20,7 @@ public sealed class UICompositionRoot : MonoBehaviour
     private TransferResolutionPresenter transferResolutionPresenter;
     private ResolutionVisualStateCoordinator resolutionVisualStateCoordinator;
     private PreparedActionsOverlayController preparedActionsOverlay;
+    private WarDominionMatchHUD matchHUD;
     private bool possuiFaseAnterior;
     private GameManager.FaseTurno faseAnterior;
     private string ultimoCicloResolucaoAnunciado = string.Empty;
@@ -139,6 +141,11 @@ public sealed class UICompositionRoot : MonoBehaviour
             mapOverlayLayer.gameObject.AddComponent<PreparedActionsOverlayController>();
         preparedActionsOverlay.Configure(
             GetComponent<MatchUIPresenter>(), mapOverlayLayer, tema);
+
+        RectTransform finalHUD = CriarCamada("FinalMatchHUD", safeArea);
+        matchHUD = finalHUD.gameObject.AddComponent<WarDominionMatchHUD>();
+        matchHUD.Build(tema, GetComponent<MatchUIPresenter>()?.Comandos);
+        DefinirHUDNovoAtivo(PlayerPrefs.GetInt(ChaveHUDNovo, 1) == 1);
         AtualizarSafeArea(true);
     }
 
@@ -202,6 +209,8 @@ public sealed class UICompositionRoot : MonoBehaviour
         if (state == null)
             return;
 
+        matchHUD?.Present(state);
+
         bool entrouEmResolucao =
             possuiFaseAnterior &&
             faseAnterior != GameManager.FaseTurno.Resolucao &&
@@ -222,5 +231,20 @@ public sealed class UICompositionRoot : MonoBehaviour
 
         ultimoCicloResolucaoAnunciado = cicloResolucao;
         roundAnnouncement?.ExibirResolucao(state);
+    }
+
+    // ============================================================
+    // 05. COMPARAÇÃO CONTROLADA ENTRE HUD FINAL E LEGADO
+    // ============================================================
+
+    public void DefinirHUDNovoAtivo(bool ativo)
+    {
+        PlayerPrefs.SetInt(ChaveHUDNovo, ativo ? 1 : 0);
+        PlayerPrefs.Save();
+        if (matchHUD != null)
+            matchHUD.gameObject.SetActive(ativo);
+        HUDPreparacao legado = GetComponent<HUDPreparacao>();
+        if (legado != null)
+            legado.enabled = !ativo;
     }
 }

@@ -14,6 +14,8 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
     public GameManager.FaseTurno Fase { get; }
     public GameManager.EstadoPreparacao EstadoPreparacao { get; }
     public GameManager.ModoAcao ModoAcao { get; }
+    public bool EmModoAcaoTerrestre => ModoAcao == GameManager.ModoAcao.AcaoTerrestre;
+    public bool EmModoTransferencia => ModoAcao == GameManager.ModoAcao.Transferir;
     public GerenciadorRodada.EstadoPartida EstadoPartida { get; }
     public bool EmMorteSubita { get; }
     public int RoundMorteSubita { get; }
