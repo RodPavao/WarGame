@@ -126,7 +126,9 @@ public sealed class WarDominionMatchHUD : MonoBehaviour
         int seconds = Mathf.CeilToInt(state.TempoRestante);
         timerText.text = $"@\n{seconds / 60:00}:{seconds % 60:00}";
         roundText.text = state.EmMorteSubita ? $"MORTE SÚBITA {state.RoundMorteSubita}" : $"ROUND {state.Round:00}";
-        phaseText.text = state.Fase.ToString().ToUpperInvariant();
+        phaseText.text = state.EmSelecaoInicial
+            ? state.FeedbackSelecaoInicial
+            : state.Fase.ToString().ToUpperInvariant();
         transferButton.SetInteractable(state.PodeEditarPreparacao && state.TransferenciaDisponivel && !state.TransferenciaUsada);
         transferButton.SetSelected(state.EmModoTransferencia);
         transferButton.SetLabel(state.EmModoTransferencia ? "X  CANCELAR TRANSFERIR" : "< >  TRANSFERIR");
@@ -150,6 +152,18 @@ public sealed class WarDominionMatchHUD : MonoBehaviour
     {
         for (int i = 0; i < deckButtons.Count; i++)
         {
+            if (state != null && state.UsaRandomCards)
+            {
+                string cardId = i < state.CartasJogadorLocal.Count
+                    ? state.CartasJogadorLocal[i]
+                    : string.Empty;
+                bool occupied = !string.IsNullOrEmpty(cardId);
+                deckButtons[i].SetInteractable(occupied);
+                deckButtons[i].SetSelected(false);
+                deckButtons[i].SetLabel(occupied ? cardId : "VAZIO");
+                continue;
+            }
+
             bool selected = selectedCard == i;
             deckButtons[i].SetInteractable(CustosDeckMock[i] <= EnergiaMock);
             deckButtons[i].SetSelected(false);
@@ -449,7 +463,17 @@ public sealed class WarDominionMatchHUD : MonoBehaviour
     // 09. COMANDOS LOCAIS E AUTORITATIVOS
     // ============================================================
 
-    private void ToggleCard(int slot) { selectedCard = selectedCard == slot ? -1 : slot; PresentDeck(); }
+    private void ToggleCard(int slot)
+    {
+        if (state != null && state.UsaRandomCards)
+        {
+            commands?.UsarCarta(slot);
+            return;
+        }
+
+        selectedCard = selectedCard == slot ? -1 : slot;
+        PresentDeck();
+    }
     private void ToggleTransfer()
     {
         if (state == null) return;

@@ -495,10 +495,9 @@ public class ContadorTropas : MonoBehaviour
 
         CentralizarMalhaNumero();
 
-        borda.color =
-            PaletaJogadores.ObterCorAtiva(
-                donoVisual
-            );
+        borda.color = donoVisual == TerritorioClique.Dono.Neutro
+            ? Color.clear
+            : PaletaJogadores.ObterCorAtiva(donoVisual);
 
         if (bordaExterna != null)
         {

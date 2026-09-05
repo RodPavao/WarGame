@@ -91,7 +91,15 @@ public class InputPartida : MonoBehaviour
             );
 
         // =================================================
-        // 5. PRIORIDADE CONTEXTUAL: MODO TRANSFERÊNCIA
+        // 5. ABERTURA 1x1: CONTADOR E MÁSCARA ESCOLHEM TERRITÓRIO
+        // =================================================
+
+        if (GameManager.instance.EmSelecaoInicial &&
+            TentarSelecionarTerritorioInicial(atingidos))
+            return;
+
+        // =================================================
+        // 6. PRIORIDADE CONTEXTUAL: MODO TRANSFERÊNCIA
         // =================================================
 
         if (GameManager.instance != null &&
@@ -156,6 +164,26 @@ public class InputPartida : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private static bool TentarSelecionarTerritorioInicial(Collider2D[] atingidos)
+    {
+        foreach (Collider2D collider in atingidos)
+        {
+            TerritorioClique territorio = collider.GetComponent<TerritorioClique>() ??
+                collider.GetComponentInParent<TerritorioClique>();
+            if (territorio == null)
+            {
+                ContadorTropas contador = collider.GetComponent<ContadorTropas>() ??
+                    collider.GetComponentInParent<ContadorTropas>();
+                territorio = contador != null ? contador.Territorio : null;
+            }
+            if (territorio == null)
+                continue;
+            territorio.Clicar();
+            return true;
+        }
+        return false;
     }
 
     // =====================================================

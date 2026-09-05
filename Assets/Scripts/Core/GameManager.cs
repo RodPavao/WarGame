@@ -16,6 +16,18 @@ public class GameManager : MonoBehaviour
         GerenciadorRodada.TotalRoundsNormais;
     public bool MorteSubitaHabilitada =>
         MatchSetupAtual == null || MatchSetupAtual.SuddenDeathEnabled;
+    public bool UsaRandomCards =>
+        MatchSetupAtual != null &&
+        MatchSetupAtual.CardRuleId == "symmetric_random_cards";
+    public IReadOnlyList<string> CartasRandomJogadorLocal =>
+        randomCardsSession != null
+            ? randomCardsSession.GetHand(ObterIdJogadorLocal())
+            : System.Array.Empty<string>();
+    public bool EhPartidaUmContraUm => MatchSetupAtual != null && MatchSetupAtual.IsOneVsOne;
+    public bool EmSelecaoInicial => initialSelectionSession != null &&
+        !initialSelectionSession.IsComplete;
+    public int EtapaSelecaoInicial => EmSelecaoInicial ? initialSelectionSession.Stage : 0;
+    public string FeedbackSelecaoInicial { get; private set; } = string.Empty;
 
     public TerritorioClique territorioSelecionado;
     public TerritorioClique territorioDestinoSelecionado;
@@ -40,6 +52,10 @@ public class GameManager : MonoBehaviour
     private GerenciadorRodada gerenciadorRodada;
     private readonly HistoricoReforcos historicoReforcos =
         new HistoricoReforcos();
+    private WDRandomCardsSession randomCardsSession;
+    private WDInitialTerritorySelectionSession initialSelectionSession;
+    private UICompositionRoot uiCompositionRoot;
+    private bool bloqueioInicioPartida = true;
 
     // =====================================================
     // 3. PREPARAÇÃO E MODOS
@@ -88,6 +104,7 @@ public class GameManager : MonoBehaviour
             historicoReforcos.Distribuicoes;
 
     public bool PodeEditarPreparacao =>
+        !EmSelecaoInicial && !bloqueioInicioPartida &&
         faseAtual == FaseTurno.Preparacao &&
         estadoPreparacao == EstadoPreparacao.Preparando;
 
@@ -195,7 +212,19 @@ public class GameManager : MonoBehaviour
 
     public bool PossuiPreparacaoParaEnviar =>
         QuantidadeOrdensPreparadas > 0 ||
-        TransferenciaPreparada != null;
+        TransferenciaPreparada != null ||
+        historicoReforcos.Distribuicoes.Count > 0;
+
+    public bool TodosTerritoriosControladosPossuemTropa
+    {
+        get
+        {
+            foreach (TerritorioClique territorio in MapaAtivo.ObterTerritoriosOuCena())
+                if (territorio != null && territorio.dono == jogadorLocal && territorio.Tropas < 1)
+                    return false;
+            return true;
+        }
+    }
 
     public int LimiteAcoesPorRodada =>
         FilaAcoes.MaximoAcoesPorRodada;
@@ -312,7 +341,7 @@ public class GameManager : MonoBehaviour
                 gameObject.AddComponent<MatchUIPresenter>();
         }
 
-        UICompositionRoot uiCompositionRoot =
+        uiCompositionRoot =
             GetComponent<UICompositionRoot>();
 
         if (uiCompositionRoot == null)
@@ -337,12 +366,110 @@ public class GameManager : MonoBehaviour
             distribuidor.GarantirDistribuicaoInicial();
         else
             AplicarParticipantesDoMatchSetupAoTabuleiro();
-        gerenciadorRodada
-            .IniciarPartida();
+        InicializarRandomCards();
+        if (EhPartidaUmContraUm)
+            InicializarSelecaoTerritorialUmContraUm();
+        else
+            IniciarPartidaAposAnuncio();
     }
 
     // =====================================================
-    // 10. PARTICIPANTES AUTORITATIVOS DO MATCH SETUP
+    // 10. ABERTURA TERRITORIAL 1x1 E ANÚNCIO DO ROUND 1
+    // =====================================================
+
+    private void InicializarSelecaoTerritorialUmContraUm()
+    {
+        gerenciadorRodada.PrepararPrioridadeRoundUm();
+        IReadOnlyList<TerritorioClique.Dono> priority =
+            gerenciadorRodada.ObterPrioridadeJogadores();
+        var playerIds = new List<string>(2);
+        foreach (TerritorioClique.Dono owner in priority)
+            if (WDMatchSetupContext.TryGetParticipant(owner, out WDMatchParticipant participant))
+                playerIds.Add(participant.PlayerId);
+
+        var territoryIds = new List<string>();
+        foreach (TerritorioClique territory in MapaAtivo.ObterTerritoriosOuCena())
+            if (territory != null)
+            {
+                territory.DefinirNeutro();
+                territoryIds.Add(territory.idTerritorio);
+            }
+
+        initialSelectionSession = new WDInitialTerritorySelectionSession(
+            MatchSetupAtual.DeterministicSeed, playerIds, territoryIds);
+        FeedbackSelecaoInicial = "ESCOLHA SEU PRIMEIRO TERRITÓRIO";
+        GetComponent<MatchUIPresenter>()?.SolicitarSnapshotAtual();
+    }
+
+    private void RegistrarEscolhaInicialLocal(TerritorioClique territory)
+    {
+        if (!territory.IsNeutral || !initialSelectionSession.IsAvailable(territory.idTerritorio))
+            return;
+        string localId = ObterIdJogadorLocal();
+        if (!initialSelectionSession.SubmitIntent(localId, territory.idTerritorio))
+            return;
+
+        string remoteId = string.Empty;
+        foreach (WDMatchParticipant participant in MatchSetupAtual.Participants)
+            if (participant.Kind != WDMatchParticipantKind.Local)
+                remoteId = participant.PlayerId;
+        string mockChoice = initialSelectionSession.PickMockIntent(territory.idTerritorio);
+        initialSelectionSession.SubmitIntent(remoteId, mockChoice);
+        WDInitialTerritoryStageResult result = initialSelectionSession.ResolveStage();
+        AplicarResultadoEscolhaInicial(result);
+    }
+
+    private void AplicarResultadoEscolhaInicial(WDInitialTerritoryStageResult result)
+    {
+        if (result == null)
+            return;
+        foreach (WDInitialTerritoryAssignment assignment in result.Assignments)
+        {
+            WDMatchParticipant participant = null;
+            foreach (WDMatchParticipant candidate in MatchSetupAtual.Participants)
+                if (candidate.PlayerId == assignment.PlayerId)
+                    participant = candidate;
+            if (participant == null || MapaAtivo.Instance == null ||
+                !MapaAtivo.Instance.TentarObterTerritorio(
+                    assignment.TerritoryId, out TerritorioClique territory))
+                continue;
+            territory.DefinirDono((TerritorioClique.Dono)(participant.SlotIndex + 1));
+            territory.DefinirTropasIniciaisSemDistribuicao();
+            territory.DestacarReforco();
+            Debug.Log($"ABERTURA 1x1 | Etapa {result.Stage} | {assignment.PlayerId} recebeu " +
+                $"{assignment.TerritoryId}" + (assignment.WasFallback ? " por fallback." : "."));
+        }
+
+        if (initialSelectionSession.IsComplete)
+        {
+            FeedbackSelecaoInicial = "TERRITÓRIOS INICIAIS DEFINIDOS";
+            IniciarPartidaAposAnuncio();
+        }
+        else
+            FeedbackSelecaoInicial = "ESCOLHA SEU SEGUNDO TERRITÓRIO";
+        GetComponent<MatchUIPresenter>()?.SolicitarSnapshotAtual();
+    }
+
+    private void IniciarPartidaAposAnuncio()
+    {
+        FeedbackSelecaoInicial = string.Empty;
+        bloqueioInicioPartida = true;
+        if (uiCompositionRoot == null)
+            uiCompositionRoot = GetComponent<UICompositionRoot>();
+        if (uiCompositionRoot != null)
+            uiCompositionRoot.ExibirInicioRound(1, LiberarEIniciarPartida);
+        else
+            LiberarEIniciarPartida();
+    }
+
+    private void LiberarEIniciarPartida()
+    {
+        bloqueioInicioPartida = false;
+        gerenciadorRodada.IniciarPartida();
+    }
+
+    // =====================================================
+    // 11. PARTICIPANTES AUTORITATIVOS DO MATCH SETUP
     // =====================================================
 
     private void AplicarParticipantesDoMatchSetupAoTabuleiro()
@@ -389,6 +516,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (bloqueioInicioPartida || EmSelecaoInicial)
+            return;
+
         if (faseAtual != FaseTurno.Preparacao)
             return;
 
@@ -419,8 +549,76 @@ public class GameManager : MonoBehaviour
         territorioTransferenciaSelecionado = null;
         feedbackTransferencia = string.Empty;
 
+        EntregarRandomCardsDoRound();
+
         CancelarSelecaoAtual();
 
+    }
+
+    // =====================================================
+    // 12. RANDOM CARDS SIMÉTRICO E DETERMINÍSTICO
+    // =====================================================
+
+    private void InicializarRandomCards()
+    {
+        if (!UsaRandomCards)
+            return;
+
+        WDRandomCardsConfig config =
+            Resources.Load<WDRandomCardsConfig>("Cartas/WDRandomCardsConfig");
+        if (config == null)
+        {
+            Debug.LogWarning("[Random Cards] Configuração não encontrada.");
+            return;
+        }
+
+        var playerIds = new List<string>();
+        foreach (WDMatchParticipant participant in MatchSetupAtual.Participants)
+            playerIds.Add(participant.PlayerId);
+        randomCardsSession = new WDRandomCardsSession(
+            MatchSetupAtual.DeterministicSeed, config.Cards, playerIds);
+    }
+
+    private void EntregarRandomCardsDoRound()
+    {
+        if (randomCardsSession == null)
+            return;
+
+        WDRandomCardsRoundResult result =
+            randomCardsSession.ProcessRound(RodadaAtual);
+        if (result.DrawnCards.Count == 0)
+        {
+            Debug.Log($"[Random Cards] Round {RodadaAtual}: pool elegível esgotado.");
+            return;
+        }
+
+        Debug.Log($"[Random Cards] Round {RodadaAtual}: " +
+            $"sorteio comum [{string.Join(", ", result.DrawnCards)}].");
+        foreach (KeyValuePair<string, bool> delivery in result.DeliveredByPlayer)
+        {
+            int occupied = 0;
+            IReadOnlyList<string> hand = randomCardsSession.GetHand(delivery.Key);
+            foreach (string cardId in hand)
+                if (!string.IsNullOrEmpty(cardId))
+                    occupied++;
+            if (delivery.Value)
+                Debug.Log($"[Random Cards] {delivery.Key}: recebeu; mão {occupied}/8.");
+            else
+                Debug.Log($"[Random Cards] {delivery.Key}: mão cheia; entrega perdida.");
+        }
+    }
+
+    public bool ConsumirCartaRandomJogadorLocal(int slotIndex) =>
+        !bloqueioInicioPartida && !EmSelecaoInicial && randomCardsSession != null &&
+        randomCardsSession.Consume(ObterIdJogadorLocal(), slotIndex);
+
+    private string ObterIdJogadorLocal()
+    {
+        if (MatchSetupAtual != null)
+            foreach (WDMatchParticipant participant in MatchSetupAtual.Participants)
+                if (participant.Kind == WDMatchParticipantKind.Local)
+                    return participant.PlayerId;
+        return string.Empty;
     }
 
     // =====================================================
@@ -608,6 +806,12 @@ public class GameManager : MonoBehaviour
     {
         if (territorio == null)
             return;
+
+        if (EmSelecaoInicial)
+        {
+            RegistrarEscolhaInicialLocal(territorio);
+            return;
+        }
 
         if (!PodeEditarPreparacao)
             return;
@@ -997,7 +1201,8 @@ public class GameManager : MonoBehaviour
 
     public void EnviarAcoes()
     {
-        if (!PodeEditarPreparacao)
+        if (!PodeEditarPreparacao || reforcosDisponiveis > 0 ||
+            !TodosTerritoriosControladosPossuemTropa)
             return;
 
         estadoPreparacao =

@@ -424,7 +424,9 @@ public sealed class WDHomeMatchFlowPanel : MonoBehaviour
                 () => ToggleLocalVote(mapId), GetMapThumbnail(mapId), isSelected));
         }
 
-        for (int i = 0; i < homeData.Decks.Count; i++)
+        bool usesProfileDeck = voteRequest == null ||
+            voteRequest.CardRuleId != "symmetric_random_cards";
+        for (int i = 0; usesProfileDeck && i < homeData.Decks.Count; i++)
         {
             int deckIndex = i;
             WDDeckProfile deck = homeData.Decks[i];

@@ -28,7 +28,7 @@ MonoBehaviour:
   margemSuperior: 16
   margemLateral: 24
   duracaoEntradaAnuncio: 0.3
-  duracaoVisivelAnuncio: 1.9
+  duracaoVisivelAnuncio: 0.85
   duracaoSaidaAnuncio: 0.35
   larguraAnuncioRound: 680
   alturaAnuncioRound: 168

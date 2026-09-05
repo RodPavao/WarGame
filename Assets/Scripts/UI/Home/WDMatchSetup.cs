@@ -57,6 +57,8 @@ public sealed class WDMatchSetup
     public bool SuddenDeathEnabled { get; }
     public int DeterministicSeed { get; }
     public IReadOnlyList<WDMatchParticipant> Participants { get; }
+    public bool IsOneVsOne => ModeId == "1x1" && Participants.Count == 2 &&
+        Participants[0].TeamIndex != Participants[1].TeamIndex;
 
     public WDMatchSetup(
         string modeId, string submodeId, string mapId, string scenePath,
@@ -240,15 +242,17 @@ public static class WDMatchSetupFactory
         if (map == null) throw new ArgumentNullException(nameof(map));
         if (profile == null) throw new ArgumentNullException(nameof(profile));
 
+        bool usesProfileDeck = request.CardRuleId != "symmetric_random_cards";
         int deckIndex = request.MapSelectionPolicy == WDMapSelectionPolicy.Fixed
             ? profile.DefaultDeckIndex
             : selectedDeckIndex;
         WDDeckProfile deck = profile.GetDeck(deckIndex);
+        string deckId = usesProfileDeck ? deck.Id : string.Empty;
         int participantCount = Mathf.Max(1, request.MatchSize);
         var participants = new List<WDMatchParticipant>(participantCount);
         participants.Add(new WDMatchParticipant(
             "local_player", profile.Nickname, 0, 0, profile.PlayerColor,
-            profile.SkinId, deck.Id, WDMatchParticipantKind.Local));
+            profile.SkinId, deckId, WDMatchParticipantKind.Local));
 
         for (int i = 1; i < participantCount; i++)
         {
@@ -258,12 +262,17 @@ public static class WDMatchSetupFactory
                 string.Empty, string.Empty, WDMatchParticipantKind.Remote));
         }
         WDMatchColorResolver.Resolve(participants);
+        int setupSeed = deterministicSeed != 0
+            ? deterministicSeed
+            : request.CardRuleId == "symmetric_random_cards"
+                ? UnityEngine.Random.Range(1, int.MaxValue)
+                : 0;
 
         return new WDMatchSetup(
             request.ModeId, request.SubmodeId, map.MapaId,
             GetMetadata(map, "scenePath"), request.CardRuleId,
             request.RoundLimit, request.SuddenDeathEnabled,
-            deterministicSeed, participants);
+            setupSeed, participants);
     }
 
     private static string GetMetadata(DefinicaoMapa map, string key)

@@ -40,6 +40,15 @@ public class DistribuidorTerritorios : MonoBehaviour
             return;
         }
 
+        if (EhPartidaUmContraUm())
+        {
+            foreach (TerritorioClique territorio in lista)
+                territorio.DefinirNeutro();
+            distribuicaoInicialExecutada = true;
+            Debug.Log("ABERTURA 1x1 | Todos os territórios iniciaram neutros com 1 tropa.");
+            return;
+        }
+
         Embaralhar(lista);
         for (int i = 0;
              i < lista.Count;
@@ -67,6 +76,12 @@ public class DistribuidorTerritorios : MonoBehaviour
         Debug.Log(
             $"Distribuição concluída | Participantes ativos: {jogadores.Count}" +
             (setup != null ? $" | Modo: {setup.ModeId}" : " | Legado sem Match Setup"));
+    }
+
+    private static bool EhPartidaUmContraUm()
+    {
+        WDMatchSetup setup = WDMatchSetupContext.Current;
+        return setup != null && setup.IsOneVsOne;
     }
 
     // =====================================================

@@ -20,6 +20,7 @@ public interface IMatchUICommands
     void CancelarSelecaoTransferencia();
     void EnviarAcoes();
     void CancelarEnvio();
+    bool UsarCarta(int slotIndex);
 }
 
 // ============================================================
@@ -83,6 +84,14 @@ public sealed class MatchUICommands : IMatchUICommands
         gameManager?.CancelarSelecaoTransferencia();
     public void EnviarAcoes() => gameManager?.EnviarAcoes();
     public void CancelarEnvio() => gameManager?.CancelarEnvio();
+    public bool UsarCarta(int slotIndex)
+    {
+        bool consumida = gameManager != null &&
+            gameManager.ConsumirCartaRandomJogadorLocal(slotIndex);
+        if (consumida)
+            gameManager.GetComponent<MatchUIPresenter>()?.SolicitarSnapshotAtual();
+        return consumida;
+    }
 
     // ============================================================
     // 03. RESOLUÇÃO GENÉRICA POR ID, SEM REFERÊNCIAS DE VIEW

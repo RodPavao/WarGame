@@ -87,10 +87,17 @@ public sealed class MatchUIPresenter : MonoBehaviour
         string destinoId = ObterId(gameManager.territorioDestinoSelecionado);
         string transferenciaId = ObterId(gameManager.territorioTransferenciaSelecionado);
         MatchUIFeedbackState feedbackAtual = CriarFeedbackAtual();
+        IReadOnlyList<string> hand = gameManager.CartasRandomJogadorLocal;
+        string[] cards = new string[hand.Count];
+        for (int i = 0; i < hand.Count; i++)
+            cards[i] = hand[i];
         string chave = CriarChaveConteudo(
             tempo, jogadores, estadosTerritorios, acoes, distribuicoes,
             transferencia, resultado, feedbackAtual,
             origemId, destinoId, transferenciaId);
+        chave += $"|random:{gameManager.UsaRandomCards}:{string.Join(",", cards)}";
+        chave += $"|initial:{gameManager.EmSelecaoInicial}:" +
+            $"{gameManager.EtapaSelecaoInicial}:{gameManager.FeedbackSelecaoInicial}";
 
         return new MatchUIState(
             gameManager.RodadaAtual,
@@ -110,7 +117,9 @@ public sealed class MatchUIPresenter : MonoBehaviour
             gameManager.AcoesEnviadas,
             gameManager.PodeCancelarEnvio,
             gameManager.PodeEditarPreparacao,
-            gameManager.PossuiPreparacaoParaEnviar && gameManager.PodeEditarPreparacao,
+            gameManager.PossuiPreparacaoParaEnviar && gameManager.PodeEditarPreparacao &&
+                gameManager.reforcosDisponiveis == 0 &&
+                gameManager.TodosTerritoriosControladosPossuemTropa,
             gameManager.PodeEditarPreparacao &&
                 gameManager.territorioSelecionado != null &&
                 gameManager.territorioDestinoSelecionado != null,
@@ -130,6 +139,11 @@ public sealed class MatchUIPresenter : MonoBehaviour
             distribuicoes,
             transferencia,
             resultado,
+            gameManager.UsaRandomCards,
+            cards,
+            gameManager.EmSelecaoInicial,
+            gameManager.EtapaSelecaoInicial,
+            gameManager.FeedbackSelecaoInicial,
             chave);
     }
 

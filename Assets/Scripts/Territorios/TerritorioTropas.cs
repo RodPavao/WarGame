@@ -78,6 +78,12 @@ public class TerritorioTropas : MonoBehaviour
 
         AtualizarContador();
     }
+
+    public void DefinirQuantidadeInicialSemTropas()
+    {
+        quantidade = 0;
+        AtualizarContador();
+    }
     
     private void AtualizarContador()
     {

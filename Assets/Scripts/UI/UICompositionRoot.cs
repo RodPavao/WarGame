@@ -276,6 +276,23 @@ public sealed class UICompositionRoot : MonoBehaviour
         roundAnnouncement?.ExibirResolucao(state);
     }
 
+    public void ExibirInicioRound(int round, System.Action concluir)
+    {
+        GarantirEstrutura();
+        if (roundAnnouncement == null)
+        {
+            concluir?.Invoke();
+            return;
+        }
+        void AoConcluir()
+        {
+            roundAnnouncement.Completed -= AoConcluir;
+            concluir?.Invoke();
+        }
+        roundAnnouncement.Completed += AoConcluir;
+        roundAnnouncement.ExibirInicioRound(round);
+    }
+
     // ============================================================
     // 05. COMPARAÇÃO CONTROLADA ENTRE HUD FINAL E LEGADO
     // ============================================================

@@ -43,6 +43,22 @@ public class TerritorioClique : MonoBehaviour
 
     public Dono dono = Dono.Neutro;
 
+    public enum EstadoTerritorial
+    {
+        Ocupado,
+        Neutro,
+        Vazio
+    }
+
+    [SerializeField] private EstadoTerritorial estadoTerritorial =
+        EstadoTerritorial.Neutro;
+
+    public EstadoTerritorial Estado => estadoTerritorial;
+    public bool IsNeutral => estadoTerritorial == EstadoTerritorial.Neutro;
+    public bool IsEmpty => estadoTerritorial == EstadoTerritorial.Vazio;
+    public bool IsOccupied => estadoTerritorial == EstadoTerritorial.Ocupado;
+    public bool PossuiDono => IsOccupied && dono != Dono.Neutro;
+
     // =====================================================
     // EXÉRCITO
     // =====================================================
@@ -64,6 +80,11 @@ public class TerritorioClique : MonoBehaviour
 
     private void Start()
     {
+        // Migração segura dos dados legados serializados antes da existência
+        // do estado territorial explícito.
+        if (dono != Dono.Neutro)
+            estadoTerritorial = EstadoTerritorial.Ocupado;
+
         territorioVisual =
             GetComponent<TerritorioVisual>();
 
@@ -116,7 +137,14 @@ public class TerritorioClique : MonoBehaviour
     public void DefinirDono(
         Dono novoDono)
     {
+        if (novoDono == Dono.Neutro)
+        {
+            DefinirNeutro();
+            return;
+        }
+
         dono = novoDono;
+        estadoTerritorial = EstadoTerritorial.Ocupado;
 
         AtualizarIdentidadeVisual();
     }
@@ -208,6 +236,14 @@ public class TerritorioClique : MonoBehaviour
         territorioContador?.Atualizar();
     }
 
+    public void DefinirTropasIniciaisSemDistribuicao()
+    {
+        if (territorioTropas == null)
+            territorioTropas = GetComponent<TerritorioTropas>();
+        territorioTropas?.DefinirQuantidadeInicialSemTropas();
+        territorioContador?.Atualizar();
+    }
+
     // =====================================================
     // VIZINHANÇA
     // =====================================================
@@ -244,6 +280,24 @@ public class TerritorioClique : MonoBehaviour
 
     public void RestaurarEstadoVisualLogico()
     {
+        AtualizarIdentidadeVisual();
+    }
+
+    public void DefinirNeutro()
+    {
+        dono = Dono.Neutro;
+        estadoTerritorial = EstadoTerritorial.Neutro;
+        DefinirTropas(1);
+        AtualizarIdentidadeVisual();
+    }
+
+    public void DefinirVazio()
+    {
+        dono = Dono.Neutro;
+        estadoTerritorial = EstadoTerritorial.Vazio;
+        if (territorioTropas == null)
+            territorioTropas = GetComponent<TerritorioTropas>();
+        territorioTropas?.DefinirQuantidadeInicialSemTropas();
         AtualizarIdentidadeVisual();
     }
 

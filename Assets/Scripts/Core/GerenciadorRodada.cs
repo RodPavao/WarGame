@@ -30,6 +30,7 @@ public class GerenciadorRodada : MonoBehaviour
     public ResultadoPartida ResultadoAtual { get; private set; }
 
     public const int TotalRoundsNormais = 10;
+    public const int TotalTropasIniciaisUmContraUm = 6;
     private int LimiteRoundsNormais => gameManager != null
         ? gameManager.LimiteRoundsDaPartida
         : TotalRoundsNormais;
@@ -175,10 +176,15 @@ public class GerenciadorRodada : MonoBehaviour
         TerritorioClique.Dono jogador)
     {
         if (rodadaAtual == 1)
+        {
+            if (gameManager != null && gameManager.EhPartidaUmContraUm)
+                return TotalTropasIniciaisUmContraUm;
             return 8;
+        }
 
         return CalcularReforcosRegulares(jogador, out _, out _);
     }
+
 
     public int CalcularReforcosRegulares(
         TerritorioClique.Dono jogador,
@@ -244,6 +250,16 @@ public class GerenciadorRodada : MonoBehaviour
         {
             if (territorio.dono != TerritorioClique.Dono.Neutro)
                 ativos.Add(territorio.dono);
+        }
+
+        if (ativos.Count == 0 && gameManager != null && gameManager.MatchSetupAtual != null)
+        {
+            foreach (WDMatchParticipant participant in gameManager.MatchSetupAtual.Participants)
+            {
+                int value = participant.SlotIndex + 1;
+                if (System.Enum.IsDefined(typeof(TerritorioClique.Dono), value))
+                    ativos.Add((TerritorioClique.Dono)value);
+            }
         }
 
         prioridadeJogadores.Clear();
@@ -326,6 +342,12 @@ public class GerenciadorRodada : MonoBehaviour
         ResultadoAtual = null;
         gameManager?.LimparPreparacaoParaTesteEditor();
         IniciarRodada();
+    }
+
+    public void PrepararPrioridadeRoundUm()
+    {
+        rodadaAtual = 1;
+        AtualizarPrioridadeJogadores();
     }
 
     [ContextMenu("Teste Editor/Preparar Round 10 Empatado")]

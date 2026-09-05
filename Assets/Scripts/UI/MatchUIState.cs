@@ -47,6 +47,11 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
     public IReadOnlyList<MatchUIReinforcementState> Distribuicoes { get; }
     public MatchUITransferState Transferencia { get; }
     public MatchUIResultState Resultado { get; }
+    public bool UsaRandomCards { get; }
+    public IReadOnlyList<string> CartasJogadorLocal { get; }
+    public bool EmSelecaoInicial { get; }
+    public int EtapaSelecaoInicial { get; }
+    public string FeedbackSelecaoInicial { get; }
 
     internal MatchUIState(
         int round,
@@ -84,6 +89,11 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
         MatchUIReinforcementState[] distribuicoes,
         MatchUITransferState transferencia,
         MatchUIResultState resultado,
+        bool usaRandomCards,
+        string[] cartasJogadorLocal,
+        bool emSelecaoInicial,
+        int etapaSelecaoInicial,
+        string feedbackSelecaoInicial,
         string chaveConteudo)
     {
         Round = round;
@@ -121,6 +131,12 @@ public sealed class MatchUIState : IEquatable<MatchUIState>
         Distribuicoes = Array.AsReadOnly(distribuicoes ?? Array.Empty<MatchUIReinforcementState>());
         Transferencia = transferencia;
         Resultado = resultado;
+        UsaRandomCards = usaRandomCards;
+        CartasJogadorLocal = Array.AsReadOnly(
+            cartasJogadorLocal ?? Array.Empty<string>());
+        EmSelecaoInicial = emSelecaoInicial;
+        EtapaSelecaoInicial = etapaSelecaoInicial;
+        FeedbackSelecaoInicial = feedbackSelecaoInicial ?? string.Empty;
         this.chaveConteudo = chaveConteudo ?? string.Empty;
     }
 

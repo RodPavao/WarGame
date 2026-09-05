@@ -110,6 +110,18 @@ public sealed class RoundAnnouncementView : MonoBehaviour
         animacaoAtual = StartCoroutine(Animar());
     }
 
+    public void ExibirInicioRound(int round)
+    {
+        if (tema == null)
+            return;
+        textoRound.text = $"ROUND {Mathf.Max(1, round):00}";
+        textoFase.text = "PREPARAÇÃO";
+        if (animacaoAtual != null)
+            StopCoroutine(animacaoAtual);
+        gameObject.SetActive(true);
+        animacaoAtual = StartCoroutine(Animar());
+    }
+
     // ============================================================
     // 04. ANIMAÇÃO PROCEDURAL DE ENTRADA, PAUSA E SAÍDA
     // ============================================================

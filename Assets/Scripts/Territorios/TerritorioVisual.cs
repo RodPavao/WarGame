@@ -131,12 +131,11 @@ public class TerritorioVisual : MonoBehaviour
 
         GarantirMaterialSemLuz();
 
-        corBase =
-            PaletaJogadores.ObterCorAtiva(
-                territorio.dono
-            );
-
-        corBase.a = 1f;
+        corBase = !territorio.PossuiDono
+            ? Color.clear
+            : PaletaJogadores.ObterCorAtiva(territorio.dono);
+        if (territorio.PossuiDono)
+            corBase.a = 1f;
 
         if (!selecionado)
         {
@@ -153,8 +152,11 @@ public class TerritorioVisual : MonoBehaviour
 
         GarantirMaterialSemLuz();
         selecionado = false;
-        corBase = PaletaJogadores.ObterCorAtiva(donoVisual);
-        corBase.a = 1f;
+        corBase = donoVisual == TerritorioClique.Dono.Neutro
+            ? Color.clear
+            : PaletaJogadores.ObterCorAtiva(donoVisual);
+        if (donoVisual != TerritorioClique.Dono.Neutro)
+            corBase.a = 1f;
         sr.color = corBase;
     }
 
@@ -188,12 +190,11 @@ public class TerritorioVisual : MonoBehaviour
             territorio == null)
             return;
 
-        corBase =
-            PaletaJogadores.ObterCorAtiva(
-                territorio.dono
-            );
-
-        corBase.a = 1f;
+        corBase = !territorio.PossuiDono
+            ? new Color(1f, 1f, 1f, 0.35f)
+            : PaletaJogadores.ObterCorAtiva(territorio.dono);
+        if (territorio.PossuiDono)
+            corBase.a = 1f;
 
         selecionado = true;
     }
@@ -214,8 +215,11 @@ public class TerritorioVisual : MonoBehaviour
         if (sr == null || territorio == null)
             return;
 
-        corBase = PaletaJogadores.ObterCorAtiva(territorio.dono);
-        corBase.a = 1f;
+        corBase = !territorio.PossuiDono
+            ? Color.clear
+            : PaletaJogadores.ObterCorAtiva(territorio.dono);
+        if (territorio.PossuiDono)
+            corBase.a = 1f;
         destaqueReforcoAtivo = true;
         fimDestaqueReforco = Time.unscaledTime + 1.5f;
     }
